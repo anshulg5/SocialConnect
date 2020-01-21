@@ -3,5 +3,5 @@ package org.example;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 public interface Sender {
-    public void send(String msg);
+    public void send(Message msg);
 }

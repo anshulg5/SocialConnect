@@ -19,7 +19,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 //                    .setChatId(update.getMessage().getChatId())
 //                    .setText(update.getMessage().getText());
 
-            mediator.send(update.getMessage().getText()); // Call Mediator's method to send the message
+            mediator.send(update.getMessage()); // Call Mediator's method to send the message
         }
     }
 

@@ -3,9 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="c2d40ab9-7224-45a6-85b3-f91cade85362" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Mediator_app.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Mediator_app.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/example/App.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Sender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Sender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Sender_app.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Sender_app.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/TelegramBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/TelegramBot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/Mediator_app.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/Mediator_app.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/Sender.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/Sender.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/Sender_app.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/Sender_app.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/org/example/TelegramBot.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/TelegramBot.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -108,22 +112,22 @@
       <screen x="0" y="0" width="1536" height="960" />
     </state>
     <state x="581" y="196" key="#com.intellij.ide.util.MemberChooser/0.0.1536.960@0.0.1536.960" timestamp="1579613071608" />
-    <state width="1494" height="265" key="GridCell.Tab.0.bottom" timestamp="1579636297530">
+    <state width="1494" height="265" key="GridCell.Tab.0.bottom" timestamp="1579639611068">
       <screen x="0" y="0" width="1536" height="960" />
     </state>
-    <state width="1494" height="265" key="GridCell.Tab.0.bottom/0.0.1536.960@0.0.1536.960" timestamp="1579636297530" />
-    <state width="1494" height="265" key="GridCell.Tab.0.center" timestamp="1579636297528">
+    <state width="1494" height="265" key="GridCell.Tab.0.bottom/0.0.1536.960@0.0.1536.960" timestamp="1579639611068" />
+    <state width="1494" height="265" key="GridCell.Tab.0.center" timestamp="1579639611067">
       <screen x="0" y="0" width="1536" height="960" />
     </state>
-    <state width="1494" height="265" key="GridCell.Tab.0.center/0.0.1536.960@0.0.1536.960" timestamp="1579636297528" />
-    <state width="1494" height="265" key="GridCell.Tab.0.left" timestamp="1579636297527">
+    <state width="1494" height="265" key="GridCell.Tab.0.center/0.0.1536.960@0.0.1536.960" timestamp="1579639611067" />
+    <state width="1494" height="265" key="GridCell.Tab.0.left" timestamp="1579639611066">
       <screen x="0" y="0" width="1536" height="960" />
     </state>
-    <state width="1494" height="265" key="GridCell.Tab.0.left/0.0.1536.960@0.0.1536.960" timestamp="1579636297527" />
-    <state width="1494" height="265" key="GridCell.Tab.0.right" timestamp="1579636297529">
+    <state width="1494" height="265" key="GridCell.Tab.0.left/0.0.1536.960@0.0.1536.960" timestamp="1579639611066" />
+    <state width="1494" height="265" key="GridCell.Tab.0.right" timestamp="1579639611067">
       <screen x="0" y="0" width="1536" height="960" />
     </state>
-    <state width="1494" height="265" key="GridCell.Tab.0.right/0.0.1536.960@0.0.1536.960" timestamp="1579636297529" />
+    <state width="1494" height="265" key="GridCell.Tab.0.right/0.0.1536.960@0.0.1536.960" timestamp="1579639611067" />
     <state x="306" y="142" key="Maven.ArtifactSearchDialog" timestamp="1579528451076">
       <screen x="0" y="0" width="1536" height="960" />
     </state>

@@ -7,6 +7,7 @@ import org.eclipse.jetty.client.util.StringContentProvider;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.json.JSONObject;
+import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.nio.ByteBuffer;
 import java.util.Iterator;
@@ -30,14 +31,14 @@ public class Sender_app {
 
     }
 
-    public void send(String msg){
+    public void send(Message msg){
         Request request = client.POST(URL);
 //            request = request.content(request.getContent(),"application/json");
         request.header(HttpHeader.CONTENT_TYPE, "application/json");
 
         JSONObject json = new JSONObject();
-        json.put("user","Anshul");
-        json.put("message",msg);
+        json.put("user",msg.getFrom().getFirstName());
+        json.put("message",msg.getText());
         request.content(new StringContentProvider(json.toString()));
 
         System.out.println(msg);

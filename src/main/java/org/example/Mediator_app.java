@@ -1,5 +1,7 @@
 package org.example;
 
+import org.telegram.telegrambots.meta.api.objects.Message;
+
 public class Mediator_app implements Sender {
 
     Receiver_app recv_app;
@@ -7,7 +9,7 @@ public class Mediator_app implements Sender {
 
 
     @Override
-    public void send(String msg) {
+    public void send(Message msg) {
         send_app.send(msg);
     }
 
