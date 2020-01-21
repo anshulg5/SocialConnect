@@ -12,11 +12,11 @@ public class Mediator_app implements Sender {
     }
 
     Mediator_app(){
-        Receiver_app recv_app = new Receiver_app(this);
-        Sender_app send_app = new Sender_app();
+        recv_app = new Receiver_app(this);
+        send_app = new Sender_app();
     }
 
-    public static void main(){
+    public static void main(String[] args){
         new Mediator_app();
     }
 
