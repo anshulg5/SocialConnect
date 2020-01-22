@@ -39,6 +39,7 @@ public class Sender_app {
         JSONObject json = new JSONObject();
         json.put("user",msg.getFrom().getFirstName());
         json.put("message",msg.getText());
+        json.put("group",msg.getChat().getTitle());
         request.content(new StringContentProvider(json.toString()));
 
         System.out.println(msg);
