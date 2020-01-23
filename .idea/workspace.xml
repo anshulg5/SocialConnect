@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c2d40ab9-7224-45a6-85b3-f91cade85362" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Sender_app.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Sender_app.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/example/Sender_app.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/Sender_app.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +39,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
