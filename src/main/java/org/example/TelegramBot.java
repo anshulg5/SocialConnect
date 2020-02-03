@@ -10,6 +10,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class TelegramBot extends TelegramLongPollingBot {
 
     private MediatorApp app;
+    private String botUserName;
+    private String botToken;
 
     @Inject
     TelegramBot(MediatorApp app){
@@ -23,16 +25,23 @@ public class TelegramBot extends TelegramLongPollingBot {
         }
     }
 
+    public void setBotUserName(String botUserName) {
+        this.botUserName = botUserName;
+    }
+
+    public void setBotToken(String botToken) {
+        this.botToken = botToken;
+    }
+
     @Override
     public String getBotUsername() {
-        return "Connectu_bot";
+        return botUserName;
     }
 
     @Override
     public String getBotToken() {
-        return "1025292716:AAEm4MMS1pahdc394Y_Wpjnkz7_D0v5EfWQ";
+        return botToken;
     }
-
 
     public boolean sendMessage(Message msg) {
         AppMessage appmsg = new AppMessage();

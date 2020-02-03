@@ -9,9 +9,11 @@ import com.google.inject.servlet.RequestScoped;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.example.Servlet.WelcomeServlet;
+import org.example.db.BotDetailDao;
 import org.example.db.ConnectionDetailDao;
 
 import org.example.model.AppMessage;
+import org.example.model.BotDetail;
 import org.example.model.ConnectionDetail;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
@@ -25,6 +27,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 
+@Singleton
 public class MediatorApp{
 
     private SenderApp MessageSender;
@@ -70,14 +73,22 @@ public class MediatorApp{
         AppModule appModule = new AppModule();
         AppServletModule appServletModule = new AppServletModule();
         Injector injector = Guice.createInjector(appModule,appServletModule);
-        TelegramBot bot = injector.getInstance(TelegramBot.class);
-        botsApi.registerBot(bot);
+
+
+        BotDetailDao dao = injector.getInstance(BotDetailDao.class);
+        List<BotDetail> bots = dao.getAllBots();
+        Iterator<BotDetail> iterator = bots.iterator();
+        while (iterator.hasNext()) {
+            TelegramBot bot = injector.getInstance(TelegramBot.class);
+            BotDetail botDetail= iterator.next();
+            bot.setBotUserName(botDetail.getBotUserName());
+            bot.setBotToken(botDetail.getBotToken());
+            botsApi.registerBot(bot);
+        }
 
         server = new Server(8080);
         ServletContextHandler handler = new ServletContextHandler(server, "/");
-
         handler.addFilter(GuiceFilter.class, "/*", EnumSet.allOf(DispatcherType.class));
-
         handler.addServlet(WelcomeServlet.class, "/");
         server.start();
         server.join();

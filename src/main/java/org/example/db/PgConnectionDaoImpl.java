@@ -14,23 +14,11 @@ import java.util.List;
 @Singleton
 public class PgConnectionDaoImpl implements ConnectionDetailDao {
 
-    private final String URL = "jdbc:postgresql://127.0.0.1:5432/postgres";
-    private final String USER = "testdb";
-    private final String DRIVER = "org.postgresql.Driver";
-    private final String PASSWORD = "zxcvbnm";
-    private JdbcTemplate db = null;
+    private final JdbcTemplate db;
 
     @Inject
-    public PgConnectionDaoImpl(DriverManagerDataSource driverManagerDataSource) {
-        this.db = new JdbcTemplate(Createdatasource(driverManagerDataSource));
-    }
-
-    private DataSource Createdatasource(DriverManagerDataSource driverManagerDataSource) {
-        driverManagerDataSource.setUrl(URL);
-        driverManagerDataSource.setUsername(USER);
-        driverManagerDataSource.setPassword(PASSWORD);
-        driverManagerDataSource.setDriverClassName(DRIVER);
-        return driverManagerDataSource;
+    public PgConnectionDaoImpl(JdbcTemplate db) {
+        this.db = db;
     }
 
     @Override
