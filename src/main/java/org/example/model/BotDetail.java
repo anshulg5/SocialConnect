@@ -3,6 +3,8 @@ package org.example.model;
 public class BotDetail {
     String botUserName;
     String botToken;
+    String msgText;
+
     public String getBotUserName() {
         return botUserName;
     }
@@ -18,4 +20,8 @@ public class BotDetail {
     public void setBotToken(String botToken) {
         this.botToken = botToken;
     }
+
+    public String getMsgText() { return msgText; }
+
+    public void setMsgText(String botMsgText) { this.msgText = msgText; }
 }

@@ -5,25 +5,16 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import com.google.inject.servlet.GuiceFilter;
-import com.google.inject.servlet.RequestScoped;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.example.Servlet.WelcomeServlet;
-import org.example.db.BotDetailDao;
 import org.example.db.ConnectionDetailDao;
 
 import org.example.model.AppMessage;
-import org.example.model.BotDetail;
 import org.example.model.ConnectionDetail;
 import org.telegram.telegrambots.ApiContextInitializer;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
-
 
 import javax.servlet.DispatcherType;
-import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -33,7 +24,6 @@ public class MediatorApp{
     private SenderApp MessageSender;
     private ConnectionDetailDao dao = null;
     private Map<String,String> channelDetails;
-    static private Server server;
 
     @Inject
     public MediatorApp(SenderApp MessageSender, ConnectionDetailDao dao){
@@ -62,34 +52,40 @@ public class MediatorApp{
                     ", Value = " + entry.getValue());
         dao.saveDetails(new ConnectionDetail(source,target));
     }
-    public boolean sendMessage(AppMessage msg) {
-        if(channelDetails.containsKey(msg.getChannelId())) return MessageSender.send(channelDetails.get(msg.getChannelId()), msg);
-        return false;
+    public boolean sendMessage(AppMessage msg,String template) {
+        String textmsg = processMessage(msg,template);
+        return MessageSender.send(msg.getChannelId(),textmsg);
     }
+
+    private String processMessage(AppMessage msg, String template) {
+        //Here convert text from given params.
+        if(template == null)
+            return msg.toString();
+        //regex
+        template = template.replaceAll("\\$\\(json\\.provider\\)",msg.getProvider());
+        template = template.replaceAll("\\$\\(json\\.channelId\\)",msg.getChannelId());
+        template = template.replaceAll("\\$\\(json\\.channelName\\)",msg.getChannelName());
+        template = template.replaceAll("\\$\\(json\\.sentby\\)",msg.getSentBy());
+        template = template.replaceAll("\\$\\(json\\.text\\)",msg.getText());
+        return template;
+    }
+
     public static void main(String[] args)throws Exception{
 
         ApiContextInitializer.init();
-        TelegramBotsApi botsApi = new TelegramBotsApi();
+    //    TelegramBotsApi botsApi = new TelegramBotsApi();
         AppModule appModule = new AppModule();
         AppServletModule appServletModule = new AppServletModule();
         Injector injector = Guice.createInjector(appModule,appServletModule);
 
+        // on run bot shutdown and add bot and remove
+        // new web-hook as receiver
 
-        BotDetailDao dao = injector.getInstance(BotDetailDao.class);
-        List<BotDetail> bots = dao.getAllBots();
-        Iterator<BotDetail> iterator = bots.iterator();
-        while (iterator.hasNext()) {
-            TelegramBot bot = injector.getInstance(TelegramBot.class);
-            BotDetail botDetail= iterator.next();
-            bot.setBotUserName(botDetail.getBotUserName());
-            bot.setBotToken(botDetail.getBotToken());
-            botsApi.registerBot(bot);
-        }
 
-        server = new Server(8080);
+
+        Server server = new Server(8080);
         ServletContextHandler handler = new ServletContextHandler(server, "/");
         handler.addFilter(GuiceFilter.class, "/*", EnumSet.allOf(DispatcherType.class));
-        handler.addServlet(WelcomeServlet.class, "/");
         server.start();
         server.join();
     }

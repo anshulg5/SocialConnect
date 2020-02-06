@@ -16,6 +16,21 @@ public class PgBotDetailDaoImpl implements BotDetailDao {
         this.db = db;
     }
     public List<BotDetail> getAllBots() {
-        return this.db.query("SELECT * from botDetail", new BotMapper());
+        return db.query("SELECT * from botDetail", new BotMapper());
+    }
+
+    @Override
+    public void addBotDetail(String botUserName, String botToken, String msgText) {
+        db.update("INSERT INTO botDetail (botusername,bottoken,msgtext) VALUES (?, ?, ?)", botUserName, botToken, msgText);
+    }
+
+    @Override
+    public void removeBotDetail(String botUserName) {
+        db.update("DELETE FROM botDetail WHERE botusername = ?",botUserName);
+    }
+
+    @Override
+    public void editBotMsgDetail(String botUserName, String msgText) {
+        // edit here
     }
 }

@@ -2,43 +2,57 @@ package org.example.model;
 
 public class AppMessage {
 
-    private String ChannelId;
-    private String User;
-    private String Text;
+    private String provider;
+    private String channelId;
+    private String channelName;
+    private String sentBy;
+    private String text;
 
-    public AppMessage() {
-    }
-    public AppMessage(String channelId, String user, String text) {
-        ChannelId = channelId;
-        User = user;
-        Text = text;
-    }
-    public void setChannelId(String channelID) {
-        ChannelId = channelID;
+
+    public String getProvider() {
+        return provider;
     }
 
-    public void setUser(String user) {
-        User = user;
-    }
-
-    public void setText(String text) {
-        Text = text;
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 
     public String getChannelId() {
-        return ChannelId;
+        return channelId;
     }
 
-    public String getUser() {
-        return User;
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
     }
 
+    public String getChannelName() {
+        return channelName;
+    }
 
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
+    }
+
+    public String getSentBy() {
+        return sentBy;
+    }
+
+    public void setSentBy(String sentBy) {
+        this.sentBy = sentBy;
+    }
 
     public String getText() {
-        return Text;
+        return text;
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    @Override
+    public String toString() {
+        return "AppMessage{provider='" + provider + '\'' + ", channelId='" + channelId + '\'' + ", channelName='" + channelName + '\'' + ", sentBy='" + sentBy + '\'' + ", text='" + text + '\'' + '}';
+    }
 }
 
 

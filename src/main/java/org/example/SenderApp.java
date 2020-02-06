@@ -1,5 +1,7 @@
 package org.example;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.client.util.StringContentProvider;
@@ -8,9 +10,11 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.example.model.AppMessage;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+@Singleton
 public class SenderApp {
 
     HttpClient client;
@@ -27,13 +31,11 @@ public class SenderApp {
         }
     }
 
-    public boolean send(String ChannelId , AppMessage msg){
+    public boolean send(String ChannelId , String msg){
         Request request = client.POST(URL);
         request.header(HttpHeader.CONTENT_TYPE, "application/json");
         JSONObject json = new JSONObject();
-        json.put("user",msg.getUser());
-        json.put("message",msg.getText());
-        json.put("group",msg.getChannelId());
+        json.put("text",msg);
         request.content(new StringContentProvider(json.toString()));
         try {
             request.send();

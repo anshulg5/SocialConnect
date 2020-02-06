@@ -13,8 +13,8 @@ public class BotMapper implements RowMapper<BotDetail> {
        BotDetail botDetail = new BotDetail();
        botDetail.setBotUserName(resultSet.getString("botUserName"));
        botDetail.setBotToken(resultSet.getString("botToken"));
+       botDetail.setMsgText(resultSet.getString("msgText"));
        return botDetail;
 
     }
-
 }
