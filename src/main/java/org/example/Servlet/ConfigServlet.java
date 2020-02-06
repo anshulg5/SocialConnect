@@ -9,10 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
 
 @Singleton
-public class WelcomeServlet extends HttpServlet {
+public class ConfigServlet extends HttpServlet {
 
     @Inject
     private MediatorApp app;
@@ -30,3 +29,4 @@ public class WelcomeServlet extends HttpServlet {
         app.addConfig(source, target);
     }
 }
+

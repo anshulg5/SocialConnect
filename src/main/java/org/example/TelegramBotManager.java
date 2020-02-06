@@ -65,6 +65,7 @@ public class TelegramBotManager {
             BotSession session = this.botSessionList.get(botUserName);
             if(session.isRunning()) {
                 bot.onClosing();
+                //This will take time.
                 session.stop();
                 botSessionList.remove(botUserName);
                 botList.remove(botUserName);

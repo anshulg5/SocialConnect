@@ -13,6 +13,6 @@ public class AppServletModule extends ServletModule {
         serve("/config").with(ConfigServlet.class);
         serve("/").with(WelcomeServlet.class);
         serve("/bot/*").with(BotControllerServlet.class);
-      //  serve("/flock").with(FWHtestingServlet.class);
+        serve("/flock").with(FWHtestingServlet.class);
     }
 }
