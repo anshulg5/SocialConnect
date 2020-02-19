@@ -1,21 +1,15 @@
 package org.example;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.google.inject.Singleton;
-import com.google.inject.servlet.GuiceFilter;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.example.db.ConnectionDetailDao;
 
 import org.example.model.AppMessage;
 import org.example.model.ConnectionDetail;
-import org.telegram.telegrambots.ApiContextInitializer;
 
-import javax.servlet.DispatcherType;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.lang.*;
 
 
 @Singleton
@@ -70,23 +64,51 @@ public class MediatorApp{
         return template;
     }
 
+
+
+
+
+
+
+
     public static void main(String[] args)throws Exception{
 
-        ApiContextInitializer.init();
-    //    TelegramBotsApi botsApi = new TelegramBotsApi();
-        AppModule appModule = new AppModule();
-        AppServletModule appServletModule = new AppServletModule();
-        Injector injector = Guice.createInjector(appModule,appServletModule);
 
-        // on run bot shutdown and add bot and remove
-        // new web-hook as receiver
+        //get constructor that takes a String as argument
 
 
+//        ApiContextInitializer.init();
+//    //    TelegramBotsApi botsApi = new TelegramBotsApi();
+//        AppModule appModule = new AppModule();
+//        AppServletModule appServletModule = new AppServletModule();
+//        Injector injector = Guice.createInjector(appModule,appServletModule);
+//
+//        // on run bot shutdown and add bot and remove
+//        // new web-hook as receiver
+//
+//
+//
+//        Server server = new Server(8080);
+//        ServletContextHandler handler = new ServletContextHandler(server, "/");
+//        handler.addFilter(GuiceFilter.class, "/*", EnumSet.allOf(DispatcherType.class));
+//        server.start();
+//        server.join();
+//
+//        JSONObject msg = new JSONObject();
+//        msg.put("id" , "123");
+//        msg.put("name" , "Hiren");
+//        Collection< Node<String> >  myStrings = new ArrayList< Node<String> > ();
+//        Node<String> event = new MyString("name");
+//        myStrings.add(event);
+//        Collection<Node<String>> cool = new ArrayList<Node<String>>();
+//
+//        PathNode get = new PathNode(cool);
+//
+//
+//        Node<String> left = new MyString();
+//        Node<String> right = new MyString("Hiren");
+//        Isequal<String> isequal = new Isequal<String>(left,right);
+//        System.out.println(isequal.apply(null));
 
-        Server server = new Server(8080);
-        ServletContextHandler handler = new ServletContextHandler(server, "/");
-        handler.addFilter(GuiceFilter.class, "/*", EnumSet.allOf(DispatcherType.class));
-        server.start();
-        server.join();
     }
 }

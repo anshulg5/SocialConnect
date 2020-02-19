@@ -31,6 +31,6 @@ public class PgBotDetailDaoImpl implements BotDetailDao {
 
     @Override
     public void editBotMsgDetail(String botUserName, String msgText) {
-        // edit here
+        db.update("UPDATE botDetail SET msgText = ? WHERE botusername = ?",msgText,botUserName);
     }
 }

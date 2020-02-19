@@ -32,21 +32,22 @@ public class FWHtestingServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if(req.getParameter("token").equals(flockWebHook.getToken())) {
-                BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
-                String json = "";
-                if(br != null){
-                    json = br.readLine();
-                    System.out.println(json);
-                }
-                JSONObject jsonObject = new JSONObject(json);
-                AppMessage msg = new AppMessage();
-                msg.setProvider("Flock");
-                msg.setSentBy(jsonObject.getString("from"));
-                msg.setChannelName(flockWebHook.getUserName());
-                msg.setText(jsonObject.getString("text"));
-                flockWebHook.sendMessage(msg);
 
-        }
+//        if(req.getParameter("token").equals(flockWebHook.getToken())) {
+//                BufferedReader br = new BufferedReader(new InputStreamReader(req.getInputStream()));
+//                String json = "";
+//                if(br != null){
+//                    json = br.readLine();
+//                    System.out.println(json);
+//                }
+//                JSONObject jsonObject = new JSONObject(json);
+//                AppMessage msg = new AppMessage();
+//                msg.setProvider("Flock");
+//                msg.setSentBy(jsonObject.getString("from"));
+//                msg.setChannelName(flockWebHook.getUserName());
+//                msg.setText(jsonObject.getString("text"));
+//                flockWebHook.sendMessage(msg);
+//
+//        }
     }
 }
