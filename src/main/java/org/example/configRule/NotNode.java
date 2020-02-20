@@ -7,12 +7,12 @@ public class NotNode implements Node<Boolean> {
 
     Node<Boolean> node;
 
-    public NotNode(Map<Operator, Object> map) {
+    public NotNode(Map<Operator, Object> map,Map<String,Node> symbolTable) {
         if(map.size()==1) {
             Iterator<Operator> iterator = map.keySet().iterator();
             while (iterator.hasNext()) {
                 Operator key = iterator.next();
-                node = RuleApp.createNode(key, map.get(key));
+                node = RuleApp.createNode(key, map.get(key),symbolTable);
             }
         }
     }

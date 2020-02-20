@@ -11,18 +11,18 @@ public class AndNode implements Node<Boolean> {
         this.nodeCollection = nodeCollection;
     }
 
-    public AndNode(List<Map<Operator,Object>>  ruleMap) {
+    public AndNode(List<Map<Operator,Object>> ruleMap,Map<String,Node> symbolTable) {
         nodeCollection = new ArrayList<>();
         Iterator<Map<Operator, Object>> iterator = ruleMap.iterator();
         while(iterator.hasNext()){
             Map<Operator,Object> map = iterator.next();
             if(map.size() == 1) {
                 Map.Entry<Operator,Object> entry = map.entrySet().iterator().next();
-                Node<Boolean> node = RuleApp.createNode(entry.getKey(),entry.getValue());
+                Node<Boolean> node = RuleApp.createNode(entry.getKey(),entry.getValue(),symbolTable);
                 nodeCollection.add(node);
             }
             else {
-                System.out.println("Invalid 'AND' format");
+                System.out.println("Invalid 'OR' format");
             }
         }
     }

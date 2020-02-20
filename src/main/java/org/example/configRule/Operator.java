@@ -16,7 +16,14 @@ public enum Operator {
     BOOL,
     INT,
 
-    STRLST
+    STRLST,
+
+    DEF,
+    LET,
+    VAR,
+    NAME,
+    VALUE,
+    BODY
 
     /*
 

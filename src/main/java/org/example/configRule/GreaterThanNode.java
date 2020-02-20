@@ -7,20 +7,20 @@ import java.util.Map;
 public class GreaterThanNode implements Node<Boolean> {
     Node left,right;
 
-    public GreaterThanNode(List<Map<Operator,Object>> ruleMap){
+    public GreaterThanNode(List<Map<Operator, Object>> ruleMap, Map<String, Node> symbolTable) {
         if(ruleMap.size() == 2) {
             Iterator<Map<Operator, Object>> iterator = ruleMap.iterator();
             Map<Operator, Object> map = iterator.next();
             if (map.size() == 1) {
                 Map.Entry<Operator, Object> entry = map.entrySet().iterator().next();
-                left = RuleApp.createNode(entry.getKey(), entry.getValue());
+                left = RuleApp.createNode(entry.getKey(), entry.getValue(),symbolTable);
             } else {
                 System.out.println("Invalid 'GT' format");
             }
             map = iterator.next();
             if (map.size() == 1) {
                 Map.Entry<Operator, Object> entry = map.entrySet().iterator().next();
-                right = RuleApp.createNode(entry.getKey(), entry.getValue());
+                right = RuleApp.createNode(entry.getKey(), entry.getValue(),symbolTable);
             } else {
                 System.out.println("Invalid 'GT' format");
             }

@@ -12,21 +12,21 @@ import java.util.*;
 public class RuleApp {
 
 
-    public static Node createNode(Operator key, Object value) {
+    public static Node createNode(Operator key, Object value, Map<String,Node> symbolTable) {
         switch (key)
         {
             case GT:
-                return new GreaterThanNode((List<Map<Operator, Object>>) value);
+                return new GreaterThanNode((List<Map<Operator, Object>>) value,symbolTable);
             case LT:
-                return new LessThanNode((List<Map<Operator, Object>>) value);
+                return new LessThanNode((List<Map<Operator, Object>>) value,symbolTable);
             case EQ:
-                return new EqualsNode((List<Map<Operator, Object>>) value);
+                return new EqualsNode((List<Map<Operator, Object>>) value,symbolTable);
             case AND:
-                return new AndNode((List<Map<Operator,Object>>) value);
+                return new AndNode((List<Map<Operator,Object>>) value,symbolTable);
             case OR:
-                return new OrNode((List<Map<Operator,Object>>) value);
+                return new OrNode((List<Map<Operator,Object>>) value,symbolTable);
             case NOT:
-                return new NotNode((Map<Operator,Object>)value);
+                return new NotNode((Map<Operator,Object>)value,symbolTable);
             case INT:
                 return new IntegerNode((Integer) value); // search for what to do if integer is there as string?
             case STR:
@@ -36,7 +36,13 @@ public class RuleApp {
             case STRLST:
                 return new CollectionStringNode((Collection<String>) value);
             case PATH:
-                return new PathNode((Map<Operator,Object>) value);
+                return new PathNode((Map<Operator,Object>) value,symbolTable);
+            case LET:
+                return new LetNode((Map<Operator,Object>)value,symbolTable);
+            case DEF:
+                return new DefinationNode((List<Map<Operator, Object>>) value,symbolTable);
+            case VAR:
+                return new VarNode((String) value,symbolTable);
             default:
                 return null;
         }
@@ -61,7 +67,16 @@ public class RuleApp {
                                ]
                       }
 
+            input 3 : { 'LET' : { 'DEF' : [ { 'Name' : "x", 'Value' : {'PATH' : { 'STRLST' : [ "Mentor"] } } } ],
+                                   'BODY' : {
+                                                'EQ' : [ { 'STR' : 'Hemanshu'} ,
+                                                         { 'VAR' : "x" } ]
+                                            }
+                                }
+                      }
+
             Doc : {
+                     'Mentor' : "Hemanshu"
                      'Town' : ["Address" , "City" ],
                      'Address' : {
                                     'City' : "Ahmedabad",
@@ -92,23 +107,35 @@ public class RuleApp {
                         ImmutableMap.of(Operator.STR,"Ahmedabad")
                 )).build();
 
-        if(input.size() == 1) {
-            Operator key = input.keySet().iterator().next();
-            Node<Boolean> rule = createNode(key,input.get(key));
+        ImmutableMap<Operator, Object> input3 = ImmutableMap.<Operator,Object>builder()
+                .put(Operator.LET,ImmutableMap.of(
+                        Operator.DEF, ImmutableList.of(
+                                ImmutableMap.of(Operator.NAME,"x",Operator.VALUE,ImmutableMap.of(Operator.PATH, ImmutableMap.of(Operator.STRLST, Lists.newArrayList("Mentor"))))
+                        ),
+                        Operator.BODY,ImmutableMap.of(Operator.EQ, ImmutableList.of(
+                                        ImmutableMap.of(Operator.VAR,"x"),
+                                        ImmutableMap.of(Operator.STR, "Hemanshu")))
+                )).build();
+
+        if(input3.size() == 1) {
+            Map<String,Node> map = new HashMap<>();
+            Operator key = input3.keySet().iterator().next();
+            Node<Boolean> rule = createNode(key,input3.get(key),map);
             System.out.println(rule.apply(getDoc()));
         }
         else {
             System.out.println("Invalid rule");
         }
 
-        if(input2.size() == 1) {
-            Operator key = input2.keySet().iterator().next();
-            Node<Boolean> rule = createNode(key,input2.get(key));
-            System.out.println(rule.apply(getDoc()));
-        }
-        else {
-            System.out.println("Invalid rule");
-        }
+//        if(input2.size() == 1) {
+//            Map<String,Node> map = new HashMap<>();
+//            Operator key = input2.keySet().iterator().next();
+//            Node<Boolean> rule = createNode(key,input2.get(key),map);
+//            System.out.println(rule.apply(getDoc()));
+//        }
+//        else {
+//            System.out.println("Invalid rule");
+//        }
     }
 
 
@@ -119,6 +146,7 @@ public class RuleApp {
     list.add("Address");
     list.add("City");
     map.put("Town",list);
+    map.put("Mentor","Hemanshu");
     Map<String,Object> map2 = new HashMap<>();
     map2.put("State","Gujarat");
     map2.put("City","Ahmedabad");

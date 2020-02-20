@@ -11,12 +11,12 @@ public class PathNode<T> implements Node<T> {
     public PathNode() {
     }
 
-    public PathNode(Map<Operator,Object> map){
+    public PathNode(Map<Operator,Object> map,Map<String,Node> symbolTable){
         if(map.size()==1) {
             Iterator<Operator> iterator = map.keySet().iterator();
             while (iterator.hasNext()) {
                 Operator key = iterator.next();
-                collectionNode = RuleApp.createNode(key, map.get(key));
+                collectionNode = RuleApp.createNode(key, map.get(key),symbolTable);
             }
         }
     }
