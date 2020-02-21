@@ -2,11 +2,15 @@ package org.example;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.internal.util.$AsynchronousComputationException;
+import org.example.configRule.Node;
 import org.example.db.ConnectionDetailDao;
 
 import org.example.model.AppMessage;
 import org.example.model.ConnectionDetail;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.lang.*;
@@ -65,15 +69,23 @@ public class MediatorApp{
     }
 
 
-
-
-
-
-
-
     public static void main(String[] args)throws Exception{
 
-
+        String url = "/Users/hiren.va/ok.txt";
+        String string = "";
+        try {
+            File myObj = new File(url);
+            Scanner myReader = new Scanner(myObj);
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                string += data;
+            }
+            myReader.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+        System.out.println(string);
         //get constructor that takes a String as argument
 
 

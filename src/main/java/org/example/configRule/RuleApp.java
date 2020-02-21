@@ -43,6 +43,8 @@ public class RuleApp {
                 return new DefinationNode((List<Map<Operator, Object>>) value,symbolTable);
             case VAR:
                 return new VarNode((String) value,symbolTable);
+            case FREAD:
+                return new FileReaderNode((Map<Operator, Object>) value,symbolTable);
             default:
                 return null;
         }
@@ -117,10 +119,17 @@ public class RuleApp {
                                         ImmutableMap.of(Operator.STR, "Hemanshu")))
                 )).build();
 
-        if(input3.size() == 1) {
+        ImmutableMap<Operator,Object> input4 = ImmutableMap.<Operator,Object>builder()
+                .put(Operator.EQ,ImmutableList.of(
+                                                ImmutableMap.of(Operator.FREAD,ImmutableMap.of(Operator.PATH,ImmutableMap.of(Operator.STRLST,Lists.newArrayList("FilePath")))),
+                                                ImmutableMap.of(Operator.STR,"String")
+                        )).build();
+
+
+        if(input4.size() == 1) {
             Map<String,Node> map = new HashMap<>();
-            Operator key = input3.keySet().iterator().next();
-            Node<Boolean> rule = createNode(key,input3.get(key),map);
+            Operator key = input4.keySet().iterator().next();
+            Node<Boolean> rule = createNode(key,input4.get(key),map);
             System.out.println(rule.apply(getDoc()));
         }
         else {
@@ -151,6 +160,12 @@ public class RuleApp {
     map2.put("State","Gujarat");
     map2.put("City","Ahmedabad");
     map.put("Address",map2);
+
+        List<String> path = new ArrayList<>();
+        path.add("/Users");
+        path.add("/hiren.va");
+        path.add("/ok.txt");
+    map.put("FilePath",path);
     return map;
 
     }

@@ -23,8 +23,8 @@ public enum Operator {
     VAR,
     NAME,
     VALUE,
-    BODY
-
+    BODY,
+    FREAD
     /*
 
     VariableNode
@@ -33,6 +33,5 @@ public enum Operator {
     NoneMatch
 
     */
-
 
 }
