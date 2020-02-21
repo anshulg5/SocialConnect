@@ -10,7 +10,7 @@ public class FileReaderNode implements Node<String> {
 
     Node<Collection<String>> node;
 
-    FileReaderNode(Map<Operator,Object> map, Map<String,Node> symbolTable){
+    FileReaderNode(Map<Operator,Object> map, Map<String,Object> symbolTable){
         if(map.size()==1){
             Operator key = map.keySet().iterator().next();
             node = RuleApp.createNode(key,map.get(key),symbolTable);

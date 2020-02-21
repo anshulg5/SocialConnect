@@ -12,7 +12,7 @@ import java.util.*;
 public class RuleApp {
 
 
-    public static Node createNode(Operator key, Object value, Map<String,Node> symbolTable) {
+    public static Node createNode(Operator key, Object value, Map<String,Object> symbolTable) {
         switch (key)
         {
             case GT:
@@ -126,10 +126,10 @@ public class RuleApp {
                         )).build();
 
 
-        if(input4.size() == 1) {
-            Map<String,Node> map = new HashMap<>();
-            Operator key = input4.keySet().iterator().next();
-            Node<Boolean> rule = createNode(key,input4.get(key),map);
+        if(input3.size() == 1) {
+            Map<String,Object> map = new HashMap<>();
+            Operator key = input3.keySet().iterator().next();
+            Node<Boolean> rule = createNode(key,input3.get(key),map);
             System.out.println(rule.apply(getDoc()));
         }
         else {
@@ -161,10 +161,10 @@ public class RuleApp {
     map2.put("City","Ahmedabad");
     map.put("Address",map2);
 
-        List<String> path = new ArrayList<>();
-        path.add("/Users");
-        path.add("/hiren.va");
-        path.add("/ok.txt");
+    List<String> path = new ArrayList<>();
+    path.add("/Users");
+    path.add("/hiren.va");
+    path.add("/ok.txt");
     map.put("FilePath",path);
     return map;
 

@@ -7,7 +7,7 @@ public class NotNode implements Node<Boolean> {
 
     Node<Boolean> node;
 
-    public NotNode(Map<Operator, Object> map,Map<String,Node> symbolTable) {
+    public NotNode(Map<Operator, Object> map,Map<String,Object> symbolTable) {
         if(map.size()==1) {
             Iterator<Operator> iterator = map.keySet().iterator();
             while (iterator.hasNext()) {

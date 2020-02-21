@@ -12,9 +12,9 @@ public class LetNode<T> implements Node<T> {
 
     Node<List<String> > def;
     Node<T>body;
-    Map<String,Node> symbolTable;
+    Map<String,Object> symbolTable;
 
-    public LetNode(Map<Operator,Object> map, Map<String,Node> symbolTable) {
+    public LetNode(Map<Operator,Object> map, Map<String,Object> symbolTable) {
         this.symbolTable = symbolTable;
         if(map.size()==2 && map.containsKey(Operator.DEF) && map.containsKey(Operator.BODY)) {
             def = RuleApp.createNode(Operator.DEF,map.get(Operator.DEF),symbolTable);
@@ -31,8 +31,8 @@ public class LetNode<T> implements Node<T> {
 
     @Override
     public T apply(Map<String, ?> input) {
-        T result = (T)body.apply(input);
         List<String> list = def.apply(input);
+        T result = (T)body.apply(input);
         for(String string : list)symbolTable.remove(string);
         return result;
     }

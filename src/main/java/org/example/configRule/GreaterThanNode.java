@@ -7,7 +7,7 @@ import java.util.Map;
 public class GreaterThanNode implements Node<Boolean> {
     Node left,right;
 
-    public GreaterThanNode(List<Map<Operator, Object>> ruleMap, Map<String, Node> symbolTable) {
+    public GreaterThanNode(List<Map<Operator, Object>> ruleMap, Map<String, Object> symbolTable) {
         if(ruleMap.size() == 2) {
             Iterator<Map<Operator, Object>> iterator = ruleMap.iterator();
             Map<Operator, Object> map = iterator.next();

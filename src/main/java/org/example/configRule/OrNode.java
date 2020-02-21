@@ -9,7 +9,7 @@ public class OrNode implements Node<Boolean>{
 
     Collection< Node<Boolean> > nodeCollection;
 
-    public OrNode(List<Map<Operator,Object>> ruleMap,Map<String,Node> symbolTable) {
+    public OrNode(List<Map<Operator,Object>> ruleMap,Map<String,Object> symbolTable) {
         nodeCollection = new ArrayList<>();
         Iterator<Map<Operator, Object>> iterator = ruleMap.iterator();
         while(iterator.hasNext()){

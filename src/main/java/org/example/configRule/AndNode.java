@@ -11,7 +11,7 @@ public class AndNode implements Node<Boolean> {
         this.nodeCollection = nodeCollection;
     }
 
-    public AndNode(List<Map<Operator,Object>> ruleMap,Map<String,Node> symbolTable) {
+    public AndNode(List<Map<Operator,Object>> ruleMap,Map<String,Object> symbolTable) {
         nodeCollection = new ArrayList<>();
         Iterator<Map<Operator, Object>> iterator = ruleMap.iterator();
         while(iterator.hasNext()){

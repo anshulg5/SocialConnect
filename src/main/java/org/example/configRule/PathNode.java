@@ -11,7 +11,7 @@ public class PathNode<T> implements Node<T> {
     public PathNode() {
     }
 
-    public PathNode(Map<Operator,Object> map,Map<String,Node> symbolTable){
+    public PathNode(Map<Operator,Object> map,Map<String,Object> symbolTable){
         if(map.size()==1) {
             Iterator<Operator> iterator = map.keySet().iterator();
             while (iterator.hasNext()) {
