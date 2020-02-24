@@ -46,6 +46,7 @@ public class TelegramBotManager {
     }
 
     public void addBot(String botUserName,String botToken,String msgText) throws TelegramApiRequestException {
+        if(botList.containsKey(botUserName))return;
         TelegramBot bot = createNewBot();
         bot.setBotUserName(botUserName);
         bot.setBotToken(botToken);

@@ -24,7 +24,8 @@ public enum Operator {
     NAME,
     VALUE,
     BODY,
-    FREAD
+    FREAD,
+    GETMSG
     /*
 
     VariableNode

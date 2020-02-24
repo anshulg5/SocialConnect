@@ -4,12 +4,25 @@ import com.google.common.collect.ImmutableBiMap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import org.example.MediatorApp;
 import org.example.configRule.primitiveType.BooleanNode;
 import org.example.configRule.primitiveType.IntegerNode;
 import org.example.configRule.primitiveType.StringNode;
 import java.util.*;
 
 public class RuleApp {
+
+
+    private static MediatorApp app = null;
+
+    public static MediatorApp getApp() {
+        return app;
+    }
+
+    public static void setApp(MediatorApp app) {
+        RuleApp.app = app;
+    }
+
 
 
     public static Node createNode(Operator key, Object value, Map<String,Object> symbolTable) {
@@ -45,6 +58,8 @@ public class RuleApp {
                 return new VarNode((String) value,symbolTable);
             case FREAD:
                 return new FileReaderNode((Map<Operator, Object>) value,symbolTable);
+            case GETMSG:
+                return new GetNextMsg(app);
             default:
                 return null;
         }
