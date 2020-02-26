@@ -46,7 +46,6 @@ public class TelegramBotManager {
     }
 
     public void addBot(String botUserName,String botToken,String msgText) throws TelegramApiRequestException {
-        if(botList.containsKey(botUserName))return;
         TelegramBot bot = createNewBot();
         bot.setBotUserName(botUserName);
         bot.setBotToken(botToken);
@@ -55,7 +54,7 @@ public class TelegramBotManager {
         botList.put(botUserName,bot);
         botSessionList.put(botUserName,session);
         // add to database if success.
-        dao.addBotDetail(botUserName,botToken,msgText);
+        //dao.addBotDetail(botUserName,botToken,msgText);
 
     }
     public void removeBot(String botUserName,String botToken){

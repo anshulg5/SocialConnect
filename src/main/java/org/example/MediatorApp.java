@@ -25,12 +25,15 @@ import org.telegram.telegrambots.meta.TelegramBotsApi;
 import sun.awt.windows.ThemeReader;
 
 import javax.servlet.DispatcherType;
+import javax.swing.plaf.TableHeaderUI;
 import javax.xml.soap.Text;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.lang.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 @Singleton
@@ -75,6 +78,11 @@ public class MediatorApp {
 
     private void setRule() {
 
+//        input : { 'AND' :[ { 'EQ' : [ { 'GETMSG' : ""},{ 'STR' : "BYE!"} ,
+//                           { 'EQ' : [ { 'PATH' : ["msg"]},{ 'STR' : "Hello!"} ]
+//                }
+//        doc : {"msg" : "Hello!"}
+//
         Map<Operator, Object> input = ImmutableMap.<Operator, Object>builder()
                 .put(Operator.AND, ImmutableList.of(
                         ImmutableMap.builder()
@@ -109,10 +117,12 @@ public class MediatorApp {
         setCurrAppmsg(msg);
         Map<String, Object> objectMap = new HashMap<>();
         objectMap.put("msg", msg.getText());
-        RuleThread ruleThread = new RuleThread(rule,objectMap);
-        Thread thread = new Thread(ruleThread);
-        thread.start();
-        String textmsg = processMessage(msg, template);
+        if(rule.apply(objectMap)){
+            System.out.println(msg + "passed Rule");
+        }
+        else {
+            System.out.println(msg + "failed Rule");
+        }
         return true;
         //   return MessageSender.send(msg.getChannelId(),textmsg);
     }
@@ -156,7 +166,6 @@ public class MediatorApp {
         AppModule appModule = new AppModule();
         AppServletModule appServletModule = new AppServletModule();
         Injector injector = Guice.createInjector(appModule, appServletModule);
-
         // on run bot shutdown and add bot and remove
         // new web-hook as receiver
 

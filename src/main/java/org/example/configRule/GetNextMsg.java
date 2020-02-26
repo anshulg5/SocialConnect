@@ -24,26 +24,16 @@ public class GetNextMsg implements Node<String> {
 
     @Override
     public String apply(Map<String, ?> input) {
-
         String inputmsg = (String) input.get("msg");
-        while(true) {
-            System.out.println(Thread.currentThread().getName() + inputmsg);
-            try {
-                Thread.sleep(4000);
+        while(inputmsg.equals(app.getCurrAppmsg().getText())) {
+            try{
+                System.out.println("Waiting for next massage not equals to MSG: " + inputmsg);
+                sleep(2000);
             }
-            catch(Exception e){
+            catch (Exception e){
 
             }
-            if(!inputmsg.equals(app.getCurrAppmsg().getText()))return app.getCurrAppmsg().getText();
         }
-
-//
-//        while (true) {
-//            AppMessage msg = app.getCurrAppmsg();
-//            if (!msg.equals(inputmsg)) {
-//                System.out.println("fadsfasdf");
-//                return msg.getText();
-//            }
-//        }
+        return app.getCurrAppmsg().getText();
     }
 }

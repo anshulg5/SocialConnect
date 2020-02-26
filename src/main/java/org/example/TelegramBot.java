@@ -2,10 +2,15 @@ package org.example;
 
 import com.google.inject.Inject;
 import org.example.model.AppMessage;
+import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import sun.awt.windows.ThemeReader;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class TelegramBot extends TelegramLongPollingBot implements ReceiverApp{
 
@@ -13,27 +18,21 @@ public class TelegramBot extends TelegramLongPollingBot implements ReceiverApp{
     private String botUserName;
     private String botToken;
     private String botMsgText = null;
+    private ExecutorService executorService = null;
+    private final Integer MAX_THREAD = 10;
 
     @Inject
     TelegramBot(MediatorApp app){
         this.app = app;
+        executorService = Executors.newFixedThreadPool(MAX_THREAD);
     }
 
     @Override
     public void onUpdateReceived(Update update) {
-       // if (update.hasMessage() && update.getMessage().hasText()) {
+        if (update.hasMessage() && update.getMessage().hasText()) {
             Message msg = update.getMessage();
-    //
-        // process in other function
-        AppMessage appMessage = new AppMessage();
-        appMessage.setChannelId(String.valueOf(msg.getChatId()));
-        appMessage.setText(msg.getText());
-        appMessage.setChannelName(msg.getChat().getTitle());
-        appMessage.setProvider("Telegram");
-        appMessage.setSentBy(msg.getFrom().getFirstName());
-        sendMessage(appMessage);
-     //       sendMessage(update.getMessage()); // Call Mediator's method to send the message
-        //}
+            executorService.execute(new TelgramSender(this,msg));
+        }
     }
 
     public void setBotUserName(String botUserName) {
@@ -57,6 +56,12 @@ public class TelegramBot extends TelegramLongPollingBot implements ReceiverApp{
     @Override
     public Boolean sendMessage(AppMessage appMessage) {
         return this.app.sendMessage(appMessage,botMsgText);
+    }
+
+    @Override
+    public void onClosing() {
+        super.onClosing();
+        executorService.shutdown();
     }
 
     public String getBotMsgText() { return botMsgText; }
