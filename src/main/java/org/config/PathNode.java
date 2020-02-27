@@ -1,11 +1,7 @@
 package org.config;
 
-import org.config.primitive.ConfigStrlist;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.util.Collection;
 import java.util.List;
 
 public class PathNode<T> implements Node<T> {
@@ -22,13 +18,4 @@ public class PathNode<T> implements Node<T> {
         List<String> path = arg.apply(msg);
         return Eval.evalPath(msg, path);
     }
-
-//    T evalPath(JSONObject msg, List<String> path){
-//
-//        return null;
-//    }
-
-//    public void addArg(Node node) {
-//        arg.add(node);
-//    }
 }

@@ -6,9 +6,6 @@ import org.json.JSONObject;
 
 import javax.inject.Singleton;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Singleton
 public class Eval {
@@ -45,7 +42,6 @@ public class Eval {
         } catch(NullPointerException e) {
             return false;
         }
-        // only got here if we didn't return false
         return true;
     }
 

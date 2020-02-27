@@ -8,12 +8,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 @Singleton
-public class Mediator {
+public class MediatorApp {
     RuleConfig ruleConfig;
     SenderApp senderApp;
 
     @Inject
-    Mediator(RuleConfig ruleConfig, SenderApp senderApp) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+    MediatorApp(RuleConfig ruleConfig, SenderApp senderApp) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
         this.ruleConfig = ruleConfig;
         ruleConfig.loadSampleConfig();
         this.senderApp = senderApp;

@@ -1,9 +1,6 @@
 package org.config;
 
 import org.json.JSONObject;
-import org.telegram.telegrambots.meta.api.objects.Message;
-
-import java.util.List;
 
 public class EqualsNode extends Operation<Node<?>> implements Node<Boolean> {
     @Override

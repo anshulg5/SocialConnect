@@ -1,7 +1,6 @@
 package org.example;
 
 import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.client.api.ContentProvider;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.client.util.StringContentProvider;
 import org.eclipse.jetty.http.HttpHeader;
@@ -9,17 +8,18 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.json.JSONObject;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.nio.ByteBuffer;
-import java.util.Iterator;
+import javax.inject.Singleton;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
-public class Sender_app {
+@Singleton
+public class SenderApp {
 
     HttpClient client;
-    String URL="https://api.flock.com/hooks/sendMessage/88e00f4f-eb77-407f-9f6d-a79565178efe";
+    String URLold="https://api.flock.com/hooks/sendMessage/88e00f4f-eb77-407f-9f6d-a79565178efe";
+    String URL = "https://api.flock.com/hooks/sendMessage/6cb0be5e-0f03-4c5b-a440-a7a6c5c887a3";
 
-    Sender_app(){
+    SenderApp(){
         SslContextFactory.Client sslContextFactory = new SslContextFactory.Client();
         client = new HttpClient(sslContextFactory);
         client.setFollowRedirects(true);
@@ -42,8 +42,7 @@ public class Sender_app {
         json.put("group",msg.getChat().getTitle());
         request.content(new StringContentProvider(json.toString()));
 
-        System.out.println(msg);
-        System.out.println(request);
+//        System.out.println(msgm
         try {
             request.send();
         } catch (InterruptedException | TimeoutException | ExecutionException e) {

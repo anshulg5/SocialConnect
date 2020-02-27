@@ -2,7 +2,6 @@ package org.config.primitive;
 
 import org.config.Node;
 import org.json.JSONObject;
-import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.List;
 

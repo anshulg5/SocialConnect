@@ -3,7 +3,6 @@ package org.services;
 import org.jdbc.dao.TelegramBotDao;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
