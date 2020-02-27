@@ -6,9 +6,6 @@ import org.json.JSONObject;
 
 import javax.inject.Singleton;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Singleton
 public class Eval {

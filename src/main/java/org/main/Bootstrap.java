@@ -2,12 +2,9 @@ package org.main;
 
 import com.google.inject.servlet.GuiceFilter;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.DefaultServlet;
 import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.DispatcherType;
 import java.util.EnumSet;

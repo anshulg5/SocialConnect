@@ -1,20 +1,23 @@
-package org.receiver.telegram;
+package org.sender.telegram;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import org.Bot.Bot;
+import org.example.MediatorApp;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-public class TelegramBot extends TelegramLongPollingBot {
+public class TelegramBot extends TelegramLongPollingBot implements Bot {
 
+    MediatorApp mediatorApp;
     private String name = "Connectu_bot";
     private String token = "1025292716:AAEm4MMS1pahdc394Y_Wpjnkz7_D0v5EfWQ";
 
-//    TelegramBot(Sender mediator){
-//        this.mediator = mediator;
-//    }
 
-    public TelegramBot(String name, String token) {
+    @Inject
+    public TelegramBot(MediatorApp mediatorApp, @Assisted("name") String name, @Assisted("token") String token) {
+        this.mediatorApp = mediatorApp;
         this.name = name;
         this.token = token;
     }
@@ -26,8 +29,10 @@ public class TelegramBot extends TelegramLongPollingBot {
 //                    .setChatId(update.getMessage().getChatId())
 //                    .setText(update.getMessage().getText());
 
-//            mediator.send(update.getMessage()); // Call Mediator's method to send the message
-            System.out.println(update.getMessage());
+//            mediatorApp.send(update.getMessage()); // Call MediatorApp's method to send the message
+            Message msg = update.getMessage();
+//            System.out.println(msg);
+            mediatorApp.send(msg);
         }
     }
 

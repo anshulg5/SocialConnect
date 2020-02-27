@@ -1,6 +1,5 @@
 package org.config;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.json.JSONObject;
 
 import java.util.List;
