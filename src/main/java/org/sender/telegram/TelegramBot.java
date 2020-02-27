@@ -1,4 +1,4 @@
-package org.example;
+package org.receiver.telegram;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -7,11 +7,18 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 public class TelegramBot extends TelegramLongPollingBot {
 
-    Sender mediator;
+    private String name = "Connectu_bot";
+    private String token = "1025292716:AAEm4MMS1pahdc394Y_Wpjnkz7_D0v5EfWQ";
 
-    TelegramBot(Sender mediator){
-        this.mediator = mediator;
+//    TelegramBot(Sender mediator){
+//        this.mediator = mediator;
+//    }
+
+    public TelegramBot(String name, String token) {
+        this.name = name;
+        this.token = token;
     }
+
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
@@ -19,17 +26,26 @@ public class TelegramBot extends TelegramLongPollingBot {
 //                    .setChatId(update.getMessage().getChatId())
 //                    .setText(update.getMessage().getText());
 
-            mediator.send(update.getMessage()); // Call Mediator's method to send the message
+//            mediator.send(update.getMessage()); // Call Mediator's method to send the message
+            System.out.println(update.getMessage());
         }
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public void setToken(String token){
+        this.token = token;
     }
 
     @Override
     public String getBotUsername() {
-        return "Connectu_bot";
+        return name;
     }
 
     @Override
     public String getBotToken() {
-        return "1025292716:AAEm4MMS1pahdc394Y_Wpjnkz7_D0v5EfWQ";
+        return token;
     }
 }
