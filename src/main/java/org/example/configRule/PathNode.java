@@ -16,7 +16,7 @@ public class PathNode<T> implements Node<T> {
             Iterator<Operator> iterator = map.keySet().iterator();
             while (iterator.hasNext()) {
                 Operator key = iterator.next();
-                collectionNode = RuleApp.createNode(key, map.get(key),symbolTable);
+                collectionNode = key.getInstance(map.get(key),symbolTable);;
             }
         }
     }

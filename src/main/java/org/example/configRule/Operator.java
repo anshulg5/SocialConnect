@@ -1,22 +1,51 @@
 package org.example.configRule;
 
-public enum Operator {
+import org.example.configRule.primitiveType.StringNode;
 
-    AND,
-    OR,
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+public enum Operator implements OperatorFactory {
+
+    AND{
+        public Node getInstance(Object value, Map<String,Object> symbolTable) {
+            return new AndNode((List<Map<Operator, Object>>) value,symbolTable);
+        }
+    },
+    OR ,
     NOT,
-
-    EQ,
+    EQ {
+        @Override
+        public Node getInstance(Object value, Map<String, Object> symbolTable) {
+            return new EqualsNode((List<Map<Operator, Object>>) value,symbolTable);
+        }
+    },
     GT,
     LT,
 
-    PATH,
+    PATH{
+        @Override
+        public Node getInstance(Object value, Map<String, Object> symbolTable) {
+            return new PathNode((Map<Operator, Object>) value,symbolTable);
+        }
+    },
 
-    STR,
+    STR{
+        @Override
+        public Node getInstance(Object value, Map<String, Object> symbolTable) {
+            return new StringNode((String) value);
+        }
+    },
     BOOL,
     INT,
 
-    STRLST,
+    STRLST{
+        @Override
+        public Node getInstance(Object value, Map<String, Object> symbolTable) {
+            return new CollectionStringNode((Collection<String>) value);
+        }
+    },
 
     DEF,
     LET,
@@ -25,7 +54,10 @@ public enum Operator {
     VALUE,
     BODY,
     FREAD,
-    GETMSG
+    GETMSG;
+
+
+
     /*
 
     VariableNode
@@ -34,5 +66,10 @@ public enum Operator {
     NoneMatch
 
     */
+
+    @Override
+    public Node getInstance(Object value, Map<String, Object> symbolTable) {
+        return null;
+    }
 
 }

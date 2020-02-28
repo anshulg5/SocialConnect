@@ -21,14 +21,14 @@ public class EqualsNode implements Node<Boolean> {
             Map<Operator, Object> map = iterator.next();
             if (map.size() == 1) {
                 Map.Entry<Operator, Object> entry = map.entrySet().iterator().next();
-                left = RuleApp.createNode(entry.getKey(), entry.getValue(),symbolTable);
+                left = entry.getKey().getInstance(entry.getValue(),symbolTable);
             } else {
                 System.out.println("Invalid 'eq' format");
             }
             map = iterator.next();
             if (map.size() == 1) {
                 Map.Entry<Operator, Object> entry = map.entrySet().iterator().next();
-                right = RuleApp.createNode(entry.getKey(), entry.getValue(),symbolTable);
+                right = entry.getKey().getInstance(entry.getValue(),symbolTable);
             } else {
                 System.out.println("Invalid 'eq' format");
             }

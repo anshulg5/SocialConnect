@@ -141,10 +141,10 @@ public class RuleApp {
                         )).build();
 
 
-        if(input3.size() == 1) {
+        if(input2.size() == 1) {
             Map<String,Object> map = new HashMap<>();
-            Operator key = input3.keySet().iterator().next();
-            Node<Boolean> rule = createNode(key,input3.get(key),map);
+            Operator key = input2.keySet().iterator().next();
+            Node<Boolean> rule = createNode(key,input2.get(key),map);
             System.out.println(rule.apply(getDoc()));
         }
         else {
