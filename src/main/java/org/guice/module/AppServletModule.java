@@ -7,7 +7,7 @@ import org.services.AddConfigServlet;
 public class AppServletModule extends ServletModule {
     @Override
     protected void configureServlets() {
-        serve("/addconfig").with(AddConfigServlet.class);
-        serve("/addbot").with(AddBotServlet.class);
+        serve("/addrule/").with(AddConfigServlet.class);
+        serve("/addbot/").with(AddBotServlet.class);
     }
 }
