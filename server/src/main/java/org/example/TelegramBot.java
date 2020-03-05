@@ -2,12 +2,10 @@ package org.example;
 
 import com.google.inject.Inject;
 import org.example.model.AppMessage;
-import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import sun.awt.windows.ThemeReader;
+
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

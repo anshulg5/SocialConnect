@@ -1,6 +1,9 @@
 package org.example;
 
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonAnyFormatVisitor;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.common.collect.ImmutableMap;
+import org.json.JSONObject;
 
 import java.util.*;
 
@@ -132,6 +135,24 @@ public class RuleApp {
 //                                                ImmutableMap.of(Operator.STR,"String")
 //                        )).build();
 
+        Collection list = new ArrayList();
+        list.add("Mentor");
+        JSONPObject jsonpObject1 = new JSONPObject("STR","Hemanshu");
+        JSONPObject jsonpObject2 = new JSONPObject("SLIST",list);
+        JSONPObject jsonpObject3 = new JSONPObject("Path",jsonpObject2);
+        Collection list2 = new ArrayList();
+        list2.add(jsonpObject3);
+        list2.add(jsonpObject1);
+        JSONPObject jsonpObject = new JSONPObject("Eq",list2);
+
+        Map<Operator,Object> map = OperatorManager.parse(jsonpObject);
+
+        Operator key = map.keySet().iterator().next();
+        Map<String,Object> sT = new HashMap<>();
+        System.out.println(key);
+        Node<Boolean> rule = key.getInstance(map.get(key),sT);
+
+        System.out.println(rule.apply(getDoc()));
 
 //        if(input2.size() == 1) {
 //            Map<String,Object> map = new HashMap<>();
@@ -155,25 +176,25 @@ public class RuleApp {
     }
 
 
-//    private static Map<String, Object> getDoc() {
-//    Map<String,Object> map = new HashMap<>();
-//
-//    List<String> list = new ArrayList<>();
-//    list.add("Address");
-//    list.add("City");
-//    map.put("Town",list);
-//    map.put("Mentor","Hemanshu");
-//    Map<String,Object> map2 = new HashMap<>();
-//    map2.put("State","Gujarat");
-//    map2.put("City","Ahmedabad");
-//    map.put("Address",map2);
-//
-//    List<String> path = new ArrayList<>();
-//    path.add("/Users");
-//    path.add("/hiren.va");
-//    path.add("/ok.txt");
-//    map.put("FilePath",path);
-//    return map;
-//
-//    }
+    private static Map<String, Object> getDoc() {
+    Map<String,Object> map = new HashMap<>();
+
+    List<String> list = new ArrayList<>();
+    list.add("Address");
+    list.add("City");
+    map.put("Town",list);
+    map.put("Mentor","Hemanshu");
+    Map<String,Object> map2 = new HashMap<>();
+    map2.put("State","Gujarat");
+    map2.put("City","Ahmedabad");
+    map.put("Address",map2);
+
+    List<String> path = new ArrayList<>();
+    path.add("/Users");
+    path.add("/hiren.va");
+    path.add("/ok.txt");
+    map.put("FilePath",path);
+    return map;
+
+    }
 }
