@@ -1,7 +1,9 @@
 package org.config;
 
+import org.jdbc.dao.RuleDao;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,39 +12,60 @@ import java.util.Map;
 
 @Singleton
 public class RuleApp {
+    RuleDao ruleDao;
     List<Node> sampleRuleList = new ArrayList<>();
     Map<String,Rule> ruleMap;
 
-    RuleApp(){
+    @Inject
+    RuleApp(RuleDao ruleDao){
         // load ruleList from db
+        this.ruleDao = ruleDao;
         ruleMap = new HashMap<>();
+        init();
     }
 
-    public Boolean addRule(String ruleID, JSONObject rule) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
-        if(ruleMap.containsKey(ruleID))
+    private void init(){
+        ruleMap = ruleDao.getRules();
+    }
+
+    public Boolean addRule(String ruleID, JSONObject ruleJSON) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+        if(ruleMap.containsKey(ruleID)) {
+            System.out.println("rule already there");
             return false;
-        ruleMap.put(ruleID,new Rule(ruleID,rule));
+        }
+        Rule rule = new Rule(ruleID,ruleJSON);
+        ruleDao.addRule(rule);
+        ruleMap.put(ruleID,rule);
         return true;
     }
 
     public Boolean deleteRule(String ruleID){
-        if(!ruleMap.containsKey(ruleID))
+        if(!ruleMap.containsKey(ruleID)){
+            System.out.println("non-existent rule");
             return false;
+        }
         ruleMap.remove(ruleID);
+        ruleDao.deleteRule(ruleID);
         return true;
     }
 
-    public Boolean updateRule(String ruleID, JSONObject rule) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
-        if(!ruleMap.containsKey(ruleID))
+    public Boolean updateRule(String ruleID, JSONObject ruleJSON) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+        if(!ruleMap.containsKey(ruleID)) {
+            System.out.println("non-existent rule");
             return false;
-        ruleMap.put(ruleID,new Rule(ruleID,rule));
+        }
+        ruleDao.deleteRule(ruleID);
+        Rule rule = new Rule(ruleID,ruleJSON);
+        ruleDao.addRule(rule);
+        ruleMap.put(ruleID,rule);
         return true;
+
     }
 
 //    public Boolean changeID
 
-    public Map<String, JSONObject> fetchRules(){
-        Map<String, JSONObject> map = new HashMap<>();
+    public Map<String, String> fetchRules(){
+        Map<String, String> map = new HashMap<>();
         for(Rule rule : ruleMap.values()){
             map.put(rule.getID(),rule.getJsonString());
         }

@@ -49,10 +49,14 @@ public class TelegramSender
         try {
 
             botsApi.registerBot((LongPollingBot) botFactory.create(name,token));
-            telegramBotDao.addBot(name,token);
-            botsMap.put(name,token);
+            if(!botsMap.containsKey(name)) {
+                telegramBotDao.addBot(name, token);
+                botsMap.put(name, token);
+            }
         } catch (TelegramApiRequestException e) {
             e.printStackTrace();
         }
     }
+
+    //public deleteBot
 }

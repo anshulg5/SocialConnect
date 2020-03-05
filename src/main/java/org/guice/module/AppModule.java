@@ -9,7 +9,7 @@ import org.sender.telegram.TelegramBot;
 public class AppModule extends AbstractModule {
     @Override
     protected void configure() {
-//        bind(AddRuleServlet.class).annotatedWith(Names.named("AddRuleServlet")).to(AddRuServlet.class);
+//        bind(RuleManagerServlet.class).annotatedWith(Names.named("RuleManagerServlet")).to(AddRuServlet.class);
         install(new FactoryModuleBuilder().implement(Bot.class, TelegramBot.class).build(BotFactory.class));
     }
 }

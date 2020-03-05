@@ -82,12 +82,6 @@ public class TelegramBotDao {
         return sbf.toString();
     }
 
-    public void executeQuery(String queryString) throws SQLException {
-        getConnection();
-        ptmt = connection.prepareStatement(queryString);
-        resultSet = ptmt.executeQuery();
-    }
-
     public void addBot(String name, String token){
         String insertString = "INSERT INTO BOT (NAME,TOKEN) VALUES (?,?);";
         try {
@@ -109,17 +103,35 @@ public class TelegramBotDao {
 
     }
 
-    public void close() throws SQLException {
+    public void deleteBot(String name){
+        String removeString = "DELETE FROM BOT WHERE NAME=" + name + ";";
+        try{
+            executeQuery(removeString);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void executeQuery(String queryString) throws SQLException {
+        getConnection();
+        ptmt = connection.prepareStatement(queryString);
+        resultSet = ptmt.executeQuery();
+    }
+
+    private void close() throws SQLException {
         if(resultSet!=null)
             resultSet.close();
         if (ptmt != null)
             ptmt.close();
         if (connection != null)
             connection.close();
-
     }
-
-//    public deleteBot()
 
 
 }
