@@ -1,10 +1,18 @@
 package org.example;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonAnyFormatVisitor;
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.fasterxml.jackson.databind.util.TypeKey;
 import com.google.common.collect.ImmutableMap;
+import com.google.inject.internal.cglib.reflect.$FastClass;
+import org.configRule.Operator.*;
 import org.json.JSONObject;
+import org.reflections.Reflections;
 
+import java.io.IOException;
+import java.lang.reflect.*;
 import java.util.*;
 
 public class RuleApp {
@@ -60,7 +68,7 @@ public class RuleApp {
 //        }
 //    }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException, IOException {
 
         /*
             input rule 1 : {
@@ -135,22 +143,46 @@ public class RuleApp {
 //                                                ImmutableMap.of(Operator.STR,"String")
 //                        )).build();
 
-        Collection list = new ArrayList();
-        list.add("Mentor");
-        JSONPObject jsonpObject1 = new JSONPObject("STR","Hemanshu");
-        JSONPObject jsonpObject2 = new JSONPObject("SLIST",list);
-        JSONPObject jsonpObject3 = new JSONPObject("Path",jsonpObject2);
-        Collection list2 = new ArrayList();
-        list2.add(jsonpObject3);
-        list2.add(jsonpObject1);
-        JSONPObject jsonpObject = new JSONPObject("Eq",list2);
+        //Class<?>[] ClassList =  Operator
+       // System.out.println(Arrays.toString(ClassList));
+        Reflections reflections = new Reflections("org.configRule");
+        Set<Class<? extends Operator>> classes = reflections.getSubTypesOf(Operator.class);
 
-        Map<Operator,Object> map = OperatorManager.parse(jsonpObject);
+        Iterator iterator = classes.iterator();
+        while(iterator.hasNext()){
+            String name = iterator.next().toString();
+            String[] currencies = name.split(" ");
+            Class.forName(currencies[1]);
+        }
 
-        Operator key = map.keySet().iterator().next();
+//        Collection list = new ArrayList();
+//        list.add("Mentor");
+//        JSONPObject jsonpObject1 = new JSONPObject("STR","Hemanshu");
+//        JSONPObject jsonpObject2 = new JSONPObject("SLIST",list);
+//        JSONPObject jsonpObject3 = new JSONPObject("Path",jsonpObject2);
+//        Collection list2 = new ArrayList();
+//        list2.add(jsonpObject3);
+//        list2.add(jsonpObject1);
+//        JSONPObject jsonpObject = new JSONPObject("Eq",list2);
+//        AndOperator andOperator = new AndOperator();
+//        EqualsOperator equalsOperator = new EqualsOperator();
+//        PathOperator pathOperator = new PathOperator();
+//        StringOperator stringOperator = new StringOperator();
+//        CollectionStringOperator collectionStringOperator = new CollectionStringOperator();
+
+        String json  = "{\"Eq\": [" +
+                                    " { \"Path\" : {\"SLIST\" : [\"Mentor\"] } }," +
+                                    " { \"STR\" : \"Hemanshu\" } " +
+                                "]" +
+                        "}";
+
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String,Object> map = (Map<String, Object>) mapper.readValue(json,new TypeReference<Map<String,Object>>(){});
+//
+        Map<Operator,Object> map2 = OperatorManager.parse(map);
+        Operator key = map2.keySet().iterator().next();
         Map<String,Object> sT = new HashMap<>();
-        System.out.println(key);
-        Node<Boolean> rule = key.getInstance(map.get(key),sT);
+        Node<Boolean> rule = key.getInstance(map2.get(key),sT);
 
         System.out.println(rule.apply(getDoc()));
 

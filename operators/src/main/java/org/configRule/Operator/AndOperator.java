@@ -15,8 +15,6 @@ public class AndOperator implements Operator {
         OperatorManager.registerOperator("And",andOperator);
     }
 
-    public AndOperator() {
-    }
 
     @Override
     public Node getInstance(Object value, Map<String, Object> symbolTable) {

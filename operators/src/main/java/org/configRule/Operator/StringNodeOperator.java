@@ -7,10 +7,10 @@ import org.example.OperatorManager;
 
 import java.util.Map;
 
-public class StringOperator implements Operator {
+public class StringNodeOperator implements Operator {
     static {
-        StringOperator stringOperator = new StringOperator();
-        OperatorManager.registerOperator("STR",stringOperator);
+        StringNodeOperator stringNodeOperator = new StringNodeOperator();
+        OperatorManager.registerOperator("STR",stringNodeOperator);
     }
     @Override
     public Node getInstance(Object value, Map<String, Object> symbolTable) {
