@@ -1,5 +1,6 @@
 package org.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.config.RuleApp;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,6 +8,7 @@ import org.json.JSONString;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.Null;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
 import java.util.Map;
 
 @Singleton
@@ -29,6 +32,8 @@ public class RuleManagerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
         System.out.println(path);
+        System.out.println(req.getParameter("ruleName"));
+        System.out.println(req.getParameter("rule"));
         switch(path){
             case "/add":
                 addRule(req, resp);
@@ -41,6 +46,8 @@ public class RuleManagerServlet extends HttpServlet {
                 break;
             default:
         }
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/");
+        requestDispatcher.forward(req, resp);
     }
 
     @Override
