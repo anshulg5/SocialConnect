@@ -4,11 +4,11 @@ import org.config.primitive.ConfigStrlist;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.inject.Singleton;
 import java.util.Collection;
 
-@Singleton
 public class Eval {
+
+    private Eval(){}
 
     static <T> T evalPath(JSONObject msg, Collection<String> path){
         Object obj = msg;
@@ -37,9 +37,7 @@ public class Eval {
     static boolean isInteger(String s) {
         try {
             Integer.parseInt(s);
-        } catch(NumberFormatException e) {
-            return false;
-        } catch(NullPointerException e) {
+        } catch(NumberFormatException | NullPointerException e) {
             return false;
         }
         return true;

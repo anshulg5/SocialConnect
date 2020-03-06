@@ -10,13 +10,13 @@ public class Rule {
     Rule(String ID, JSONObject jsonObject) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
         this.ID = ID;
         this.jsonObject = jsonObject;
-        rootNode = NodeFactory.createNode(jsonObject);
+        rootNode = NodeManager.createNode(jsonObject);
     }
 
     public Rule(String ID, String jsonString) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
         this.ID =ID;
         this.jsonObject = new JSONObject(jsonString);
-        rootNode = NodeFactory.createNode(jsonObject);
+        rootNode = NodeManager.createNode(jsonObject);
     }
 
     Boolean validate(JSONObject msg){
@@ -41,6 +41,6 @@ public class Rule {
 
     void setJsonObject(JSONObject jsonObject) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
         this.jsonObject = jsonObject;
-        rootNode = NodeFactory.createNode(jsonObject);
+        rootNode = NodeManager.createNode(jsonObject);
     }
 }

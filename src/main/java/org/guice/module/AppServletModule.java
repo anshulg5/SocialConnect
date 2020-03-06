@@ -1,11 +1,10 @@
 package org.guice.module;
 
 import com.google.inject.servlet.ServletModule;
-import org.example.AddRuleServlet;
-import org.example.WelcomeServlet;
 import org.services.AddBotServlet;
-import org.services.AddConfigServlet;
+import org.services.AddRuleServlet;
 import org.services.RuleManagerServlet;
+import org.services.WelcomeServlet;
 
 public class AppServletModule extends ServletModule {
     @Override

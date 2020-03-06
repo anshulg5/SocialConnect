@@ -1,4 +1,4 @@
-package org.example;
+package org.services;
 
 import javax.inject.Singleton;
 import javax.servlet.ServletException;
@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Singleton
-public class WelcomeServlet extends HttpServlet {
+public class AddRuleServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setStatus(HttpServletResponse.SC_OK);
@@ -18,22 +18,19 @@ public class WelcomeServlet extends HttpServlet {
                 "<html lang=\"en\">\n" +
                 "<head>\n" +
                 "    <meta charset=\"UTF-8\">\n" +
-                "    <title>SocialConnect</title>\n" +
+                "    <title>AddRules</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
                 "    <!-- header -->\n" +
                 "    <div>\n" +
-                "        <h1>Welcome<//h1>\n" +
+                "        <h1>Add Rule<//h1>\n" +
                 "    </div>\n" +
-                "\n" +
-                "    <div>       <!-- content -->\n" +
-                "        <div>    <!-- button holder -->\n" +
-                "            <button onclick=\"location.href='/rule/list'\">List Rules</button>\n" +
-                "            <button onclick=\"location.href='/rule/add'\">Add Rule</button>\n" +
-                "        </div>\n" +
-                "    </div>\n" +
-                "</body>\n" +
-                "</html>"
+                "\n" +  "<form action=\"/rulemanager/add\" id=\"ruleForm\" method=\"post\" >" +
+                    "Name : <input type=\"text\" name=\"id\">" +
+                    "<input type=\"submit\">" +
+                "</form>" + "<br>" +
+                "<textarea rows=\"4\" cols=\"50\" name=\"rule\" form=\"ruleForm\">" +
+                "Enter Rule Here...</textarea>"
         );
     }
 

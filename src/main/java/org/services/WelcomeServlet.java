@@ -1,7 +1,6 @@
-package org.example;
+package org.services;
 
 import javax.inject.Singleton;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Singleton
-public class AddRuleServlet extends HttpServlet {
+public class WelcomeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setStatus(HttpServletResponse.SC_OK);
@@ -19,19 +18,22 @@ public class AddRuleServlet extends HttpServlet {
                 "<html lang=\"en\">\n" +
                 "<head>\n" +
                 "    <meta charset=\"UTF-8\">\n" +
-                "    <title>AddRules</title>\n" +
+                "    <title>SocialConnect</title>\n" +
                 "</head>\n" +
                 "<body>\n" +
                 "    <!-- header -->\n" +
                 "    <div>\n" +
-                "        <h1>Add Rule<//h1>\n" +
+                "        <h1>Welcome<//h1>\n" +
                 "    </div>\n" +
-                "\n" +  "<form action=\"/rulemanager/add\" id=\"ruleForm\" method=\"post\" >" +
-                    "Name : <input type=\"text\" name=\"ruleName\">" +
-                    "<input type=\"submit\">" +
-                "</form>" + "<br>" +
-                "<textarea rows=\"4\" cols=\"50\" name=\"rule\" form=\"ruleForm\">" +
-                "Enter Rule Here...</textarea>"
+                "\n" +
+                "    <div>       <!-- content -->\n" +
+                "        <div>    <!-- button holder -->\n" +
+                "            <button onclick=\"location.href='/rule/list'\">List Rules</button>\n" +
+                "            <button onclick=\"location.href='/rule/add'\">Add Rule</button>\n" +
+                "        </div>\n" +
+                "    </div>\n" +
+                "</body>\n" +
+                "</html>"
         );
     }
 

@@ -7,7 +7,7 @@ import java.util.List;
 public class PathNode<T> implements Node<T> {
     Node<List<String>> arg;
 
-    PathNode(Node<List<String>> value){
+    public PathNode(Node<List<String>> value){
         this.arg = value;
     }
 

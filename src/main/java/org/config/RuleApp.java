@@ -21,6 +21,7 @@ public class RuleApp {
         // load ruleList from db
         this.ruleDao = ruleDao;
         ruleMap = new HashMap<>();
+        NodeManager.init();
         init();
     }
 
@@ -89,9 +90,9 @@ public class RuleApp {
         System.out.println(json3);
 
         try {
-            sampleRuleList.add(NodeFactory.createNode(json));
-            sampleRuleList.add(NodeFactory.createNode(json2));
-            sampleRuleList.add(NodeFactory.createNode(json3));
+            sampleRuleList.add(NodeManager.createNode(json));
+            sampleRuleList.add(NodeManager.createNode(json2));
+            sampleRuleList.add(NodeManager.createNode(json3));
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }
@@ -104,7 +105,7 @@ public class RuleApp {
         System.out.println(json4);
         Node config4 = null;
         try {
-            config4 = NodeFactory.createNode(json4);
+            config4 = NodeManager.createNode(json4);
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }
@@ -114,7 +115,7 @@ public class RuleApp {
         System.out.println(json5);
         Node config5 = null;
         try {
-            config5 = NodeFactory.createNode(json5);
+            config5 = NodeManager.createNode(json5);
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }
