@@ -2,7 +2,6 @@ package org.node;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.node.primitiveNode.ConfigStrlist;
 
 import java.util.Collection;
 
@@ -27,10 +26,6 @@ public class Eval {
             else
                 System.out.println("Error in the path: reached the end before");
         }
-
-        if(obj instanceof JSONArray)
-            obj = new ConfigStrlist((JSONArray)obj).apply(msg);
-
         return (T)obj;
     }
 
