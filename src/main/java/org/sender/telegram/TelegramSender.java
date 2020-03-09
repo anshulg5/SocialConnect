@@ -1,7 +1,7 @@
 package org.sender.telegram;
 
 import org.Bot.BotFactory;
-import org.jdbc.dao.TelegramBotDao;
+import org.database.dao.TelegramBotDao;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;

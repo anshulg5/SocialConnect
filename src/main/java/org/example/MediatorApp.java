@@ -1,7 +1,7 @@
 package org.example;
 
-import org.config.RuleApp;
 import org.json.JSONObject;
+import org.rule.RuleApp;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import javax.inject.Inject;
@@ -10,13 +10,13 @@ import javax.inject.Singleton;
 @Singleton
 public class MediatorApp {
     RuleApp ruleApp;
-    SenderApp senderApp;
+    FlockReceiverApp flockReceiverApp;
 
     @Inject
-    MediatorApp(RuleApp ruleApp, SenderApp senderApp) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+    MediatorApp(RuleApp ruleApp, FlockReceiverApp flockReceiverApp) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
         this.ruleApp = ruleApp;
 //        ruleApp.loadSampleRules();
-        this.senderApp = senderApp;
+        this.flockReceiverApp = flockReceiverApp;
 //        ruleApp.demo();
     }
 
@@ -27,6 +27,6 @@ public class MediatorApp {
 //        System.out.println(ruleApp.validateSampleRules(1,jsonMsg));
 //        System.out.println(ruleApp.validateSampleRules(2,jsonMsg));
         System.out.println(ruleApp.validateByID("first",jsonMsg));
-        senderApp.send(msg);
+        flockReceiverApp.send(msg);
     }
 }

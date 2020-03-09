@@ -1,10 +1,8 @@
 package org.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.config.RuleApp;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONString;
+import org.rule.RuleApp;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -13,10 +11,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.constraints.Null;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Iterator;
 import java.util.Map;
 
 @Singleton

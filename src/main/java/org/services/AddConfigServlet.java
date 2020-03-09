@@ -1,6 +1,6 @@
 package org.services;
 
-import org.jdbc.dao.TelegramBotDao;
+import org.database.dao.TelegramBotDao;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
