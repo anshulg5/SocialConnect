@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Singleton
 public class RuleManagerServlet extends HttpServlet {
-    RuleApp ruleApp;
+    private RuleApp ruleApp;
 
     @Inject
     RuleManagerServlet(RuleApp ruleApp){
@@ -27,9 +27,9 @@ public class RuleManagerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
-        System.out.println(path);
-        System.out.println(req.getParameter("ruleName"));
-        System.out.println(req.getParameter("rule"));
+//        System.out.println(path);
+//        System.out.println(req.getParameter("ruleName"));
+//        System.out.println(req.getParameter("rule"));
         switch(path){
             case "/add":
                 addRule(req, resp);
@@ -42,8 +42,7 @@ public class RuleManagerServlet extends HttpServlet {
                 break;
             default:
         }
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/");
-        requestDispatcher.forward(req, resp);
+        resp.sendRedirect("/");
     }
 
     @Override
@@ -59,13 +58,13 @@ public class RuleManagerServlet extends HttpServlet {
 
     private void addRule(HttpServletRequest req, HttpServletResponse resp){
         String ID = req.getParameter("id");
-        JSONObject rule=null;
+        JSONObject rule= null;
         try {
             String ruleString = req.getParameter("rule");
             if(ID==null || ruleString==null)
                 throw new NullPointerException();
             rule = new JSONObject(ruleString);
-        } catch (JSONException | NullPointerException e){
+        } catch (JSONException | NullPointerException e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }

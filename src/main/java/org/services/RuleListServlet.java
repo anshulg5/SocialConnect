@@ -1,14 +1,21 @@
 package org.services;
 
+import org.rule.RuleApp;
+
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 
 @Singleton
-public class AddRuleServlet extends HttpServlet {
+public class RuleListServlet extends HttpServlet {
+    @Inject
+    RuleApp ruleApp;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setStatus(HttpServletResponse.SC_OK);
@@ -20,23 +27,27 @@ public class AddRuleServlet extends HttpServlet {
                 "    <meta charset=\"UTF-8\">\n" +
                 "    <title>AddRules</title>\n" +
                 "    <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.min.css\">" +
-                "</head>\n" +
-                "<body>\n" +
-                "    <!-- header -->\n" +
-                "    <div>\n" +
-                "        <h1>Add Rule<//h1>\n" +
-                "    </div>\n" +
-                "\n" +  "<form action=\"/rulemanager/add\" id=\"ruleForm\" method=\"post\" >" +
-                    "Name : <input type=\"text\" name=\"id\">" +
-                    "<input type=\"submit\">" +
-                "</form>" + "<br>" +
-                "<textarea rows=\"4\" cols=\"50\" name=\"rule\" form=\"ruleForm\">" +
-                "Enter Rule Here...</textarea>"
-        );
+                "</head>\n");
+        Map<String,String> ruleList = ruleApp.fetchRules();
+        System.out.println(ruleList.size());
+        String htmlBody = "";
+        htmlBody += "<body>";
+        htmlBody += "<table>" ;
+        Iterator<String> iterator = ruleList.keySet().iterator();
+        while (iterator.hasNext()){
+            String key = iterator.next();
+            htmlBody += "<tr>";
+            htmlBody += "<td>" + key + "</td>";
+            htmlBody += "<td>" + ruleList.get(key) + "</td>";
+            htmlBody += "</tr>";
+        }
+        htmlBody += "</table>";
+        htmlBody += "</body>";
+        resp.getWriter().println(htmlBody);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req,resp);
+        doGet(req, resp);
     }
 }
