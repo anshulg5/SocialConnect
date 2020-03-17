@@ -1,7 +1,5 @@
 package org.services;
 
-import com.sun.tools.internal.ws.wsdl.document.soap.SOAPUse;
-
 import javax.inject.Singleton;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,8 +29,7 @@ public class WelcomeServlet extends HttpServlet {
                 "        <h1>Welcome<//h1>\n" +
                 "    </div>\n" +
                 "\n" +
-           //     " <script> document.write(\"Hello JavaScript by JavaScript\"); </script>" +
-                "    <div>       <!-- content -->\n" +
+                 "    <div>       <!-- content -->\n" +
                 "        <div>    <!-- button holder -->\n" +
                 "            <button onclick=\"location.href='/rule/list'\">List Rules</button>\n" +
                 "            <button onclick=\"location.href='/rule/add'\">Add Rule</button>\n" +

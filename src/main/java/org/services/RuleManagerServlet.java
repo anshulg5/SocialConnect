@@ -27,7 +27,7 @@ public class RuleManagerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
-//        System.out.println(path);
+        System.out.println(path);
 //        System.out.println(req.getParameter("ruleName"));
 //        System.out.println(req.getParameter("rule"));
         switch(path){
@@ -52,8 +52,13 @@ public class RuleManagerServlet extends HttpServlet {
             case "/fetch":
                 fetchRule(req,resp);
                 break;
+            case "/delete":
+                deleteRule(req,resp);
+                break;
             default:
+                break;
         }
+        resp.sendRedirect("/");
     }
 
     private void addRule(HttpServletRequest req, HttpServletResponse resp){
@@ -74,7 +79,7 @@ public class RuleManagerServlet extends HttpServlet {
         } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        setSuccessMsg(resp,success,"added","duplicate");
+       // setSuccessMsg(resp,success,"added","duplicate");
     }
 
     private void deleteRule(HttpServletRequest req, HttpServletResponse resp){
@@ -85,7 +90,7 @@ public class RuleManagerServlet extends HttpServlet {
         }
         Boolean success=false;
         success = ruleApp.deleteRule(ID);
-        setSuccessMsg(resp,success,"deleted","not present");
+    //    setSuccessMsg(resp,success,"deleted","not present");
     }
 
     private void updateRule(HttpServletRequest req, HttpServletResponse resp){

@@ -17,7 +17,7 @@ public class RuleListServlet extends HttpServlet {
     @Inject
     RuleApp ruleApp;
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.setContentType("text/html");
         resp.setCharacterEncoding("utf-8");
@@ -29,16 +29,17 @@ public class RuleListServlet extends HttpServlet {
                 "    <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.min.css\">" +
                 "</head>\n");
         Map<String,String> ruleList = ruleApp.fetchRules();
-        System.out.println(ruleList.size());
         String htmlBody = "";
         htmlBody += "<body>";
+        htmlBody += "<h1>List of Rules</h1>";
         htmlBody += "<table>" ;
         Iterator<String> iterator = ruleList.keySet().iterator();
         while (iterator.hasNext()){
             String key = iterator.next();
             htmlBody += "<tr>";
             htmlBody += "<td>" + key + "</td>";
-            htmlBody += "<td>" + ruleList.get(key) + "</td>";
+            htmlBody += "<td>" + "<button onclick=\"location.href='/rule/delete?id=" + key + "'\">Delete</button>\n" + "</td>";
+            htmlBody += "<td>" + "<button onclick=\"location.href='/rule/update?id=" + key + "'\">Update</button>\n" + "</td>";
             htmlBody += "</tr>";
         }
         htmlBody += "</table>";
