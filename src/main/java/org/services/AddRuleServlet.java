@@ -19,7 +19,6 @@ public class AddRuleServlet extends HttpServlet {
                 "<head>\n" +
                 "    <meta charset=\"UTF-8\">\n" +
                 "    <title>AddRules</title>\n" +
-                "    <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.min.css\">" +
                 "</head>\n" +
                 "<body>\n" +
                 "    <!-- header -->\n" +

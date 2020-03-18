@@ -14,22 +14,19 @@ public class WelcomeServlet extends HttpServlet {
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.setContentType("text/html");
         resp.setCharacterEncoding("utf-8");
-        String htmlHeader = "";
-        htmlHeader += "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
-                "    <title>SocialConnect</title>\n" +
-                "    <link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.min.css\">"+
-                "</head>\n";
         resp.getWriter().println("<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
-                 htmlHeader +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <title>SocialConnect</title>\n" +
+                "</head>\n" +
                 "<body>\n" +
                 "    <!-- header -->\n" +
                 "    <div>\n" +
                 "        <h1>Welcome<//h1>\n" +
                 "    </div>\n" +
                 "\n" +
-                 "    <div>       <!-- content -->\n" +
+                "    <div>       <!-- content -->\n" +
                 "        <div>    <!-- button holder -->\n" +
                 "            <button onclick=\"location.href='/rule/list'\">List Rules</button>\n" +
                 "            <button onclick=\"location.href='/rule/add'\">Add Rule</button>\n" +
