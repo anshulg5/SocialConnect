@@ -1,10 +1,7 @@
 package org.guice.module;
 
 import com.google.inject.servlet.ServletModule;
-import org.services.AddBotServlet;
-import org.services.AddRuleServlet;
-import org.services.RuleManagerServlet;
-import org.services.WelcomeServlet;
+import org.services.*;
 
 public class AppServletModule extends ServletModule {
     @Override
@@ -13,5 +10,6 @@ public class AppServletModule extends ServletModule {
         serve("/addbot/").with(AddBotServlet.class);
         serve("/").with(WelcomeServlet.class);
         serve("/rule/add").with(AddRuleServlet.class);
+        serve("/rule/list").with(RuleListServlet.class);
     }
 }
