@@ -34,6 +34,7 @@ public class RuleManagerServlet extends HttpServlet {
         System.out.println("id: "+req.getParameter("id"));
         System.out.println("rule: "+req.getParameter("rule"));
         resp.setContentType("text/html");
+        resp.setStatus(HttpServletResponse.SC_OK);
         switch(path){
             case "/add":
                 addRule(req, resp);
@@ -57,6 +58,7 @@ public class RuleManagerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doPost(req,resp);
+//        resp.sendRedirect("/");
     }
 
     private void addRule(HttpServletRequest req, HttpServletResponse resp){
@@ -77,7 +79,7 @@ public class RuleManagerServlet extends HttpServlet {
         } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        setSuccessMsg(resp,success,"added","duplicate");
+        setSuccessMsg(resp,success,"added","duplicate");    //used to set Error 403 in case of duplicacy
     }
 
     private void deleteRule(HttpServletRequest req, HttpServletResponse resp){
