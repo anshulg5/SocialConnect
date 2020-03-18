@@ -27,9 +27,9 @@ public class RuleManagerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String path = req.getPathInfo();
+        resp.setHeader("Access-Control-Allow-Origin","*");
         System.out.println(path);
-//        System.out.println(req.getParameter("ruleName"));
-//        System.out.println(req.getParameter("rule"));
+        resp.setStatus(HttpServletResponse.SC_OK);
         switch(path){
             case "/add":
                 addRule(req, resp);
@@ -42,7 +42,6 @@ public class RuleManagerServlet extends HttpServlet {
                 break;
             default:
         }
-        resp.sendRedirect("/");
     }
 
     @Override
