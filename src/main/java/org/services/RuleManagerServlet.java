@@ -6,7 +6,6 @@ import org.rule.RuleApp;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,10 +25,15 @@ public class RuleManagerServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+//        resp.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
+//        resp.addHeader("Access-Control-Allow-Headers", "X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept");
+//        resp.addHeader("Access-Control-Max-Age", "1728000");
         String path = req.getPathInfo();
         System.out.println(path);
-        System.out.println(req.getParameter("ruleName"));
-        System.out.println(req.getParameter("rule"));
+        System.out.println("id: "+req.getParameter("id"));
+        System.out.println("rule: "+req.getParameter("rule"));
+        resp.setContentType("text/html");
         switch(path){
             case "/add":
                 addRule(req, resp);
@@ -40,21 +44,19 @@ public class RuleManagerServlet extends HttpServlet {
             case "/update":
                 updateRule(req,resp);
                 break;
-            default:
-        }
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/");
-        requestDispatcher.forward(req, resp);
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String path = req.getPathInfo();
-        switch (path){
             case "/fetch":
                 fetchRule(req,resp);
                 break;
             default:
         }
+        System.out.println("status"+resp.getStatus());
+//        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/");
+//        requestDispatcher.forward(req, resp);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doPost(req,resp);
     }
 
     private void addRule(HttpServletRequest req, HttpServletResponse resp){
