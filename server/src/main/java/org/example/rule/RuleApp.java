@@ -1,8 +1,9 @@
-package org.rule;
+package org.example.rule;
 
 import org.database.dao.RuleDao;
+import org.example.Node;
 import org.json.JSONObject;
-import org.node.Node;
+
 import org.node.NodeManager;
 
 import javax.inject.Inject;

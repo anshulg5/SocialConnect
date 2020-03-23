@@ -1,8 +1,9 @@
-package org.rule;
+package org.example.rule;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
+
 import org.node.Node;
 import org.node.NodeManager;
 

@@ -1,4 +1,4 @@
-package org.database.dao;
+package org.example.db.dao;
 
 import org.database.ConnectionFactory;
 import org.rule.Rule;

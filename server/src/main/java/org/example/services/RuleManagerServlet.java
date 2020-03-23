@@ -1,12 +1,9 @@
-package org.services;
+package org.example.services;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONException;
+import org.example.rule.RuleApp;
 import org.json.JSONObject;
-import org.rule.RuleApp;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
