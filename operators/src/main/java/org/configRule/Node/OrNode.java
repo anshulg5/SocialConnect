@@ -10,7 +10,7 @@ public class OrNode implements Node<Boolean> {
 
     Collection< Node<Boolean> > nodeCollection;
 
-    public OrNode(List<Map<NodeFactory,Object>> ruleMap, Map<String,Object> symbolTable) {
+    public OrNode(List<Map<NodeFactory,Object>> ruleMap, Map<String,Object> symbolTable) throws IllegalAccessException {
         nodeCollection = new ArrayList<>();
         Iterator<Map<NodeFactory, Object>> iterator = ruleMap.iterator();
         while(iterator.hasNext()){
@@ -21,7 +21,7 @@ public class OrNode implements Node<Boolean> {
                 nodeCollection.add(node);
             }
             else {
-                System.out.println("Invalid 'AND' format");
+                System.out.println("Invalid 'OR' format");
             }
         }
     }

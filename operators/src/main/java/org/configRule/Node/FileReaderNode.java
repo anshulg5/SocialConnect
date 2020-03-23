@@ -1,7 +1,6 @@
 package org.configRule.Node;
 
 import org.example.Node;
-import org.example.NodeFactory;
 import org.example.NodeManager;
 
 import java.io.File;
@@ -14,10 +13,10 @@ public class FileReaderNode implements Node<String> {
 
     Node<Collection<String>> node;
 
-    FileReaderNode(Map<String,Object> map, Map<String,Object> symbolTable){
+    FileReaderNode(Map<String,Object> map, Map<String,Object> symbolTable) throws IllegalAccessException {
         if(map.size()==1){
             String key = map.keySet().iterator().next();
-            node = NodeManager.parse(key,map.get(key),symbolTable);
+            node = NodeManager.create(key,map.get(key),symbolTable);
         }
         else {
             System.out.println("Invalid rule");

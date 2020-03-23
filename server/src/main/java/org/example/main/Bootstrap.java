@@ -1,4 +1,4 @@
-package org.main;
+package org.example.main;
 
 import com.google.inject.servlet.GuiceFilter;
 import org.eclipse.jetty.server.Server;

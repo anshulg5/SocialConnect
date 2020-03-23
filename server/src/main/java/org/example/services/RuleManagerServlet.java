@@ -1,5 +1,6 @@
 package org.example.services;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.rule.RuleApp;
@@ -78,7 +79,7 @@ public class RuleManagerServlet extends HttpServlet {
         Boolean success=false;
         try {
             success = ruleApp.addRule(ID, rule);
-        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
+        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | JsonProcessingException e) {
             e.printStackTrace();
         }
         setSuccessMsg(resp,success,"added","duplicate");    //used to set Error 403 in case of duplicacy
@@ -112,7 +113,7 @@ public class RuleManagerServlet extends HttpServlet {
         try {
             success = ruleApp.updateRule(ID, rule);
             System.out.println(success);
-        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
+        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | JsonProcessingException e) {
             e.printStackTrace();
         }
         setSuccessMsg(resp,success,"updated","not present");

@@ -21,14 +21,14 @@ public class TelegramBotManager {
     private ConcurrentHashMap<String,BotSession> botSessionList;
 
     @Inject
-    TelegramBotManager(TelegramBotsApi botsApi, MediatorApp app, BotDetailDao dao) throws TelegramApiRequestException {
+    TelegramBotManager(TelegramBotsApi botsApi, MediatorApp app) throws TelegramApiRequestException { // add dependency  BotDetailDao dao
         this.botsApi = botsApi;
         this.app = app;
         this.dao = dao;
         this.botList = new ConcurrentHashMap<String, TelegramBot>();
         this.botSessionList = new ConcurrentHashMap<String, BotSession>();
         //Load bots from database
-        loadBots();
+//        loadBots();
     }
 
     private void loadBots() throws TelegramApiRequestException {

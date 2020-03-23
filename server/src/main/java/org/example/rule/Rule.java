@@ -1,11 +1,11 @@
 package org.example.rule;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONObject;
+import org.example.Node;
+import org.example.NodeManager;
 
-import org.node.Node;
-import org.node.NodeManager;
 
 import java.io.IOException;
 import java.util.Map;
@@ -13,23 +13,27 @@ import java.util.Map;
 public class Rule {
     String ID;
     Map<String, Object> ruleMap;
+    String ruleString;
     Node rootNode;
+    static ObjectMapper mapper = new ObjectMapper();
 
-    public Rule(String ID, Map<String, Object> ruleMap) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+    public Rule(String ID, Map<String, Object> ruleMap) throws IllegalAccessException, InstantiationException, ClassNotFoundException, JsonProcessingException {
         this.ID = ID;
         this.ruleMap = ruleMap;
-        rootNode = NodeManager.createNode(ruleMap);
+        rootNode = NodeManager.create(ruleMap);
+        this.ruleString = mapper.writeValueAsString(ruleMap);
+        System.out.println(ruleString);
     }
 
-    public Rule(String ID, String jsonString) throws IllegalAccessException, InstantiationException, ClassNotFoundException, IOException {
+    public Rule(String ID, String ruleString) throws IllegalAccessException, InstantiationException, ClassNotFoundException, IOException {
         this.ID =ID;
-        ObjectMapper mapper = new ObjectMapper();
-        this.ruleMap = (Map<String, Object>) mapper.readValue(jsonString,new TypeReference<Map<String,Object>>(){});
-        rootNode = NodeManager.createNode(ruleMap);
+        this.ruleMap = (Map<String, Object>) mapper.readValue(ruleString,new TypeReference<Map<String,Object>>(){});
+        this.ruleString = ruleString;
+        rootNode = NodeManager.create(ruleMap);
     }
 
-    public Boolean validate(JSONObject msg){
-        return (Boolean) rootNode.apply(msg);
+    public Boolean validate(Map<String, ?> input){
+        return (Boolean) rootNode.apply(input);
     }
 
     public String getID(){
@@ -40,8 +44,8 @@ public class Rule {
         return ruleMap;
     }
 
-    public String getJsonString(){
-        return ruleMap.toString();
+    public String getString(){
+        return ruleString;
     }
 
     void setID(String newID){
@@ -50,6 +54,6 @@ public class Rule {
 
     void setRuleMap(Map<String, Object> ruleMap) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
         this.ruleMap = ruleMap;
-        rootNode = NodeManager.createNode(ruleMap);
+        rootNode = NodeManager.create(ruleMap);
     }
 }

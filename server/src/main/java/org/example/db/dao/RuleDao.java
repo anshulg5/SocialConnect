@@ -1,7 +1,9 @@
 package org.example.db.dao;
 
-import org.database.ConnectionFactory;
-import org.rule.Rule;
+
+import org.example.db.ConnectionFactory;
+import org.example.rule.Rule;
+
 
 import javax.inject.Singleton;
 import java.io.IOException;
@@ -49,7 +51,7 @@ public class RuleDao {
             getConnection();
             ptmt = connection.prepareStatement(insertString);
             ptmt.setString(1,rule.getID());
-            ptmt.setString(2,rule.getJsonString());
+            ptmt.setString(2,rule.getString());
             ptmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

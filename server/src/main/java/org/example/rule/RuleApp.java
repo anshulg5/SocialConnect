@@ -1,17 +1,16 @@
 package org.example.rule;
 
-import org.database.dao.RuleDao;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Node;
-import org.json.JSONObject;
-
-import org.node.NodeManager;
+import org.example.NodeManager;
+import org.example.db.dao.RuleDao;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 @Singleton
 public class RuleApp {
@@ -24,6 +23,7 @@ public class RuleApp {
         // load ruleList from db
         this.ruleDao = ruleDao;
         rulesMap = new HashMap<>();
+
         init();
     }
 
@@ -31,7 +31,7 @@ public class RuleApp {
         rulesMap = ruleDao.getRules();
     }
 
-    public Boolean addRule(String ruleID, Map<String, Object> ruleMap) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+    public Boolean addRule(String ruleID, Map<String, Object> ruleMap) throws IllegalAccessException, InstantiationException, ClassNotFoundException, JsonProcessingException {
         if(rulesMap.containsKey(ruleID)) {
             System.out.println("rule already there");
             return false;
@@ -52,7 +52,7 @@ public class RuleApp {
         return true;
     }
 
-    public Boolean updateRule(String ruleID, Map<String, Object> ruleMap) throws IllegalAccessException, InstantiationException, ClassNotFoundException {
+    public Boolean updateRule(String ruleID, Map<String, Object> ruleMap) throws IllegalAccessException, InstantiationException, ClassNotFoundException, JsonProcessingException {
         if(!rulesMap.containsKey(ruleID)) {
             System.out.println("non-existent rule");
             return false;
@@ -70,62 +70,80 @@ public class RuleApp {
     public Map<String, String> fetchRules(){
         Map<String, String> map = new HashMap<>();
         for(Rule rule : rulesMap.values()){
-            map.put(rule.getID(),rule.getJsonString());
+            map.put(rule.getID(),rule.getString());
         }
         return map;
     }
 
-    public Boolean validateByID(String ruleID, JSONObject msg){
+    public Boolean validateByID(String ruleID, Map<String,?> msg){
         return rulesMap.get(ruleID).validate(msg);
     }
 
     public void loadSampleRules(){
         System.out.println("\nLoading Sample Rule configurations");
-
-        JSONObject json = new JSONObject("{\"EQ\":[{\"PTH\":[\"from\",\"firstName\"]},{\"STR\":\"Anshu\"}]}");
-        System.out.println(json);
-
-        JSONObject json2 = new JSONObject("{\"AND\":[{\"EQ\":[{\"PTH\":[\"from\",\"firstName\"]},{\"STR\":\"Anshul\"}]},{\"NOT\":[{\"EQ\":[{\"PTH\":[\"text\"]},{\"STR\":\"Hi\"}]}]}]}");
-        System.out.println(json2);
-
-        JSONObject json3 = new JSONObject("{\"AND\":[{\"EQ\":[{\"PTH\":[\"from\",\"firstName\"]},{\"STR\":\"Anshu\"}]},{\"BOOL\":true}]}");
-        System.out.println(json3);
-
+        
         try {
-            sampleRuleList.add(NodeManager.createNode(json));
-            sampleRuleList.add(NodeManager.createNode(json2));
-            sampleRuleList.add(NodeManager.createNode(json3));
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+
+            ObjectMapper mapper = new ObjectMapper();
+
+            String rule = "{\"EQ\":[{\"PTH\":{\"STRLIST\":[\"from\",\"firstName\"]}},{\"STR\":\"Anshu\"}]}";
+            Map<String, Object> ruleMap = (Map<String, Object>) mapper.readValue(rule,new TypeReference<Map<String,Object>>(){});
+            System.out.println(rule);
+
+            String rule2 = "{\"AND\":[{\"EQ\":[{\"PTH\":{\"STRLIST\":[\"from\",\"firstName\"]}},{\"STR\":\"Anshul\"}]},{\"NOT\":[{\"EQ\":[{\"PTH\":{\"STRLIST\":[\"text\"]}},{\"STR\":\"Hi\"}]}]}]}";
+            Map<String, Object> ruleMap2 = (Map<String, Object>) mapper.readValue(rule2,new TypeReference<Map<String,Object>>(){});
+            System.out.println(rule2);
+
+            String rule3 = "{\"AND\":[{\"EQ\":[{\"PTH\":{\"STRLIST\":[\"from\",\"firstName\"]}},{\"STR\":\"Anshu\"}]},{\"BOOL\":true}]}";
+            Map<String, Object> ruleMap3 = (Map<String, Object>) mapper.readValue(rule3,new TypeReference<Map<String,Object>>(){});
+            System.out.println(rule3);
+            
+            
+            sampleRuleList.add(NodeManager.create(ruleMap));
+            sampleRuleList.add(NodeManager.create(ruleMap2));
+            sampleRuleList.add(NodeManager.create(ruleMap3));
+        } catch (IllegalAccessException | IOException e) {
             e.printStackTrace();
         }
     }
 
     public void demo(){
-        JSONObject jsonMsg2 = new JSONObject("{\"name\":54,\"arr\":[\"random_str\",[\"path_to\"]],\"path_to\":[\"name\"]}");
+        ObjectMapper mapper = new ObjectMapper();
+        String msg = "{\"name\":54,\"arr\":[\"random_str\",[\"path_to\"]],\"path_to\":[\"name\"]}";
+        System.out.println(msg);
+        Map<String, Object> msgMap = null;
 
-        JSONObject json4 = new JSONObject("{\"EQ\":[{\"PTH\":{\"PTH\":{\"PTH\":[\"arr\",\"1\"]}}},{\"INT\":54}]}");
-        System.out.println(json4);
-        Node config4 = null;
         try {
-            config4 = NodeManager.createNode(json4);
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+            msgMap = (Map<String, Object>) mapper.readValue(msg,new TypeReference<Map<String,Object>>(){});
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(config4.apply(jsonMsg2));
 
-        JSONObject json5 = new JSONObject("{\"EQ\":[{\"PTH\":{\"PTH\":[\"path_to\"]}},{\"STR\":\"Anshul\"}]}");
-        System.out.println(json5);
-        Node config5 = null;
+        String rule = "{\"EQ\":[{\"PTH\":{\"PTH\":{\"PTH\":{\"STRLIST\":[\"arr\",\"1\"]}}}},{\"INT\":54}]}";
+        System.out.println(rule);
+        Node config = null;
         try {
-            config5 = NodeManager.createNode(json5);
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+            Map<String, Object> ruleMap = (Map<String, Object>) mapper.readValue(rule,new TypeReference<Map<String,Object>>(){});
+            config = NodeManager.create(ruleMap);
+        } catch (IllegalAccessException | IOException e) {
             e.printStackTrace();
         }
-        System.out.println(config5.apply(jsonMsg2));
+        System.out.println(config.apply(msgMap));
+
+        String rule2 = "{\"EQ\":[{\"PTH\":{\"PTH\":{\"STRLIST\":[\"path_to\"]}}},{\"STR\":\"Anshul\"}]}";
+        System.out.println(rule2);
+        Node config2 = null;
+        try {
+            Map<String, Object> ruleMap2 = (Map<String, Object>) mapper.readValue(rule2,new TypeReference<Map<String,Object>>(){});
+            config2 = NodeManager.create(ruleMap2);
+        } catch (IllegalAccessException | IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(config2.apply(msgMap));
     }
 
-    public Boolean validateSampleRules(int index, JSONObject msg){
+    public Boolean validateSampleRules(int index, Map<String,?> inp){
         System.out.println("Validating the message on Config "+index);
-        return (Boolean) sampleRuleList.get(index).apply(msg);
+        return (Boolean) sampleRuleList.get(index).apply(inp);
     }
 }

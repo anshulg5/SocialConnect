@@ -16,9 +16,9 @@ public class AppModule extends AbstractModule {
     private Properties loadProperties() {
 
         Properties properties = new Properties();
-        properties.setProperty("url" , "jdbc:postgresql://127.0.0.1:5432/postgres");
-        properties.setProperty("username" , "testdb");
-        properties.setProperty("password" , "zxcvbnm");
+        properties.setProperty("url" , "jdbc:postgresql://localhost:5432/SocialConnect");
+        properties.setProperty("username" , "root");
+        properties.setProperty("password" , "root");
         properties.setProperty("driver" , "org.postgresql.Driver");
 
         return properties;

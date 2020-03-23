@@ -12,11 +12,16 @@ public class AndNodeFactory implements NodeFactory {
 
     static {
         AndNodeFactory andOperator = new AndNodeFactory();
-        NodeManager.registerNodeFactory("And",andOperator);
+        NodeManager.registerNodeFactory("AND",andOperator);
     }
 
     @Override
-    public Node getInstance(Object value, Map<String, Object> symbolTable) {
+    public Node getInstance(Object value, Map<String, Object> symbolTable) throws IllegalAccessException {
         return new AndNode((List<Map<String, Object>>) value,symbolTable);
+    }
+
+    @Override
+    public Node getInstance(Object value) throws IllegalAccessException {
+        return new AndNode((List<Map<String, Object>>) value);
     }
 }

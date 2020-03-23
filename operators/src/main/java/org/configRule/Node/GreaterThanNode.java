@@ -1,7 +1,6 @@
 package org.configRule.Node;
 
 import org.example.Node;
-import org.example.NodeFactory;
 import org.example.NodeManager;
 
 import java.util.Iterator;
@@ -12,20 +11,20 @@ public class GreaterThanNode implements Node<Boolean> {
 
     private Node left,right;
 
-    public GreaterThanNode(List<Map<String, Object>> ruleMap, Map<String, Object> symbolTable) {
+    public GreaterThanNode(List<Map<String, Object>> ruleMap, Map<String, Object> symbolTable) throws IllegalAccessException {
         if(ruleMap.size() == 2) {
             Iterator<Map<String, Object>> iterator = ruleMap.iterator();
             Map<String, Object> map = iterator.next();
             if (map.size() == 1) {
                 Map.Entry<String, Object> entry = map.entrySet().iterator().next();
-                left = NodeManager.parse(entry.getKey(),entry.getValue(),symbolTable);
+                left = NodeManager.create(entry.getKey(),entry.getValue(),symbolTable);
             } else {
                 System.out.println("Invalid 'gt' format");
             }
             map = iterator.next();
             if (map.size() == 1) {
                 Map.Entry<String, Object> entry = map.entrySet().iterator().next();
-                right = NodeManager.parse(entry.getKey(),entry.getValue(),symbolTable);
+                right = NodeManager.create(entry.getKey(),entry.getValue(),symbolTable);
             } else {
                 System.out.println("Invalid 'gt' format");
             }

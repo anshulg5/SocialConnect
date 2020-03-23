@@ -12,6 +12,7 @@ import org.example.db.ConnectionDetailDao;
 
 import org.example.model.AppMessage;
 import org.example.model.ConnectionDetail;
+import org.example.rule.RuleApp;
 import org.telegram.telegrambots.ApiContextInitializer;
 
 import javax.servlet.DispatcherType;
@@ -23,6 +24,7 @@ import java.lang.*;
 @Singleton
 public class MediatorApp {
 
+    private RuleApp ruleApp;
     private SenderApp MessageSender;
     private ConnectionDetailDao dao = null;
     private Map<String, String> channelDetails;
@@ -38,18 +40,22 @@ public class MediatorApp {
     }
 
     @Inject
-    public MediatorApp(SenderApp MessageSender, ConnectionDetailDao dao) {
+    public MediatorApp(RuleApp ruleApp, SenderApp MessageSender) { //add dependency ConnectionDetailDao dao
+        this.ruleApp = ruleApp;
         this.dao = dao;
         this.MessageSender = MessageSender;
         channelDetails = new ConcurrentHashMap();
-        List<ConnectionDetail> data = dao.getAllConnections();
-        Iterator<ConnectionDetail> iterator = data.iterator();
+
+//        List<ConnectionDetail> data = dao.getAllConnections();
+//        Iterator<ConnectionDetail> iterator = data.iterator();
+//
+//
+//        while (iterator.hasNext()) {
+//            ConnectionDetail detail = iterator.next();
+//            channelDetails.put(detail.getSourceID(), detail.getTargetID());
+//        }
 
 
-        while (iterator.hasNext()) {
-            ConnectionDetail detail = iterator.next();
-            channelDetails.put(detail.getSourceID(), detail.getTargetID());
-        }
 //        for (Map.Entry<String,String> entry : channelDetails.entrySet())
 //            System.out.println("Key = " + entry.getKey() +
 //                    ", Value = " + entry.getValue());
@@ -68,13 +74,15 @@ public class MediatorApp {
     }
 
     public boolean sendMessage(AppMessage msg, String template) {
+
+        // which rule to apply?
+
         setCurrAppmsg(msg);
         Map<String, Object> objectMap = new HashMap<>();
         objectMap.put("msg", msg.getText());
-        if(rule.apply(objectMap)){
+        if (ruleApp.validateByID("first",objectMap)) {  // check here
             System.out.println(msg + "passed Rule");
-        }
-        else {
+        } else {
             System.out.println(msg + "failed Rule");
         }
         return true;
@@ -95,56 +103,4 @@ public class MediatorApp {
     }
 
 
-    public static void main(String[] args) throws Exception {
-//
-//        String url = "/Users/hiren.va/ok.txt";
-//        String string = "";
-//        try {
-//            File myObj = new File(url);
-//            Scanner myReader = new Scanner(myObj);
-//            while (myReader.hasNextLine()) {
-//                String data = myReader.nextLine();
-//                string += data;
-//            }
-//            myReader.close();
-//        } catch (FileNotFoundException e) {
-//            System.out.println("An error occurred.");
-//            e.printStackTrace();
-//        }
-//        System.out.println(string);
-        //get constructor that takes a String as argument
-
-
-        ApiContextInitializer.init();
-        // TelegramBotsApi botsApi = new TelegramBotsApi();
-        AppModule appModule = new AppModule();
-        AppServletModule appServletModule = new AppServletModule();
-        Injector injector = Guice.createInjector(appModule, appServletModule);
-        // on run bot shutdown and add bot and remove
-        // new web-hook as receiver
-
-
-        Server server = new Server(8080);
-        ServletContextHandler handler = new ServletContextHandler(server, "/");
-        handler.addFilter(GuiceFilter.class, "/*", EnumSet.allOf(DispatcherType.class));
-        server.start();
-        server.join();
-//
-//        JSONObject msg = new JSONObject();
-//        msg.put("id" , "123");
-//        msg.put("name" , "Hiren");
-//        Collection< Node<String> >  myStrings = new ArrayList< Node<String> > ();
-//        Node<String> event = new MyString("name");
-//        myStrings.add(event);
-//        Collection<Node<String>> cool = new ArrayList<Node<String>>();
-//
-//        PathNode get = new PathNode(cool);
-//
-//
-//        Node<String> left = new MyString();
-//        Node<String> right = new MyString("Hiren");
-//        Isequal<String> isequal = new Isequal<String>(left,right);
-//        System.out.println(isequal.apply(null));
-
-    }
 }

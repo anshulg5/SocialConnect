@@ -1,6 +1,7 @@
 package org.example.db.dao;
 
-import org.database.ConnectionFactory;
+
+import org.example.db.ConnectionFactory;
 
 import javax.inject.Singleton;
 import java.sql.Connection;
