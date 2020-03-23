@@ -53,26 +53,10 @@ public class MediatorApp {
 //        for (Map.Entry<String,String> entry : channelDetails.entrySet())
 //            System.out.println("Key = " + entry.getKey() +
 //                    ", Value = " + entry.getValue());
-
-        setRule();
 //        AppMessage msg = new AppMessage();
 //        setCurrAppmsg(msg);
     }
 
-    private void setRule() {
-
-//        input : { 'AND' :[ { 'EQ' : [ { 'GETMSG' : ""},{ 'STR' : "BYE!"} ,
-//                           { 'EQ' : [ { 'PATH' : ["msg"]},{ 'STR' : "Hello!"} ]
-//                }
-//        doc : {"msg" : "Hello!"}
-//
-        Map<Operator, Object> input = ImmutableMap.of();
-        if (input.size() == 1) {
-            Map<String, Object> map = new HashMap<>();
-            Operator key = input.keySet().iterator().next();
-            rule = key.getInstance(input.get(key), map);
-        }
-    }
 
     public void addConfig(String source, String target) {
         if (source == null || target == null) return;

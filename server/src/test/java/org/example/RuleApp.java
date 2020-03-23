@@ -2,17 +2,9 @@ package org.example;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonAnyFormatVisitor;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.fasterxml.jackson.databind.util.TypeKey;
-import com.google.common.collect.ImmutableMap;
-import com.google.inject.internal.cglib.reflect.$FastClass;
-import org.configRule.Operator.*;
-import org.json.JSONObject;
 import org.reflections.Reflections;
 
 import java.io.IOException;
-import java.lang.reflect.*;
 import java.util.*;
 
 public class RuleApp {
@@ -28,45 +20,6 @@ public class RuleApp {
         RuleApp.app = app;
     }
 
-//    public static Node createNode(Operator key, Object value, Map<String,Object> symbolTable) {
-//        switch (key)
-//        {
-//            case Operator.GT:
-//                return new GreaterThanNode((List<Map<Operator, Object>>) value,symbolTable);
-//            case Operator.LT:
-//                return new LessThanNode((List<Map<Operator, Object>>) value,symbolTable);
-//            case Operator.EQ:
-//                return new EqualsNode((List<Map<Operator, Object>>) value,symbolTable);
-//            case Operator.AND:
-//                return new AndNode((List<Map<Operator,Object>>) value,symbolTable);
-//            case Operator.OR:
-//                return new OrNode((List<Map<Operator,Object>>) value,symbolTable);
-//            case Operator.NOT:
-//                return new NotNode((Map<Operator,Object>)value,symbolTable);
-//            case Operator.INT:
-//                return new IntegerNode((Integer) value); // search for what to do if integer is there as string?
-//            case Operator.STR:
-//                return new StringNode((String)value);
-//            case Operator.BOOL:
-//                return new BooleanNode((Boolean)value);
-//            case Operator.STRLST:
-//                return new CollectionStringNode((Collection<String>) value);
-//            case Operator.PATH:
-//                return new PathNode((Map<Operator,Object>) value,symbolTable);
-//            case Operator.LET:
-//                return new LetNode((Map<Operator,Object>)value,symbolTable);
-//            case Operator.DEF:
-//                return new DefinationNode((List<Map<Operator, Object>>) value,symbolTable);
-//            case Operator.VAR:
-//                return new VarNode((String) value,symbolTable);
-//            case Operator.FREAD:
-//                return new FileReaderNode((Map<Operator, Object>) value,symbolTable);
-//            case Operator.GETMSG:
-//                return new GetNextMsg(app);
-//            default:
-//                return null;
-//        }
-//    }
 
     public static void main(String[] args) throws ClassNotFoundException, IOException {
 
@@ -146,7 +99,7 @@ public class RuleApp {
         //Class<?>[] ClassList =  Operator
        // System.out.println(Arrays.toString(ClassList));
         Reflections reflections = new Reflections("org.configRule");
-        Set<Class<? extends Operator>> classes = reflections.getSubTypesOf(Operator.class);
+        Set<Class<? extends NodeFactory>> classes = reflections.getSubTypesOf(NodeFactory.class);
 
         Iterator iterator = classes.iterator();
         while(iterator.hasNext()){
@@ -171,18 +124,17 @@ public class RuleApp {
 //        CollectionStringOperator collectionStringOperator = new CollectionStringOperator();
 
         String json  = "{\"Eq\": [" +
-                                    " { \"Path\" : {\"SLIST\" : [\"Mentor\"] } }," +
-                                    " { \"STR\" : \"Hemanshu\" } " +
+                                    " { \"Path\" : {\"Slist\" : [\"Mentor\"] } }," +
+                                    " { \"Str\" : \"Hemanshu\" } " +
                                 "]" +
                         "}";
 
         ObjectMapper mapper = new ObjectMapper();
         Map<String,Object> map = (Map<String, Object>) mapper.readValue(json,new TypeReference<Map<String,Object>>(){});
 //
-        Map<Operator,Object> map2 = OperatorManager.parse(map);
-        Operator key = map2.keySet().iterator().next();
+        String key = map.keySet().iterator().next();
         Map<String,Object> sT = new HashMap<>();
-        Node<Boolean> rule = key.getInstance(map2.get(key),sT);
+        Node<Boolean> rule = NodeManager.parse(key,map.get(key),sT);
 
         System.out.println(rule.apply(getDoc()));
 

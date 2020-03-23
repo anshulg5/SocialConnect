@@ -1,7 +1,8 @@
 package org.configRule.Node;
 
 import org.example.Node;
-import org.example.Operator;
+import org.example.NodeFactory;
+import org.example.NodeManager;
 
 import java.util.*;
 
@@ -9,12 +10,12 @@ public class PathNode<T> implements Node<T> {
 
     Node<Collection<String>> collectionNode;
 
-    public PathNode(Map<Operator,Object> map, Map<String,Object> symbolTable){
+    public PathNode(Map<String,Object> map, Map<String,Object> symbolTable){
         if(map.size()==1) {
-            Iterator<Operator> iterator = map.keySet().iterator();
+            Iterator<String> iterator = map.keySet().iterator();
             while (iterator.hasNext()) {
-                Operator key = iterator.next();
-                collectionNode = key.getInstance(map.get(key),symbolTable);;
+                String key = iterator.next();
+                collectionNode = NodeManager.parse(key,map.get(key),symbolTable);;
             }
         }
     }

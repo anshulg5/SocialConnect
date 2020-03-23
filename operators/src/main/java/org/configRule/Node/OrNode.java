@@ -2,7 +2,7 @@ package org.configRule.Node;
 
 
 import org.example.Node;
-import org.example.Operator;
+import org.example.NodeFactory;
 
 import java.util.*;
 
@@ -10,13 +10,13 @@ public class OrNode implements Node<Boolean> {
 
     Collection< Node<Boolean> > nodeCollection;
 
-    public OrNode(List<Map<Operator,Object>> ruleMap, Map<String,Object> symbolTable) {
+    public OrNode(List<Map<NodeFactory,Object>> ruleMap, Map<String,Object> symbolTable) {
         nodeCollection = new ArrayList<>();
-        Iterator<Map<Operator, Object>> iterator = ruleMap.iterator();
+        Iterator<Map<NodeFactory, Object>> iterator = ruleMap.iterator();
         while(iterator.hasNext()){
-            Map<Operator,Object> map = iterator.next();
+            Map<NodeFactory,Object> map = iterator.next();
             if(map.size() == 1) {
-                Operator key = map.keySet().iterator().next();
+                NodeFactory key = map.keySet().iterator().next();
                 Node<Boolean> node = key.getInstance(map.get(key),symbolTable);
                 nodeCollection.add(node);
             }
