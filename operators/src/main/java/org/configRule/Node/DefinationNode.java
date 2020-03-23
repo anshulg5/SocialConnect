@@ -1,7 +1,7 @@
 package org.configRule.Node;
 
 import org.example.Node;
-import org.example.Operator;
+import org.example.NodeFactory;
 
 import java.util.*;
 
@@ -10,7 +10,7 @@ public class DefinationNode implements Node<List<String>> {
     Map<String,Node> list;
     Map<String,Object> symbolTable;
 
-    public DefinationNode(List< Map<Operator,Object>> ruleMap, Map<String, Object> symbolTable) {
+    public DefinationNode(List< Map<String,Object>> ruleMap, Map<String, Object> symbolTable) {
 //        list = new HashMap<>();
 //        this.symbolTable = symbolTable;
 //        Iterator<Map<Operator, Object>> iterator =  ruleMap.iterator();

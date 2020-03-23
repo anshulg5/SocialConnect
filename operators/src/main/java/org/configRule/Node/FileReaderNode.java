@@ -1,7 +1,8 @@
 package org.configRule.Node;
 
 import org.example.Node;
-import org.example.Operator;
+import org.example.NodeFactory;
+import org.example.NodeManager;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,10 +14,10 @@ public class FileReaderNode implements Node<String> {
 
     Node<Collection<String>> node;
 
-    FileReaderNode(Map<Operator,Object> map, Map<String,Object> symbolTable){
+    FileReaderNode(Map<String,Object> map, Map<String,Object> symbolTable){
         if(map.size()==1){
-            Operator key = map.keySet().iterator().next();
-            node = key.getInstance(map.get(key),symbolTable);
+            String key = map.keySet().iterator().next();
+            node = NodeManager.parse(key,map.get(key),symbolTable);
         }
         else {
             System.out.println("Invalid rule");
