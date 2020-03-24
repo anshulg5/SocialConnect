@@ -29,4 +29,6 @@ public class PgConnectionDaoImpl implements ConnectionDetailDao {
         return db.update("INSERT into connection(sourceid,targetid) values(?,?)",detail.getSourceID(),detail.getTargetID()) > 0;
     }
 
+
+
 }

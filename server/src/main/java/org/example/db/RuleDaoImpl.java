@@ -34,11 +34,13 @@ public class RuleDaoImpl implements RuleDao {
         return map;
     }
 
+    @Override
     public void addRule(Rule rule){
         String insertString = "INSERT INTO RULE (ID,JSONString) VALUES (?,?)";
         db.update(insertString,rule.getID(),rule.getRuleString());
     }
 
+    @Override
     public void deleteRule(String ruleID){
         String removeString = "DELETE FROM RULE WHERE ID = ?";
         db.update(removeString,ruleID);

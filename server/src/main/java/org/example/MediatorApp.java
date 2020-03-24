@@ -32,7 +32,7 @@ public class MediatorApp {
     }
 
     @Inject
-    public MediatorApp(RuleApp ruleApp, SenderApp MessageSender) { //add dependency ConnectionDetailDao dao
+    public MediatorApp(RuleApp ruleApp, SenderApp MessageSender, ConnectionDetailDao dao) {
         this.ruleApp = ruleApp;
         this.dao = dao;
         this.MessageSender = MessageSender;

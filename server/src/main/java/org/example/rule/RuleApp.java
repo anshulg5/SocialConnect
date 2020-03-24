@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Node;
 import org.example.NodeManager;
 import org.example.db.RuleDaoImpl;
+import org.example.db.dao.RuleDao;
 import org.example.model.Rule;
 
 import javax.inject.Inject;
@@ -15,12 +16,12 @@ import java.util.*;
 
 @Singleton
 public class RuleApp {
-    private RuleDaoImpl ruleDao;
+    private RuleDao ruleDao;
     List<Node> sampleRuleList = new ArrayList<>();
     Map<String, Rule> rulesMap;
 
     @Inject
-    RuleApp(RuleDaoImpl ruleDao){
+    RuleApp(RuleDao ruleDao){
         // load ruleList from db
         this.ruleDao = ruleDao;
         rulesMap = new HashMap<>();

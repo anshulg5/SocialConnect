@@ -19,6 +19,7 @@ public class AppModule extends AbstractModule {
 
         Properties properties = new Properties();
         properties.setProperty("url" , "jdbc:postgresql://localhost:5432/SocialConnect");
+        properties.setProperty("url2" , "jdbc:postgresql://localhost:5432/SocialConnect");
         properties.setProperty("username" , "root");
         properties.setProperty("password" , "root");
         properties.setProperty("driver" , "org.postgresql.Driver");
@@ -37,16 +38,19 @@ public class AppModule extends AbstractModule {
     static class PgDataSourceProvider implements Provider<JdbcTemplate> {
 
         private final String url;
+        private final String url2;
         private final String username;
         private final String password;
         private final String driver;
 
         @Inject
         public PgDataSourceProvider(@Named("url") final String url,
+                                    @Named("url2") final String url2,
                                     @Named("username") final String username,
                                     @Named("password") final String password,
                                     @Named("driver") final String driver) {
             this.url = url;
+            this.url2 = url2;
             this.username = username;
             this.password = password;
             this.driver = driver;
@@ -54,11 +58,12 @@ public class AppModule extends AbstractModule {
 
         @Override
         public JdbcTemplate get() {
-            final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-            dataSource.setUrl(url);
-            dataSource.setUsername(username);
-            dataSource.setPassword(password);
-            dataSource.setDriverClassName(driver);
+//            final DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//            dataSource.setUrl(url);
+//            dataSource.setUsername(username);
+//            dataSource.setPassword(password);
+//            dataSource.setDriverClassName(driver);
+            final DriverManagerDataSource dataSource = new DriverManagerDataSource(url2);
             return new JdbcTemplate(dataSource);
         }
     }
