@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Node;
 import org.example.NodeManager;
-import org.example.db.dao.RuleDao;
+import org.example.db.RuleDaoImpl;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -14,12 +14,12 @@ import java.util.*;
 
 @Singleton
 public class RuleApp {
-    RuleDao ruleDao;
+    RuleDaoImpl ruleDao;
     List<Node> sampleRuleList = new ArrayList<>();
     Map<String, Rule> rulesMap;
 
     @Inject
-    RuleApp(RuleDao ruleDao){
+    RuleApp(RuleDaoImpl ruleDao){
         // load ruleList from db
         this.ruleDao = ruleDao;
         rulesMap = new HashMap<>();
@@ -70,7 +70,7 @@ public class RuleApp {
     public Map<String, String> fetchRules(){
         Map<String, String> map = new HashMap<>();
         for(Rule rule : rulesMap.values()){
-            map.put(rule.getID(),rule.getString());
+            map.put(rule.getID(),rule.getRuleString());
         }
         return map;
     }

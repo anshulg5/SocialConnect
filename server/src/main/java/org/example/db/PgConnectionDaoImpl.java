@@ -2,13 +2,11 @@ package org.example.db;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.example.db.ConnectionDetailDao;
+import org.example.db.dao.ConnectionDetailDao;
 import org.example.model.ConnectionDetail;
 import org.example.model.ConnectionMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import javax.sql.DataSource;
 import java.util.List;
 
 @Singleton

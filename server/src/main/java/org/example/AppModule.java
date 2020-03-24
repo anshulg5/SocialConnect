@@ -3,10 +3,12 @@ package org.example;
 import com.google.inject.*;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
-import org.example.db.BotDetailDao;
-import org.example.db.ConnectionDetailDao;
+import org.example.db.RuleDaoImpl;
+import org.example.db.dao.BotDetailDao;
+import org.example.db.dao.ConnectionDetailDao;
 import org.example.db.PgBotDetailDaoImpl;
 import org.example.db.PgConnectionDaoImpl;
+import org.example.db.dao.RuleDao;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import java.util.Properties;
@@ -29,6 +31,7 @@ public class AppModule extends AbstractModule {
         bind(JdbcTemplate.class).toProvider(PgDataSourceProvider.class).in(Scopes.SINGLETON);
         bind(ConnectionDetailDao.class).to(PgConnectionDaoImpl.class);
         bind(BotDetailDao.class).to(PgBotDetailDaoImpl.class);
+        bind(RuleDao.class).to(RuleDaoImpl.class);
     }
 
     static class PgDataSourceProvider implements Provider<JdbcTemplate> {

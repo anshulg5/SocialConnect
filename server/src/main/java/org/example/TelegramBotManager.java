@@ -2,7 +2,7 @@ package org.example;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.example.db.BotDetailDao;
+import org.example.db.dao.BotDetailDao;
 import org.example.model.BotDetail;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;

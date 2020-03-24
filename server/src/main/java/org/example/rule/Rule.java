@@ -11,10 +11,10 @@ import java.io.IOException;
 import java.util.Map;
 
 public class Rule {
-    String ID;
-    Map<String, Object> ruleMap;
-    String ruleString;
-    Node rootNode;
+    private String ID;
+    private Map<String, Object> ruleMap;
+    private String ruleString;
+    private Node rootNode;
     static ObjectMapper mapper = new ObjectMapper();
 
     public Rule(String ID, Map<String, Object> ruleMap) throws IllegalAccessException, InstantiationException, ClassNotFoundException, JsonProcessingException {
@@ -32,24 +32,40 @@ public class Rule {
         rootNode = NodeManager.create(ruleMap);
     }
 
+    public Rule() {
+
+    }
+
     public Boolean validate(Map<String, ?> input){
         return (Boolean) rootNode.apply(input);
     }
 
-    public String getID(){
+    public String getID() {
         return ID;
     }
 
-    Map<String, Object> getRuleMap(){
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public Map<String, Object> getRuleMap() {
         return ruleMap;
     }
 
-    public String getString(){
+    public String getRuleString() {
         return ruleString;
     }
 
-    void setID(String newID){
-        ID = newID;
+    public void setRuleString(String ruleString) {
+        this.ruleString = ruleString;
+    }
+
+    public Node getRootNode() {
+        return rootNode;
+    }
+
+    public void setRootNode(Node rootNode) {
+        this.rootNode = rootNode;
     }
 
     void setRuleMap(Map<String, Object> ruleMap) throws IllegalAccessException, InstantiationException, ClassNotFoundException {

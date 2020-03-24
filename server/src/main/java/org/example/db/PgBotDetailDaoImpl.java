@@ -1,10 +1,10 @@
 package org.example.db;
 
 import com.google.inject.Inject;
+import org.example.db.dao.BotDetailDao;
 import org.example.model.BotDetail;
 import org.example.model.BotMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import java.util.List;
 

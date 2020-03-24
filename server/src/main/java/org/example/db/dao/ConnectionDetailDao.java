@@ -1,4 +1,4 @@
-package org.example.db;
+package org.example.db.dao;
 
 import com.google.inject.Singleton;
 import org.example.model.ConnectionDetail;

@@ -1,21 +1,13 @@
 package org.example;
 
-import com.google.common.collect.ImmutableMap;
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.google.inject.Singleton;
-import com.google.inject.servlet.GuiceFilter;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.example.db.ConnectionDetailDao;
+import org.example.db.dao.ConnectionDetailDao;
 
 import org.example.model.AppMessage;
 import org.example.model.ConnectionDetail;
 import org.example.rule.RuleApp;
-import org.telegram.telegrambots.ApiContextInitializer;
 
-import javax.servlet.DispatcherType;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.lang.*;
