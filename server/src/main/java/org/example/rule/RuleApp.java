@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Node;
 import org.example.NodeManager;
 import org.example.db.RuleDaoImpl;
+import org.example.model.Rule;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -14,7 +15,7 @@ import java.util.*;
 
 @Singleton
 public class RuleApp {
-    RuleDaoImpl ruleDao;
+    private RuleDaoImpl ruleDao;
     List<Node> sampleRuleList = new ArrayList<>();
     Map<String, Rule> rulesMap;
 

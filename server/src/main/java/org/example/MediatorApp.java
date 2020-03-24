@@ -37,22 +37,6 @@ public class MediatorApp {
         this.dao = dao;
         this.MessageSender = MessageSender;
         channelDetails = new ConcurrentHashMap();
-
-//        List<ConnectionDetail> data = dao.getAllConnections();
-//        Iterator<ConnectionDetail> iterator = data.iterator();
-//
-//
-//        while (iterator.hasNext()) {
-//            ConnectionDetail detail = iterator.next();
-//            channelDetails.put(detail.getSourceID(), detail.getTargetID());
-//        }
-
-
-//        for (Map.Entry<String,String> entry : channelDetails.entrySet())
-//            System.out.println("Key = " + entry.getKey() +
-//                    ", Value = " + entry.getValue());
-//        AppMessage msg = new AppMessage();
-//        setCurrAppmsg(msg);
     }
 
 

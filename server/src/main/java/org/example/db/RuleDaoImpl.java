@@ -2,21 +2,13 @@ package org.example.db;
 
 
 import com.google.inject.Inject;
-import org.example.db.ConnectionFactory;
 import org.example.db.dao.RuleDao;
-import org.example.model.BotMapper;
-import org.example.rule.Rule;
-import org.example.rule.RuleMapper;
+import org.example.model.Rule;
+import org.example.model.RuleMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import sun.jvm.hotspot.opto.InlineTree;
 
 
 import javax.inject.Singleton;
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;

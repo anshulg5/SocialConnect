@@ -1,4 +1,4 @@
-package org.example.rule;
+package org.example.model;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

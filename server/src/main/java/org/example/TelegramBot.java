@@ -16,20 +16,24 @@ public class TelegramBot extends TelegramLongPollingBot implements ReceiverApp{
     private String botUserName;
     private String botToken;
     private String botMsgText = null;
-    private ExecutorService executorService = null;
-    private final Integer MAX_THREAD = 10;
 
     @Inject
     TelegramBot(MediatorApp app){
         this.app = app;
-        executorService = Executors.newFixedThreadPool(MAX_THREAD);
     }
 
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
-            Message msg = update.getMessage();
-            executorService.execute(new TelgramSender(this,msg));
+            Message message = update.getMessage();
+            AppMessage appMessage = new AppMessage();
+            appMessage.setChannelId(String.valueOf(message.getChatId()));
+            appMessage.setText(message.getText());
+            appMessage.setChannelName(message.getChat().getTitle());
+            appMessage.setProvider("Telegram");
+            appMessage.setSentBy(message.getFrom().getFirstName());
+            sendMessage(appMessage);
+            sendMessage(appMessage);
         }
     }
 
@@ -59,7 +63,6 @@ public class TelegramBot extends TelegramLongPollingBot implements ReceiverApp{
     @Override
     public void onClosing() {
         super.onClosing();
-        executorService.shutdown();
     }
 
     public String getBotMsgText() { return botMsgText; }

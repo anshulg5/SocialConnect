@@ -1,6 +1,7 @@
-package org.example.rule;
+package org.example.model;
 
 
+import org.example.model.Rule;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
