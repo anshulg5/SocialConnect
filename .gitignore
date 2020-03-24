@@ -1,6 +1,3 @@
 target/
 .idea/
-SocialConnect.iml
-Operators.iml
-Commons.iml
-server.iml
+**/*.iml
