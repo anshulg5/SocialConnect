@@ -26,6 +26,7 @@ public class TelegramBot extends TelegramLongPollingBot implements ReceiverApp{
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText()) {
             Message message = update.getMessage();
+            System.out.println(message);
             AppMessage appMessage = new AppMessage();
             appMessage.setChannelId(String.valueOf(message.getChatId()));
             appMessage.setText(message.getText());

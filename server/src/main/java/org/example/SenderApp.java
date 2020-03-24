@@ -19,6 +19,7 @@ public class SenderApp {
 
     HttpClient client;
     String URL="https://api.flock.com/hooks/sendMessage/88e00f4f-eb77-407f-9f6d-a79565178efe";
+    String URL2 = "https://api.flock.com/hooks/sendMessage/6cb0be5e-0f03-4c5b-a440-a7a6c5c887a3";
 
     SenderApp(){
         SslContextFactory.Client sslContextFactory = new SslContextFactory.Client();
@@ -32,7 +33,7 @@ public class SenderApp {
     }
 
     public boolean send(String ChannelId , String msg){
-        Request request = client.POST(URL);
+        Request request = client.POST(URL2);
         request.header(HttpHeader.CONTENT_TYPE, "application/json");
         JSONObject json = new JSONObject();
         json.put("text",msg);

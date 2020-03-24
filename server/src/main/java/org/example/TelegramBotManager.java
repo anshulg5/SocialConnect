@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.example.db.dao.BotDetailDao;
 import org.example.model.BotDetail;
+import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import org.telegram.telegrambots.meta.generics.BotSession;
@@ -21,8 +22,9 @@ public class TelegramBotManager {
     private ConcurrentHashMap<String,BotSession> botSessionList;
 
     @Inject
-    TelegramBotManager(TelegramBotsApi botsApi, MediatorApp app, BotDetailDao dao) throws TelegramApiRequestException {
-        this.botsApi = botsApi;
+    TelegramBotManager(MediatorApp app, BotDetailDao dao) throws TelegramApiRequestException {
+        ApiContextInitializer.init();
+        this.botsApi = new TelegramBotsApi();
         this.app = app;
         this.dao = dao;
         this.botList = new ConcurrentHashMap<String, TelegramBot>();
@@ -36,25 +38,25 @@ public class TelegramBotManager {
         Iterator<BotDetail> iterator = bots.iterator();
         while (iterator.hasNext()) {
             BotDetail botDetail= iterator.next();
-            addBot(botDetail.getBotUserName(),botDetail.getBotToken(),botDetail.getMsgText());
+            createNewBot(botDetail.getBotUserName(),botDetail.getBotToken(),botDetail.getMsgText());
         }
     }
 
-    private TelegramBot createNewBot() throws TelegramApiRequestException {
+    private void createNewBot(String botUserName,String botToken,String msgText) throws TelegramApiRequestException {
         TelegramBot bot = new TelegramBot(this.app);
-        return bot;
-    }
-
-    public void addBot(String botUserName,String botToken,String msgText) throws TelegramApiRequestException {
-        TelegramBot bot = createNewBot();
         bot.setBotUserName(botUserName);
         bot.setBotToken(botToken);
         bot.setBotMsgText(msgText);
         BotSession session = this.botsApi.registerBot(bot);
         botList.put(botUserName,bot);
         botSessionList.put(botUserName,session);
+    }
+
+    public void addBot(String botUserName,String botToken,String msgText) throws TelegramApiRequestException {
+        createNewBot(botUserName,botToken,msgText);
+
         // add to database if success.
-        //dao.addBotDetail(botUserName,botToken,msgText);
+        dao.addBotDetail(botUserName,botToken,msgText);
 
     }
     public void removeBot(String botUserName,String botToken){
