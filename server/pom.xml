@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>operators</artifactId>
+            <artifactId>node</artifactId>
             <version>${project.version}</version>
         </dependency>
 
