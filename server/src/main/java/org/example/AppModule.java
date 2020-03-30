@@ -73,13 +73,13 @@ public class AppModule extends AbstractModule {
 
         @Override
         public JdbcTemplate get() {
-//            final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//            dataSource.setUrl(url);
-//            dataSource.setUsername(username);
-//            dataSource.setPassword(password);
+            final DriverManagerDataSource dataSource = new DriverManagerDataSource();
+            dataSource.setUrl(url);
+            dataSource.setUsername(username);
+            dataSource.setPassword(password);
 //            dataSource.setDriverClassName(driver);
             System.out.println(url);
-            final DriverManagerDataSource dataSource = new DriverManagerDataSource(url);
+//            final DriverManagerDataSource dataSource = new DriverManagerDataSource(url);
             return new JdbcTemplate(dataSource);
         }
     }
