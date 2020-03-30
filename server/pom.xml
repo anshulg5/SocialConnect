@@ -17,6 +17,7 @@
             <artifactId>commons</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>node</artifactId>
@@ -86,6 +87,14 @@
             <version>9.4.25.v20191220</version>
         </dependency>
 
-    </dependencies>
 
+    </dependencies>
+    <build>
+        <resources>
+        <resource>
+            <directory>src/main/resources</directory>
+            <filtering>true</filtering>
+        </resource>
+    </resources>
+    </build>
 </project>
