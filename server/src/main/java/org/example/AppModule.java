@@ -27,10 +27,19 @@ public class AppModule extends AbstractModule {
             System.setProperty("ENV","local");
         }
         
-        String propertiesFileName = "server/src/main/resources/" + System.getProperty("ENV") + "/" +  System.getProperty("ENV");
-        Properties prop = null;
-        try (InputStream input = new FileInputStream(propertiesFileName + ".properties")) {
+        try {
+            String current = new java.io.File(".").getCanonicalPath();
+            System.out.println("Current dir:"+current);
+            String currentDir = System.getProperty("user.dir");
+            System.out.println("Current dir using System:" +currentDir);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
         
+        
+        String propertiesFileName = System.getProperty("ENV") + "/" +  System.getProperty("ENV");
+        Properties prop = null;
+        try (InputStream input = this.getClass().getClassLoader().getResourceAsStream(propertiesFileName + ".properties")) {
             prop = new Properties();
             prop.load(input);
         
