@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="anshul.g (generated)" id="1585718834671-1">
+        <createTable tableName="bot">
+            <column name="name" type="VARCHAR(30)"/>
+            <column name="token" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="anshul.g (generated)" id="1585718834671-2">
+        <createTable tableName="botdetail">
+            <column name="botusername" type="BPCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="bottoken" type="TEXT"/>
+            <column name="msgtext" type="TEXT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="anshul.g (generated)" id="1585718834671-3">
+        <createTable tableName="connection">
+            <column name="sourceid" type="BPCHAR(50)"/>
+            <column name="targetid" type="BPCHAR(50)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="anshul.g (generated)" id="1585718834671-4">
+        <createTable tableName="rule">
+            <column name="id" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="jsonstring" type="TEXT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="anshul.g (generated)" id="1585718834671-5">
+        <addPrimaryKey columnNames="botusername" constraintName="botdetail_pkey" tableName="botdetail"/>
+    </changeSet>
+    <changeSet author="anshul.g (generated)" id="1585718834671-6">
+        <addPrimaryKey columnNames="id" constraintName="rule_pkey" tableName="rule"/>
+    </changeSet>
+</databaseChangeLog>
