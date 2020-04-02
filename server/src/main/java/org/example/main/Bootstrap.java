@@ -38,8 +38,8 @@ class Bootstrap{
         sslContextFactory.setKeyManagerPassword("123456");
 
 //         Configuring plain connector (optional)
-//        ServerConnector plainConnector = new ServerConnector(server, new HttpConnectionFactory());
-//        plainConnector.setPort(plainPort);
+        ServerConnector plainConnector = new ServerConnector(server, new HttpConnectionFactory());
+        plainConnector.setPort(plainPort);
 
         // Configuring SSL connector
         HttpConfiguration https = new HttpConfiguration();
@@ -51,7 +51,7 @@ class Bootstrap{
         // Setting HTTP and HTTPS connectors
         server.setConnectors(new Connector[] {
                 sslConnector
-//                , plainConnector
+                , plainConnector
         });
     }
 
