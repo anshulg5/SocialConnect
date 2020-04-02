@@ -34,7 +34,6 @@ public class TelegramBot extends TelegramLongPollingBot implements ReceiverApp{
             appMessage.setProvider("Telegram");
             appMessage.setSentBy(message.getFrom().getFirstName());
             sendMessage(appMessage);
-            sendMessage(appMessage);
         }
     }
 

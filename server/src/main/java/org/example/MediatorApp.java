@@ -1,5 +1,7 @@
 package org.example;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.example.db.dao.ConnectionDetailDao;
@@ -8,6 +10,7 @@ import org.example.model.AppMessage;
 import org.example.model.ConnectionDetail;
 import org.example.rule.RuleApp;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.lang.*;
@@ -48,16 +51,42 @@ public class MediatorApp {
                     ", Value = " + entry.getValue());
         dao.saveDetails(new ConnectionDetail(source, target));
     }
-
-    public boolean sendMessage(AppMessage msg, String template) {
+    
+    public static boolean isJSONValid(String jsonInString ) {
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            mapper.readTree(jsonInString);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+    
+    public boolean sendMessage(AppMessage msg, String template){
 
         // which rule to apply?
 
         setCurrAppmsg(msg);
         Map<String, Object> objectMap = new HashMap<>();
-        objectMap.put("msg", msg.getText());
-        if (ruleApp.validateByID("first",objectMap)) {  // check here
+        objectMap.put("firstname",msg.getSentBy());
+        objectMap.put("group",msg.getChannelName());
+        objectMap.put("provider",msg.getProvider());
+        if(isJSONValid(msg.getText())) {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                objectMap.put("msg", (Map<String, Object>) mapper.readValue(msg.getText(), new TypeReference<Map<String, Object>>() {}));
+            }
+            catch (Exception e){
+                return false;
+            }
+        }
+        else {
+            objectMap.put("msg",msg.getText());
+        }
+        System.out.println(objectMap);
+        if (ruleApp.validateByID("third",objectMap)) {  // check here
             System.out.println(msg + "passed Rule");
+            return MessageSender.send(msg.getChannelId(),msg.getText());
         } else {
             System.out.println(msg + "failed Rule");
         }

@@ -32,7 +32,7 @@ class Bootstrap{
     void configureServer(){
         SslContextFactory sslContextFactory = new SslContextFactory.Server();
         String keyStorePath = getClass().getClassLoader().getResource("keystore.jks").toExternalForm();
-        System.out.println("uri "+keyStorePath);
+      //  System.out.println("uri "+keyStorePath);
         sslContextFactory.setKeyStorePath(keyStorePath);
         sslContextFactory.setKeyStorePassword("123456");
         sslContextFactory.setKeyManagerPassword("123456");
@@ -63,7 +63,7 @@ class Bootstrap{
 //            database.addConfig();
 //            server.join();
         } catch (Exception e) {
-            e.printStackTrace();
+      //      e.printStackTrace();
         }
     }
 }
