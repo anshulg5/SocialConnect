@@ -6,21 +6,22 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.servlet.DispatcherType;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
 import java.util.EnumSet;
 
 @Singleton
-public class Bootstrap{
-    Server server;
+class Bootstrap{
+    private final Server server;
+    private final int plainPort;
+    private final int sslPort;
 
     @Inject
-    Bootstrap(){
+    Bootstrap(@Named("web.http.port") int plainPort,
+              @Named("web.https.port") int sslPort){
+        this.plainPort = plainPort;
+        this.sslPort = sslPort;
         server = new Server();
         configureServer();
         ServletContextHandler context = new ServletContextHandler(server, "/");
@@ -29,45 +30,29 @@ public class Bootstrap{
     }
 
     void configureServer(){
-        // HTTP Configuration
-        HttpConfiguration http = new HttpConfiguration();
-        http.addCustomizer(new SecureRequestCustomizer());
-
-        // Configuration for HTTPS redirect
-        http.setSecurePort(443);
-        http.setSecureScheme("https");
-        ServerConnector connector = new ServerConnector(server);
-        connector.addConnectionFactory(new HttpConnectionFactory(http));
-        connector.setPort(80);
-
-        // HTTPS configuration
-        HttpConfiguration https = new HttpConfiguration();
-        https.addCustomizer(new SecureRequestCustomizer());
-
-        //SSL Configuration
         SslContextFactory sslContextFactory = new SslContextFactory.Server();
         String keyStorePath = getClass().getClassLoader().getResource("keystore.jks").toExternalForm();
         System.out.println("uri "+keyStorePath);
-//        String keyStorePath = null;
-//        try {
-//            File file = Paths.get(res.toURI()).toFile();
-//            keyStorePath = file.getAbsolutePath();
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println("\n"+keyStorePath.substring(1)+"\n");
         sslContextFactory.setKeyStorePath(keyStorePath);
         sslContextFactory.setKeyStorePassword("123456");
         sslContextFactory.setKeyManagerPassword("123456");
 
+//         Configuring plain connector (optional)
+//        ServerConnector plainConnector = new ServerConnector(server, new HttpConnectionFactory());
+//        plainConnector.setPort(plainPort);
+
         // Configuring SSL connector
+        HttpConfiguration https = new HttpConfiguration();
+        https.addCustomizer(new SecureRequestCustomizer());
         ServerConnector sslConnector = new ServerConnector(server,
                 new SslConnectionFactory(sslContextFactory, "http/1.1"),
                 new HttpConnectionFactory(https));
-        sslConnector.setPort(443);
-
+        sslConnector.setPort(sslPort);
         // Setting HTTP and HTTPS connectors
-        server.setConnectors(new Connector[] { connector, sslConnector });
+        server.setConnectors(new Connector[] {
+                sslConnector
+//                , plainConnector
+        });
     }
 
 
