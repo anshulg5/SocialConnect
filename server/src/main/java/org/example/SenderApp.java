@@ -33,7 +33,7 @@ public class SenderApp {
     }
 
     public boolean send(String ChannelId , String msg){
-        Request request = client.POST(URL2);
+        Request request = client.POST(URL);
         request.header(HttpHeader.CONTENT_TYPE, "application/json");
         JSONObject json = new JSONObject();
         json.put("text",msg);
