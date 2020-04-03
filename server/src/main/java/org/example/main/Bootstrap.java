@@ -22,6 +22,8 @@ class Bootstrap{
               @Named("web.https.port") int sslPort){
         this.plainPort = plainPort;
         this.sslPort = sslPort;
+        System.setProperty("org.eclipse.jetty.util.log.class", "org.eclipse.jetty.util.log.StdErrLog");
+        System.setProperty("org.eclipse.jetty.LEVEL", "OFF");
         server = new Server();
         configureServer();
         ServletContextHandler context = new ServletContextHandler(server, "/");
