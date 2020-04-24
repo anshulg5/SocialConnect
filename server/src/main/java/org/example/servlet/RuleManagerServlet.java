@@ -1,4 +1,4 @@
-package org.example.services;
+package org.example.servlet;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

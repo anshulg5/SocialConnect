@@ -12,7 +12,7 @@ import javax.servlet.DispatcherType;
 import java.util.EnumSet;
 
 @Singleton
-class Bootstrap{
+public class Bootstrap{
     private final Server server;
     private final int plainPort;
     private final int sslPort;

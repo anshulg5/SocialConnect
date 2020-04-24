@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Node;
 import org.example.NodeManager;
-import org.example.db.RuleDaoImpl;
 import org.example.db.dao.RuleDao;
 import org.example.model.Rule;
 
@@ -54,6 +53,11 @@ public class RuleApp {
         return true;
     }
 
+    public void deleteAllRules(){
+        rulesMap.clear();
+        ruleDao.deleteAllRules();
+    }
+
     public Boolean updateRule(String ruleID, Map<String, Object> ruleMap) throws IllegalAccessException, InstantiationException, ClassNotFoundException, JsonProcessingException {
         if(!rulesMap.containsKey(ruleID)) {
             System.out.println("non-existent rule");
@@ -75,6 +79,12 @@ public class RuleApp {
             map.put(rule.getID(),rule.getRuleString());
         }
         return map;
+    }
+
+    public Map<String, Object> fetchRuleMapById(String id){
+        if(!rulesMap.containsKey(id))
+            return null;
+        return rulesMap.get(id).getRuleMap();
     }
 
     public Boolean validateByID(String ruleID, Map<String,?> msg){

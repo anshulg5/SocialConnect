@@ -1,4 +1,4 @@
-package org.example.Servlet;
+package org.example.servlet;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
