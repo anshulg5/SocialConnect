@@ -143,6 +143,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <environmentVariables>
+                        <LANG>en_US.UTF-8</LANG>
+                        <LC_ALL>en_US.UTF-8</LC_ALL>
                     </environmentVariables>
 
                 </configuration>
