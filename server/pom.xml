@@ -9,6 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <properties>
+        <ENV>local</ENV>
+    </properties>
+
     <artifactId>server</artifactId>
 
     <dependencies>
@@ -120,13 +124,16 @@
 
 
     <build>
-        <filters>
-            <filter>src/main/resources/settings.properties</filter>
-        </filters>
+<!--        <filters>-->
+<!--            <filter>src/main/resources/settings.properties</filter>-->
+<!--        </filters>-->
         <resources>
             <resource>
+                <directory>src/main/resources-filtered</directory>
+                <filtering>true</filtering>
+            </resource>
+            <resource>
                 <directory>src/main/resources</directory>
-                <filtering>false</filtering>
             </resource>
         </resources>
         <plugins>

@@ -1,5 +1,7 @@
 package org.example.db.dao;
+
 import org.example.model.Rule;
+
 import java.util.Map;
 
 public interface RuleDao {

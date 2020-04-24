@@ -3,15 +3,13 @@ package org.example;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.util.Modules;
+import org.example.main.Main;
 import org.example.modules.AppModule;
-import org.example.modules.AppServletModule;
 import org.example.modules.NodeModule;
 import org.example.modules.TestModule;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestInstancePostProcessor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class TestExtension implements TestInstancePostProcessor, BeforeAllCallback {
 
@@ -22,9 +20,7 @@ public class TestExtension implements TestInstancePostProcessor, BeforeAllCallba
 
     private void createInjectorandBindDependencies() {
         if (INJECTOR == null) {
-            INJECTOR = Guice.createInjector(Modules
-                                                .override(new AppModule(), new NodeModule())
-                                                .with(new TestModule()));
+            INJECTOR = Main.start(new TestModule());
         }
     }
 
@@ -36,6 +32,9 @@ public class TestExtension implements TestInstancePostProcessor, BeforeAllCallba
 
     @Override
     public void beforeAll(ExtensionContext extensionContext) throws Exception {
+        if(System.getProperty("ENV") == null || System.getProperty("ENV").isEmpty()){
+            System.setProperty("ENV","local");
+        }
 //        if (!started) {
 //            logger.info("Starting server");
 //            started = true;

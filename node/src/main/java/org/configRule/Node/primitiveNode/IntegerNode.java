@@ -1,6 +1,7 @@
 package org.configRule.Node.primitiveNode;
 
 import org.example.Node;
+
 import java.util.Map;
 
 public class IntegerNode implements Node<Integer> {

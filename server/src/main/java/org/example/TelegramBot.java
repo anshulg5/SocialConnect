@@ -6,10 +6,6 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class TelegramBot extends TelegramLongPollingBot implements ReceiverApp{
 
     private MediatorApp app;

@@ -1,6 +1,5 @@
 package org.configRule.NodeFactory;
 
-import org.configRule.Node.AndNode;
 import org.configRule.Node.NotNode;
 import org.example.Node;
 import org.example.NodeFactory;

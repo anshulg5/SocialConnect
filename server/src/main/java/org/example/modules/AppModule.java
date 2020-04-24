@@ -6,8 +6,6 @@ import com.google.inject.Provider;
 import com.google.inject.Scopes;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
-import com.opentable.db.postgres.embedded.EmbeddedPostgres;
-import com.opentable.db.postgres.embedded.LiquibasePreparer;
 import org.example.db.PgBotDetailDaoImpl;
 import org.example.db.PgConnectionDaoImpl;
 import org.example.db.RuleDaoImpl;
@@ -17,85 +15,16 @@ import org.example.db.dao.RuleDao;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class AppModule extends AbstractModule {
-
-    private Properties loadProperties() {
-
-        Properties properties = new Properties();
-        
-        if(System.getProperty("ENV") == null || System.getProperty("ENV").isEmpty()){
-            System.setProperty("ENV","local");
-        }
-        
-        try {
-            String current = new java.io.File(".").getCanonicalPath();
-            System.out.println("Current dir:"+current);
-            String currentDir = System.getProperty("user.dir");
-            System.out.println("Current dir using System:" +currentDir);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        
-        String propertiesFileName = System.getProperty("ENV") + "/" +  System.getProperty("ENV");
-        Properties prop = null;
-        try (InputStream input = this.getClass().getClassLoader().getResourceAsStream(propertiesFileName + ".properties")) {
-            prop = new Properties();
-            prop.load(input);
-        
-            // get the property value and print it out
-            // System.out.println(prop.getProperty("db.url"));
-            // System.out.println(prop.getProperty("db.user"));
-            // System.out.println(prop.getProperty("db.password"));
-        
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return prop;
-    }
     @Override
     protected void configure() {
-        Names.bindProperties(binder(), loadProperties());
-        bind(JdbcTemplate.class).toProvider(PgDataSourceProvider.class).in(Scopes.SINGLETON);
-        bind(ConnectionDetailDao.class).to(PgConnectionDaoImpl.class);
-        bind(BotDetailDao.class).to(PgBotDetailDaoImpl.class);
-        bind(RuleDao.class).to(RuleDaoImpl.class);
-    }
-
-    static class PgDataSourceProvider implements Provider<JdbcTemplate> {
-
-        private final String url;
-        private final String username;
-        private final String password;
-        private final String driver;
-
-        @Inject
-        public PgDataSourceProvider(@Named("db.url") final String url,
-                                    @Named("db.user") final String username,
-                                    @Named("db.password") final String password,
-                                    @Named("db.driver") final String driver) {
-            this.url = url;
-            this.username = username;
-            this.password = password;
-            this.driver = driver;
-        }
-
-        @Override
-        public JdbcTemplate get() {
-            final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-            dataSource.setUrl(url);
-//            dataSource.setUsername(username);
-//            dataSource.setPassword(password);
-//            dataSource.setDriverClassName(driver);
-            System.out.println(url);
-//            final DriverManagerDataSource dataSource = new DriverManagerDataSource(url);
-            return new JdbcTemplate(dataSource);
-        }
+        install(new PropertiesModule());
+        install(new DatabaseModule());
+        install(new AppServletModule());
+        install(new NodeModule());
     }
 }

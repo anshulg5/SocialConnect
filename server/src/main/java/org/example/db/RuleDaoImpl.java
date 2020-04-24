@@ -7,7 +7,6 @@ import org.example.model.Rule;
 import org.example.model.RuleMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-
 import javax.inject.Singleton;
 import java.util.HashMap;
 import java.util.Iterator;

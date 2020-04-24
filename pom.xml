@@ -157,7 +157,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>org.example.main.App</mainClass>
+                            <mainClass>org.example.main.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

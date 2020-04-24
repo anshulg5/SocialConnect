@@ -1,16 +1,13 @@
 package org.example;
 
-import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.Request;
 import org.eclipse.jetty.client.util.StringContentProvider;
 import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
-import org.example.model.AppMessage;
 import org.json.JSONObject;
 
-import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 

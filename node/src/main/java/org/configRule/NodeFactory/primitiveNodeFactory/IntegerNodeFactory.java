@@ -1,6 +1,5 @@
 package org.configRule.NodeFactory.primitiveNodeFactory;
 
-import org.configRule.Node.primitiveNode.BooleanNode;
 import org.configRule.Node.primitiveNode.IntegerNode;
 import org.example.Node;
 import org.example.NodeFactory;

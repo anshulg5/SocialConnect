@@ -10,6 +10,10 @@ import java.util.Set;
 public class NodeModule extends AbstractModule {
     @Override
     protected void configure() {
+        loadNodeFactories();
+    }
+
+    private void loadNodeFactories(){
         Reflections reflections = new Reflections("org.configRule");
         Set<Class<? extends NodeFactory>> classes = reflections.getSubTypesOf(NodeFactory.class);
 

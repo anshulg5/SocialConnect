@@ -1,8 +1,11 @@
 package org.configRule.Node;
+
 import org.example.Node;
 import org.example.NodeManager;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class EqualsNode implements Node<Boolean> {
     private Node left,right;

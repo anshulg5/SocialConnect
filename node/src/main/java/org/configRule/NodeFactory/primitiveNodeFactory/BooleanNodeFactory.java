@@ -1,7 +1,6 @@
 package org.configRule.NodeFactory.primitiveNodeFactory;
 
 import org.configRule.Node.primitiveNode.BooleanNode;
-
 import org.example.Node;
 import org.example.NodeFactory;
 import org.example.NodeManager;

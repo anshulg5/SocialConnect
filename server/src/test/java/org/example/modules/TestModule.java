@@ -3,7 +3,6 @@ package org.example.modules;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.Scopes;
-import com.google.inject.Singleton;
 import com.opentable.db.postgres.embedded.EmbeddedPostgres;
 import com.opentable.db.postgres.embedded.LiquibasePreparer;
 import org.springframework.jdbc.core.JdbcTemplate;
