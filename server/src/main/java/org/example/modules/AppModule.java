@@ -62,11 +62,7 @@ public class AppModule extends AbstractModule {
     @Override
     protected void configure() {
         Names.bindProperties(binder(), loadProperties());
-        if(System.getProperty("test")=="true")
-            bind(JdbcTemplate.class).toProvider(PgTestDataSourceProvider.class).in(Scopes.SINGLETON);
-
-        else
-            bind(JdbcTemplate.class).toProvider(PgDataSourceProvider.class).in(Scopes.SINGLETON);
+        bind(JdbcTemplate.class).toProvider(PgDataSourceProvider.class).in(Scopes.SINGLETON);
         bind(ConnectionDetailDao.class).to(PgConnectionDaoImpl.class);
         bind(BotDetailDao.class).to(PgBotDetailDaoImpl.class);
         bind(RuleDao.class).to(RuleDaoImpl.class);
@@ -102,22 +98,4 @@ public class AppModule extends AbstractModule {
             return new JdbcTemplate(dataSource);
         }
     }
-
-    static class PgTestDataSourceProvider implements Provider<JdbcTemplate> {
-
-        @Override
-        public JdbcTemplate get() {
-            DataSource dataSource = null;
-            LiquibasePreparer liquibasePreparer = LiquibasePreparer.forClasspathLocation("changelog.xml");
-            try {
-                dataSource = EmbeddedPostgres.builder()
-                                .start().getPostgresDatabase();
-                liquibasePreparer.prepare(dataSource);
-            } catch (IOException | SQLException e) {
-                e.printStackTrace();
-            }
-            return new JdbcTemplate(dataSource);
-        }
-    }
-
 }
