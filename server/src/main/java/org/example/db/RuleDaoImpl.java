@@ -45,4 +45,11 @@ public class RuleDaoImpl implements RuleDao {
         String removeString = "DELETE FROM RULE WHERE ID = ?";
         db.update(removeString,ruleID);
     }
+
+    @Override
+    public void deleteAllRules() {
+        String removeAllString = "DELETE FROM RULE";
+        db.update(removeAllString);
+    }
+
 }

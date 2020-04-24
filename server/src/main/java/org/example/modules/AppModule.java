@@ -1,20 +1,26 @@
-package org.example;
+package org.example.modules;
 
-import com.google.inject.*;
+import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Scopes;
 import com.google.inject.name.Named;
 import com.google.inject.name.Names;
+import com.opentable.db.postgres.embedded.EmbeddedPostgres;
+import com.opentable.db.postgres.embedded.LiquibasePreparer;
+import org.example.db.PgBotDetailDaoImpl;
+import org.example.db.PgConnectionDaoImpl;
 import org.example.db.RuleDaoImpl;
 import org.example.db.dao.BotDetailDao;
 import org.example.db.dao.ConnectionDetailDao;
-import org.example.db.PgBotDetailDaoImpl;
-import org.example.db.PgConnectionDaoImpl;
 import org.example.db.dao.RuleDao;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import java.io.FileInputStream;
+import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.util.Properties;
 
 public class AppModule extends AbstractModule {
@@ -44,9 +50,9 @@ public class AppModule extends AbstractModule {
             prop.load(input);
         
             // get the property value and print it out
-            System.out.println(prop.getProperty("db.url"));
-            System.out.println(prop.getProperty("db.user"));
-            System.out.println(prop.getProperty("db.password"));
+            // System.out.println(prop.getProperty("db.url"));
+            // System.out.println(prop.getProperty("db.user"));
+            // System.out.println(prop.getProperty("db.password"));
         
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -56,7 +62,11 @@ public class AppModule extends AbstractModule {
     @Override
     protected void configure() {
         Names.bindProperties(binder(), loadProperties());
-        bind(JdbcTemplate.class).toProvider(PgDataSourceProvider.class).in(Scopes.SINGLETON);
+        if(System.getProperty("test")=="true")
+            bind(JdbcTemplate.class).toProvider(PgTestDataSourceProvider.class).in(Scopes.SINGLETON);
+
+        else
+            bind(JdbcTemplate.class).toProvider(PgDataSourceProvider.class).in(Scopes.SINGLETON);
         bind(ConnectionDetailDao.class).to(PgConnectionDaoImpl.class);
         bind(BotDetailDao.class).to(PgBotDetailDaoImpl.class);
         bind(RuleDao.class).to(RuleDaoImpl.class);
@@ -84,11 +94,28 @@ public class AppModule extends AbstractModule {
         public JdbcTemplate get() {
             final DriverManagerDataSource dataSource = new DriverManagerDataSource();
             dataSource.setUrl(url);
-            dataSource.setUsername(username);
-            dataSource.setPassword(password);
+//            dataSource.setUsername(username);
+//            dataSource.setPassword(password);
 //            dataSource.setDriverClassName(driver);
             System.out.println(url);
 //            final DriverManagerDataSource dataSource = new DriverManagerDataSource(url);
+            return new JdbcTemplate(dataSource);
+        }
+    }
+
+    static class PgTestDataSourceProvider implements Provider<JdbcTemplate> {
+
+        @Override
+        public JdbcTemplate get() {
+            DataSource dataSource = null;
+            LiquibasePreparer liquibasePreparer = LiquibasePreparer.forClasspathLocation("changelog.xml");
+            try {
+                dataSource = EmbeddedPostgres.builder()
+                                .start().getPostgresDatabase();
+                liquibasePreparer.prepare(dataSource);
+            } catch (IOException | SQLException e) {
+                e.printStackTrace();
+            }
             return new JdbcTemplate(dataSource);
         }
     }

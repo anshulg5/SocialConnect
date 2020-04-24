@@ -39,6 +39,7 @@ public class TelegramBotManager {
         while (iterator.hasNext()) {
             BotDetail botDetail= iterator.next();
             createNewBot(botDetail.getBotUserName(),botDetail.getBotToken(),botDetail.getMsgText());
+            System.out.println("loading "+botDetail.getBotUserName());
         }
     }
 

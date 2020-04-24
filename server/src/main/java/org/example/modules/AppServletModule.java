@@ -1,9 +1,9 @@
-package org.example;
+package org.example.modules;
 
 import com.google.inject.servlet.ServletModule;
-import org.example.Servlet.BotControllerServlet;
-import org.example.Servlet.ConfigServlet;
-import org.example.services.RuleManagerServlet;
+import org.example.servlet.BotControllerServlet;
+import org.example.servlet.ConfigServlet;
+import org.example.servlet.RuleManagerServlet;
 
 
 public class AppServletModule extends ServletModule {
