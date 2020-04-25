@@ -1,4 +1,4 @@
-package org.example.db.dao;
+package org.example.dao;
 
 import org.example.model.BotDetail;
 

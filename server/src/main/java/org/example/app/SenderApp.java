@@ -1,4 +1,4 @@
-package org.example;
+package org.example.app;
 
 import com.google.inject.Singleton;
 import org.eclipse.jetty.client.HttpClient;

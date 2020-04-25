@@ -4,12 +4,12 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
-import org.example.db.PgBotDetailDaoImpl;
-import org.example.db.PgConnectionDaoImpl;
-import org.example.db.RuleDaoImpl;
-import org.example.db.dao.BotDetailDao;
-import org.example.db.dao.ConnectionDetailDao;
-import org.example.db.dao.RuleDao;
+import org.example.dao.PgBotDetailDaoImpl;
+import org.example.dao.PgConnectionDaoImpl;
+import org.example.dao.RuleDaoImpl;
+import org.example.dao.BotDetailDao;
+import org.example.dao.ConnectionDetailDao;
+import org.example.dao.RuleDao;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 

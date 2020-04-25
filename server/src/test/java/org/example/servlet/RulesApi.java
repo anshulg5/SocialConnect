@@ -3,7 +3,7 @@ package org.example.servlet;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.TestExtension;
-import org.example.rule.RuleApp;
+import org.example.app.RuleApp;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

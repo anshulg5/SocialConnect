@@ -3,7 +3,7 @@ package org.example.servlet;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.eclipse.jetty.http.HttpStatus;
-import org.example.MediatorApp;
+import org.example.app.MediatorApp;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

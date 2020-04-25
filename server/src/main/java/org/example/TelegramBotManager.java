@@ -2,7 +2,8 @@ package org.example;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.example.db.dao.BotDetailDao;
+import org.example.app.MediatorApp;
+import org.example.dao.BotDetailDao;
 import org.example.model.BotDetail;
 import org.telegram.telegrambots.ApiContextInitializer;
 import org.telegram.telegrambots.meta.TelegramBotsApi;

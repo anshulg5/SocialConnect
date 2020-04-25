@@ -12,20 +12,22 @@ import javax.servlet.DispatcherType;
 import java.util.EnumSet;
 
 @Singleton
-public class Bootstrap{
-    private final Server server;
+public class Server {
+    private final org.eclipse.jetty.server.Server server;
     private final int plainPort;
     private final int sslPort;
 
     @Inject
-    Bootstrap(@Named("web.http.port") int plainPort,
-              @Named("web.https.port") int sslPort){
+    Server(@Named("web.http.port") int plainPort,
+           @Named("web.https.port") int sslPort){
         this.plainPort = plainPort;
         this.sslPort = sslPort;
-//        System.setProperty("org.eclipse.jetty.util.log.class", "org.eclipse.jetty.util.log.StdErrLog");
+        System.setProperty("org.eclipse.jetty.util.log.class", "org.eclipse.jetty.util.log.StdErrLog");
         System.setProperty("org.eclipse.jetty.LEVEL", "OFF");
-        server = new Server();
+
+        server = new org.eclipse.jetty.server.Server();
         configureServer();
+
         ServletContextHandler context = new ServletContextHandler(server, "/");
         context.addFilter(GuiceFilter.class,"/*", EnumSet.allOf(DispatcherType.class));
 //        context.addServlet(DefaultServlet.class,"/");
@@ -62,10 +64,9 @@ public class Bootstrap{
         try {
             server.start();
             System.out.println("Started Server");
-//            database.addConfig();
 //            server.join();
         } catch (Exception e) {
-      //      e.printStackTrace();
+            e.printStackTrace();
         }
     }
 }

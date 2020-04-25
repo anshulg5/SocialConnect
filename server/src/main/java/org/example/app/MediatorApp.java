@@ -1,13 +1,13 @@
-package org.example;
+package org.example.app;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.example.db.dao.ConnectionDetailDao;
+import org.example.Node;
+import org.example.dao.ConnectionDetailDao;
 import org.example.model.AppMessage;
 import org.example.model.ConnectionDetail;
-import org.example.rule.RuleApp;
 
 import java.io.IOException;
 import java.util.HashMap;

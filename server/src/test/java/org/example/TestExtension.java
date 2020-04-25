@@ -1,11 +1,7 @@
 package org.example;
 
-import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.util.Modules;
 import org.example.main.Main;
-import org.example.modules.AppModule;
-import org.example.modules.NodeModule;
 import org.example.modules.TestModule;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;

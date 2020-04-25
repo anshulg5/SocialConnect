@@ -1,7 +1,7 @@
-package org.example.db;
+package org.example.dao;
 
 import com.google.inject.Inject;
-import org.example.db.dao.BotDetailDao;
+import org.example.dao.BotDetailDao;
 import org.example.model.BotDetail;
 import org.example.model.BotMapper;
 import org.springframework.jdbc.core.JdbcTemplate;

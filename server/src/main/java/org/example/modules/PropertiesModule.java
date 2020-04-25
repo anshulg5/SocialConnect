@@ -8,20 +8,18 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class PropertiesModule extends AbstractModule {
-    private Properties properties;
-
+    @Override
     protected void configure() {
         Names.bindProperties(binder(),loadConfig("settings"));
     }
 
     private Properties loadConfig(String propertiesFileName) {
         try (InputStream input = this.getClass().getClassLoader().getResourceAsStream(propertiesFileName + ".properties")) {
-            properties = new Properties();
+            Properties properties = new Properties();
             properties.load(input);
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
+            return properties;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return properties;
     }
 }

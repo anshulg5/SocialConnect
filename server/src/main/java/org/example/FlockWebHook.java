@@ -1,6 +1,7 @@
 package org.example;
 
 import com.google.inject.Inject;
+import org.example.app.MediatorApp;
 import org.example.model.AppMessage;
 
 public class FlockWebHook implements ReceiverApp {

@@ -1,8 +1,8 @@
-package org.example.db;
+package org.example.dao;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.example.db.dao.ConnectionDetailDao;
+import org.example.dao.ConnectionDetailDao;
 import org.example.model.ConnectionDetail;
 import org.example.model.ConnectionMapper;
 import org.springframework.jdbc.core.JdbcTemplate;

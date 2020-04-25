@@ -6,8 +6,6 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.util.Modules;
 import org.example.modules.AppModule;
-import org.example.modules.AppServletModule;
-import org.example.modules.NodeModule;
 
 
 public class Main {
@@ -21,7 +19,7 @@ public class Main {
 
     public static Injector start(Module... modules){
         Injector injector = Guice.createInjector(Modules.override(new MainModule()).with(modules));
-        injector.getInstance(Bootstrap.class).start();
+        injector.getInstance(Bootstrapper.class).start();
         return injector;
     }
 

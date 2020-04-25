@@ -3,7 +3,7 @@ package org.example.servlet;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.rule.RuleApp;
+import org.example.app.RuleApp;
 import org.json.JSONObject;
 
 import javax.inject.Inject;

@@ -2,6 +2,7 @@ package org.example;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.app.MediatorApp;
 import org.reflections.Reflections;
 
 import java.io.IOException;

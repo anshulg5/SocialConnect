@@ -1,8 +1,8 @@
-package org.example.db;
+package org.example.dao;
 
 
 import com.google.inject.Inject;
-import org.example.db.dao.RuleDao;
+import org.example.dao.RuleDao;
 import org.example.model.Rule;
 import org.example.model.RuleMapper;
 import org.springframework.jdbc.core.JdbcTemplate;

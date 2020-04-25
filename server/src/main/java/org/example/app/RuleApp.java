@@ -1,11 +1,11 @@
-package org.example.rule;
+package org.example.app;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.Node;
 import org.example.NodeManager;
-import org.example.db.dao.RuleDao;
+import org.example.dao.RuleDao;
 import org.example.model.Rule;
 
 import javax.inject.Inject;
@@ -27,11 +27,9 @@ public class RuleApp {
         // load ruleList from db
         this.ruleDao = ruleDao;
         rulesMap = new HashMap<>();
-
-        init();
     }
 
-    private void init(){
+    public void init(){
         rulesMap = ruleDao.getRules();
     }
 

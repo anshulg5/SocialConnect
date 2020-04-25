@@ -1,6 +1,7 @@
 package org.example;
 
 import com.google.inject.Inject;
+import org.example.app.MediatorApp;
 import org.example.model.AppMessage;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Message;

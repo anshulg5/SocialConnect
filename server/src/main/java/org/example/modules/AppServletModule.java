@@ -7,7 +7,6 @@ import org.example.servlet.RuleManagerServlet;
 
 
 public class AppServletModule extends ServletModule {
-
     @Override
     protected void configureServlets() {
         serve("/rulemanager/*").with(RuleManagerServlet.class);
