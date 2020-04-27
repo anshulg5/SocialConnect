@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(TestExtension.class)
-public class RulesApi {
+public class RulesApiTest {
     @Inject
     public RuleApp ruleApp;
 
