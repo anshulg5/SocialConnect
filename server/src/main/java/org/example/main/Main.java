@@ -14,12 +14,11 @@ public class Main {
         if(System.getProperty("ENV") == null || System.getProperty("ENV").isEmpty()){
             System.setProperty("ENV","local");
         }
-        start();
+        createInjector().getInstance(Server.class).start();
     }
 
-    public static Injector start(Module... modules){
+    public static Injector createInjector(Module... modules){
         Injector injector = Guice.createInjector(Modules.override(new MainModule()).with(modules));
-        injector.getInstance(Bootstrapper.class).start();
         return injector;
     }
 

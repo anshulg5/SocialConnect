@@ -16,7 +16,7 @@ public class TestExtension implements TestInstancePostProcessor, BeforeAllCallba
 
     private void createInjectorandBindDependencies() {
         if (INJECTOR == null) {
-            INJECTOR = Main.start(new TestModule());
+            INJECTOR = Main.createInjector(new TestModule());
         }
     }
 

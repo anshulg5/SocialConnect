@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.Properties;
 
 public class PropertiesModule extends AbstractModule {
+
     @Override
     protected void configure() {
         Names.bindProperties(binder(),loadConfig("settings"));
@@ -21,7 +22,8 @@ public class PropertiesModule extends AbstractModule {
         FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
                 new FileBasedConfigurationBuilder(PropertiesConfiguration.class)
                     .configure(new Parameters().properties()
-                                .setFileName(propertiesFileName + ".properties"));
+//                    .setListDelimiterHandler(new DefaultListDelimiterHandler(','))
+                    .setFileName(propertiesFileName + ".properties"));
         try {
             Properties properties = new Properties();
             Configuration config = builder.getConfiguration();

@@ -29,6 +29,7 @@ public class RuleApp {
         rulesMap = new HashMap<>();
     }
 
+    @Inject
     public void init(){
         rulesMap = ruleDao.getRules();
     }

@@ -5,21 +5,22 @@ import org.reflections.Reflections;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.util.Iterator;
 import java.util.Set;
 
 public class NodeFactoriesLoader {
     @Inject
     @Named("nodefactory-package")
-    private String packageName;
+    private String packages;
 
+    @Inject
     public void load(){
-        Reflections reflections = new Reflections(packageName);
+        String[] packageList = packages.split(",");
+        Reflections reflections = new Reflections(packageList);
         Set<Class<? extends NodeFactory>> classes = reflections.getSubTypesOf(NodeFactory.class);
 
         for (Class<? extends NodeFactory> aClass : classes) {
             String className = aClass.toString()
-                                        .split(" ")[1];
+                    .split(" ")[1];
             try {
                 Class.forName(className);
             } catch (ClassNotFoundException e) {
