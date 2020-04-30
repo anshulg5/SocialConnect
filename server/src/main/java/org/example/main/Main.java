@@ -14,7 +14,8 @@ public class Main {
         if(System.getProperty("ENV") == null || System.getProperty("ENV").isEmpty()){
             System.setProperty("ENV","local");
         }
-        createInjector().getInstance(Server.class).start();
+        Injector injector = createInjector();
+        injector.getInstance(Server.class).start();
     }
 
     public static Injector createInjector(Module... modules){
