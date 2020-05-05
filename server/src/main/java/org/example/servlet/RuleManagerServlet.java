@@ -8,7 +8,6 @@ import org.json.JSONObject;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -26,7 +25,7 @@ public class RuleManagerServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         resp.addHeader("Access-Control-Allow-Origin", "*");
 //        resp.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
 //        resp.addHeader("Access-Control-Allow-Headers", "X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept");
@@ -58,7 +57,7 @@ public class RuleManagerServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
         doPost(req,resp);
 //        resp.sendRedirect("/");
     }
@@ -71,7 +70,7 @@ public class RuleManagerServlet extends HttpServlet {
             String ruleString = req.getParameter("rule");
             if(ID==null || ruleString==null)
                 throw new NullPointerException();
-            rule = (Map<String, Object>) mapper.readValue(ruleString,new TypeReference<Map<String,Object>>(){});
+            rule = mapper.readValue(ruleString,new TypeReference<Map<String,Object>>(){});
         } catch (NullPointerException | IOException e){
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
@@ -79,7 +78,7 @@ public class RuleManagerServlet extends HttpServlet {
         Boolean success=false;
         try {
             success = ruleApp.addRule(ID, rule);
-        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | JsonProcessingException e) {
+        } catch (IllegalAccessException | JsonProcessingException e) {
             e.printStackTrace();
         }
         setSuccessMsg(resp,success,"added","duplicate");    //used to set Error 403 in case of duplicacy
@@ -104,7 +103,7 @@ public class RuleManagerServlet extends HttpServlet {
             String ruleString = req.getParameter("rule");
             if(ID==null || ruleString==null)
                 throw new NullPointerException();
-            rule = (Map<String, Object>) mapper.readValue(ruleString,new TypeReference<Map<String,Object>>(){});
+            rule = mapper.readValue(ruleString,new TypeReference<Map<String,Object>>(){});
         } catch (NullPointerException | IOException e){
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
@@ -113,7 +112,7 @@ public class RuleManagerServlet extends HttpServlet {
         try {
             success = ruleApp.updateRule(ID, rule);
             System.out.println(success);
-        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | JsonProcessingException e) {
+        } catch (IllegalAccessException | JsonProcessingException e) {
             e.printStackTrace();
         }
         setSuccessMsg(resp,success,"updated","not present");

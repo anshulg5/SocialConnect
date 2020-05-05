@@ -8,5 +8,4 @@ public interface RuleDao {
     Map<String, Rule> getRules();
     void addRule(Rule rule);
     void deleteRule(String ruleID);
-    void deleteAllRules();
 }

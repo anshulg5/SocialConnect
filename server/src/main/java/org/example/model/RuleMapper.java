@@ -16,7 +16,7 @@ public class RuleMapper implements RowMapper<Rule> {
         Rule rule = null;
         try {
             rule = new Rule(ID, JSONString);
-        } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | IOException e) {
+        } catch (IllegalAccessException | IOException e) {
             e.printStackTrace();
         }
         return rule;

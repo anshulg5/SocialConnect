@@ -43,7 +43,7 @@ public class RulesApiTest {
 
     @ParameterizedTest
     @MethodSource("oneRuleIdAndOneRuleStringProvider")
-    public void shouldReturnTrue_whenNewCorrectRuleIsAdded(String id, String ruleString) throws IOException, IllegalAccessException, ClassNotFoundException, InstantiationException {
+    public void shouldReturnTrue_whenNewCorrectRuleIsAdded(String id, String ruleString) throws IOException, IllegalAccessException {
         //given
         Map<String,Object> rule = mapper.readValue(ruleString,new TypeReference<Map<String,Object>>(){});
 
@@ -52,7 +52,7 @@ public class RulesApiTest {
 
         //then
         assertTrue(status);
-        assertEquals(rule,ruleApp.fetchRuleMapById(id));
+        assertEquals(ruleString,ruleApp.fetchRules().get(id));
 
         //clean
         ruleApp.deleteRule(id);
@@ -60,7 +60,7 @@ public class RulesApiTest {
 
     @ParameterizedTest
     @MethodSource("oneRuleIdAndTwoRuleStringProvider")
-    public void shouldReturnFalse_whenDuplicateCorrectRuleIsAdded(String id, String ruleString1, String ruleString2) throws IOException, IllegalAccessException, ClassNotFoundException, InstantiationException {
+    public void shouldReturnFalse_whenDuplicateCorrectRuleIsAdded(String id, String ruleString1, String ruleString2) throws IOException, IllegalAccessException {
         //given
         Map<String,Object> rule1 = mapper.readValue(ruleString1,new TypeReference<Map<String,Object>>(){});
         Map<String,Object> rule2 = mapper.readValue(ruleString2,new TypeReference<Map<String,Object>>(){});
@@ -78,7 +78,7 @@ public class RulesApiTest {
 
     @ParameterizedTest
     @MethodSource("oneRuleIdAndTwoRuleStringProvider")
-    public void shouldReturnTrue_whenRuleIsUpdated(String id, String ruleString1, String ruleString2) throws IOException, IllegalAccessException, ClassNotFoundException, InstantiationException {
+    public void shouldReturnTrue_whenRuleIsUpdated(String id, String ruleString1, String ruleString2) throws IOException, IllegalAccessException {
         //given
         Map<String,Object> rule = mapper.readValue(ruleString1,new TypeReference<Map<String,Object>>(){});
         Map<String,Object> newRule = mapper.readValue(ruleString2,new TypeReference<Map<String,Object>>(){});
@@ -89,7 +89,7 @@ public class RulesApiTest {
 
         //then
         assertTrue(status);
-        assertEquals(newRule,ruleApp.fetchRuleMapById(id));
+        assertEquals(ruleString2,ruleApp.fetchRules().get(id));
 
         //clean
         ruleApp.deleteRule(id);
@@ -97,7 +97,7 @@ public class RulesApiTest {
 
     @ParameterizedTest
     @MethodSource("oneRuleIdAndOneRuleStringProvider")
-    public void shouldReturnFalse_whenRuleToBeUpdatedIsNotPresent(String id, String ruleString) throws IOException, IllegalAccessException, ClassNotFoundException, InstantiationException {
+    public void shouldReturnFalse_whenRuleToBeUpdatedIsNotPresent(String id, String ruleString) throws IOException, IllegalAccessException {
         //given
         Map<String,Object> rule = mapper.readValue(ruleString,new TypeReference<Map<String,Object>>(){});
 
@@ -106,7 +106,7 @@ public class RulesApiTest {
 
         //then
         assertFalse(status);
-        assertNull(ruleApp.fetchRuleMapById(id));
+        assertNull(ruleApp.fetchRules().get(id));
 
         //clean
         ruleApp.deleteRule(id);
@@ -114,7 +114,7 @@ public class RulesApiTest {
 
     @ParameterizedTest
     @MethodSource("oneRuleIdAndOneRuleStringProvider")
-    public void shouldReturnTrue_whenRuleIsDeleted(String id, String ruleString) throws IOException, IllegalAccessException, ClassNotFoundException, InstantiationException {
+    public void shouldReturnTrue_whenRuleIsDeleted(String id, String ruleString) throws IOException, IllegalAccessException {
         //given
         Map<String,Object> rule = mapper.readValue(ruleString,new TypeReference<Map<String,Object>>(){});
 
@@ -124,7 +124,7 @@ public class RulesApiTest {
 
         //then
         assertTrue(status);
-        assertNull(ruleApp.fetchRuleMapById(id));
+        assertNull(ruleApp.fetchRules().get(id));
 
         //clean
         ruleApp.deleteRule(id);
@@ -140,7 +140,7 @@ public class RulesApiTest {
 
         //then
         assertFalse(status);
-        assertNull(ruleApp.fetchRuleMapById(id));
+        assertNull(ruleApp.fetchRules().get(id));
     }
 
     private static Stream<Arguments> oneRuleIdAndOneRuleStringProvider(){

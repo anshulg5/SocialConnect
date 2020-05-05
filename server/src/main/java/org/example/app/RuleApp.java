@@ -25,7 +25,7 @@ public class RuleApp {
         rulesMap = ruleDao.getRules();
     }
 
-    public Boolean addRule(String ruleID, Map<String, Object> ruleMap) throws IllegalAccessException, InstantiationException, ClassNotFoundException, JsonProcessingException {
+    public Boolean addRule(String ruleID, Map<String, Object> ruleMap) throws IllegalAccessException, JsonProcessingException {
         if(rulesMap.containsKey(ruleID)) {
             System.out.println("rule already there");
             return false;
@@ -46,12 +46,7 @@ public class RuleApp {
         return true;
     }
 
-    public void deleteAllRules(){
-        rulesMap.clear();
-        ruleDao.deleteAllRules();
-    }
-
-    public Boolean updateRule(String ruleID, Map<String, Object> ruleMap) throws IllegalAccessException, InstantiationException, ClassNotFoundException, JsonProcessingException {
+    public Boolean updateRule(String ruleID, Map<String, Object> ruleMap) throws IllegalAccessException, JsonProcessingException {
         if(!rulesMap.containsKey(ruleID)) {
             System.out.println("non-existent rule");
             return false;
@@ -74,18 +69,13 @@ public class RuleApp {
         return map;
     }
 
-    public Map<String, Object> fetchRuleMapById(String id){
-        if(!rulesMap.containsKey(id))
-            return null;
-        return rulesMap.get(id).getRuleMap();
-    }
-
     public Boolean validateByID(String ruleID, Map<String,?> msg){
         Boolean match;
         try{
             match =  rulesMap.get(ruleID).validate(msg);
         } catch (Exception e) {
             match = false;
+            System.out.println(e);
         }
         return match;
     }
