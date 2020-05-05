@@ -17,7 +17,6 @@ public class IntegerNode implements Node<Integer> {
     }
 
     public IntegerNode(Object value) {
-        System.out.println(value);
         if(value instanceof String)
             this.value = Integer.parseInt((String)value);
         else
