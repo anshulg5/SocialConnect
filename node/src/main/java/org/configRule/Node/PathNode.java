@@ -40,8 +40,12 @@ public class PathNode<T> implements Node<T> {
         while(iterator.hasNext()) {
             if(object instanceof Map)
                 object = ((Map) object).get(iterator.next());
-            else
-                object = ((List) object).get(Integer.valueOf(iterator.next()));
+            else {
+                Object index = iterator.next();
+                if(index instanceof String)
+                    index = Integer.valueOf((String) index);
+                object = ((List) object).get((Integer) index);
+            }
         }
         return (T)object;
     }

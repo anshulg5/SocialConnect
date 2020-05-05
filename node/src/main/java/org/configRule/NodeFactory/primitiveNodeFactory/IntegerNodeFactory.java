@@ -15,11 +15,11 @@ public class IntegerNodeFactory implements NodeFactory {
 
     @Override
     public Node getInstance(Object value, Map<String, Object> symbolTable) {
-        return new IntegerNode((Integer)value);
+        return new IntegerNode(value);
     }
 
     @Override
     public Node getInstance(Object value) {
-        return new IntegerNode((Integer) value);
+        return new IntegerNode(value);
     }
 }

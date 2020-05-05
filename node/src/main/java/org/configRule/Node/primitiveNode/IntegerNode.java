@@ -16,6 +16,14 @@ public class IntegerNode implements Node<Integer> {
         this.value =value;
     }
 
+    public IntegerNode(Object value) {
+        System.out.println(value);
+        if(value instanceof String)
+            this.value = Integer.parseInt((String)value);
+        else
+            this.value = (Integer)value;
+    }
+
     public void setValue(String value) {
         this.value = Integer.parseInt(value);
     }
