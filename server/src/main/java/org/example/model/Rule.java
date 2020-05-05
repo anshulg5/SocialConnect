@@ -31,10 +31,6 @@ public class Rule {
         rootNode = NodeManager.create(ruleMap);
     }
 
-    public Rule() {
-
-    }
-
     public Boolean validate(Map<String, ?> input){
         return (Boolean) rootNode.apply(input);
     }
