@@ -12,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.inject.Inject;
 import java.io.IOException;
@@ -28,11 +27,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RulesApiTest {
     @Inject
     private RuleApp ruleApp;
-    @Inject
-    private JdbcTemplate jdbcTemplate;
 
     private ObjectMapper mapper = new ObjectMapper();
-    private static List<String> ruleString = new ArrayList<>();
+    private static List<String> ruleStringList = new ArrayList<>();
 
 
 //    @AfterEach
@@ -144,9 +141,9 @@ public class RulesApiTest {
     }
 
     private static Stream<Arguments> oneRuleIdAndOneRuleStringProvider(){
-        String ruleString1 = ruleString.get(0);
-        String ruleString2= ruleString.get(1);
-        String ruleString3 = ruleString.get(2);
+        String ruleString1 = ruleStringList.get(0);
+        String ruleString2= ruleStringList.get(1);
+        String ruleString3 = ruleStringList.get(2);
 
         return Stream.of(
                 Arguments.of("id",ruleString1),
@@ -156,9 +153,9 @@ public class RulesApiTest {
     }
 
     private static Stream<Arguments> oneRuleIdAndTwoRuleStringProvider(){
-        String ruleString1 = ruleString.get(0);
-        String ruleString2= ruleString.get(1);
-        String ruleString3 = ruleString.get(2);
+        String ruleString1 = ruleStringList.get(0);
+        String ruleString2= ruleStringList.get(1);
+        String ruleString3 = ruleStringList.get(2);
 
         return Stream.of(
                 Arguments.of("id",ruleString1,ruleString2),
@@ -169,8 +166,8 @@ public class RulesApiTest {
     }
 
     @BeforeAll
-    private static void populateRuleStringList(){
-        ruleString.add(JsonParser.parseString(
+    private static void loadRuleStringList(){
+        ruleStringList.add(JsonParser.parseString(
                 "{" +
                         "EQ: [" +
                                 "{" +
@@ -182,7 +179,7 @@ public class RulesApiTest {
                             "]" +
                       "}").toString());
 
-        ruleString.add(JsonParser.parseString(
+        ruleStringList.add(JsonParser.parseString(
                 "{" +
                         "AND: [" +
                                 "{" +
@@ -212,7 +209,7 @@ public class RulesApiTest {
                             "]" +
                     "}").toString());
 
-        ruleString.add(JsonParser.parseString(
+        ruleStringList.add(JsonParser.parseString(
                 "{" +
                         "EQ: [" +
                                 "{" +
