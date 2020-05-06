@@ -1,4 +1,4 @@
-package org.example.servlet;
+package org.example.api;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonParser;
@@ -266,7 +266,7 @@ public class MsgValidationTest {
 
         map = mapBuilder.get()
                 .put("from",mapBuilder.get()
-                        .put("lastName","Hemanshu")
+                        .put("lastName","Gupta")
                         .build())
                 .put("text","Bye")
                 .put("group","FlockTesting")
