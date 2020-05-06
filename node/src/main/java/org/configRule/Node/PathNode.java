@@ -46,6 +46,8 @@ public class PathNode<T> implements Node<T> {
                     index = Integer.valueOf((String) index);
                 object = ((List) object).get((Integer) index);
             }
+            if(object==null)
+                throw new NullPointerException();
         }
         return (T)object;
     }

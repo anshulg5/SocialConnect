@@ -75,7 +75,6 @@ public class RuleApp {
             match =  rulesMap.get(ruleID).validate(msg);
         } catch (Exception e) {
             match = false;
-            System.out.println(e);
         }
         return match;
     }
