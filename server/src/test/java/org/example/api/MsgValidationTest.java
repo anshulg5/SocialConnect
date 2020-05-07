@@ -14,8 +14,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -25,8 +24,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(TestExtension.class)
 public class MsgValidationTest {
 
-    private static List<Rule> ruleList = new ArrayList<>();
-    private static List<Map<String,?>> msgList = new ArrayList<>();
+    private static Rule rule1, rule2, rule3, rule4, rule5;
+    private static Map<String, Object> map1, map2, map3, map4, map5, map6, map7 ,map8, map9, map10,
+            map11, map12, map13, map14, map15, map16, map17 ,map18, map19, map20;
 
     @ParameterizedTest
     @MethodSource
@@ -67,79 +67,79 @@ public class MsgValidationTest {
 
     private static Stream<Arguments> shouldReturnTrue_whenRulePassOnMsg(){
         return Stream.of(
-                Arguments.of(ruleList.get(0),msgList.get(0)),
-                Arguments.of(ruleList.get(0),msgList.get(1)),
-                Arguments.of(ruleList.get(1),msgList.get(6)),
-                Arguments.of(ruleList.get(2),msgList.get(9)),
-                Arguments.of(ruleList.get(2),msgList.get(10)),
-                Arguments.of(ruleList.get(4),msgList.get(18))
+                Arguments.of(rule1,map1),
+                Arguments.of(rule1,map2),
+                Arguments.of(rule2,map7),
+                Arguments.of(rule3,map10),
+                Arguments.of(rule3,map11),
+                Arguments.of(rule5,map19)
         );
     }
 
     private static Stream<Arguments> shouldReturnFalse_whenSimilarStructureOfRuleAndMsg_and_whenRuleFailsOnMsg(){
         return Stream.of(
-                Arguments.of(ruleList.get(0),msgList.get(2)),
-                Arguments.of(ruleList.get(0),msgList.get(3)),
-                Arguments.of(ruleList.get(1),msgList.get(7)),
-                Arguments.of(ruleList.get(2),msgList.get(15)),
-                Arguments.of(ruleList.get(2),msgList.get(17)),
-                Arguments.of(ruleList.get(4),msgList.get(19))
+                Arguments.of(rule1,map3),
+                Arguments.of(rule1,map4),
+                Arguments.of(rule2,map8),
+                Arguments.of(rule3,map16),
+                Arguments.of(rule3,map18),
+                Arguments.of(rule5,map20)
         );
     }
 
     private static Stream<Arguments> shouldThrowNullPointerException_whenKeyInRuleIsNotFoundInMsg(){
         return Stream.of(
-                Arguments.of(ruleList.get(0),msgList.get(5)),
-                Arguments.of(ruleList.get(0),msgList.get(6)),
-                Arguments.of(ruleList.get(0),msgList.get(7)),
-                Arguments.of(ruleList.get(0),msgList.get(8)),
+                Arguments.of(rule1,map6),
+                Arguments.of(rule1,map7),
+                Arguments.of(rule1,map8),
+                Arguments.of(rule1,map9),
 
-                Arguments.of(ruleList.get(1),msgList.get(0)),
-                Arguments.of(ruleList.get(1),msgList.get(1)),
-                Arguments.of(ruleList.get(1),msgList.get(2)),
-                Arguments.of(ruleList.get(1),msgList.get(3)),
-                Arguments.of(ruleList.get(1),msgList.get(4)),
-                Arguments.of(ruleList.get(1),msgList.get(5)),
-                Arguments.of(ruleList.get(1),msgList.get(8)),
+                Arguments.of(rule2,map1),
+                Arguments.of(rule2,map2),
+                Arguments.of(rule2,map3),
+                Arguments.of(rule2,map4),
+                Arguments.of(rule2,map5),
+                Arguments.of(rule2,map6),
+                Arguments.of(rule2,map9),
 
-                Arguments.of(ruleList.get(2),msgList.get(0)),
-                Arguments.of(ruleList.get(2),msgList.get(1)),
-                Arguments.of(ruleList.get(2),msgList.get(2)),
-                Arguments.of(ruleList.get(2),msgList.get(3)),
-                Arguments.of(ruleList.get(2),msgList.get(4)),
-                Arguments.of(ruleList.get(2),msgList.get(5)),
-                Arguments.of(ruleList.get(2),msgList.get(6)),
-                Arguments.of(ruleList.get(2),msgList.get(7)),
-                Arguments.of(ruleList.get(2),msgList.get(8)),
-                Arguments.of(ruleList.get(2),msgList.get(16))
+                Arguments.of(rule3,map1),
+                Arguments.of(rule3,map2),
+                Arguments.of(rule3,map3),
+                Arguments.of(rule3,map4),
+                Arguments.of(rule3,map5),
+                Arguments.of(rule3,map6),
+                Arguments.of(rule3,map7),
+                Arguments.of(rule3,map8),
+                Arguments.of(rule3,map9),
+                Arguments.of(rule3,map17)
         );
     }
 
     private static Stream<Arguments> shouldThrowIndexOutOfBoundsException_whenOutOfRangeIndexInListIsAccessedInMsg(){
         return Stream.of(
-                Arguments.of(ruleList.get(0),msgList.get(4))
+                Arguments.of(rule1,map5)
         );
     }
 
     private static Stream<Arguments> shouldThrowNumberFormatException_whenListInMsgGetsANonNumericIndex(){
         return Stream.of(
-                Arguments.of(ruleList.get(3),msgList.get(0))
+                Arguments.of(rule4,map1)
         );
     }
 
     private static Stream<Arguments> shouldThrowClassCastException_whenInnerPathInRuleDoesNotReturnList(){
         return Stream.of(
-                Arguments.of(ruleList.get(2),msgList.get(11)),
-                Arguments.of(ruleList.get(2),msgList.get(12)),
-                Arguments.of(ruleList.get(2),msgList.get(13)),
-                Arguments.of(ruleList.get(2),msgList.get(14))
+                Arguments.of(rule3,map12),
+                Arguments.of(rule3,map13),
+                Arguments.of(rule3,map14),
+                Arguments.of(rule3,map15)
         );
     }
 
 
 
     @BeforeAll
-    private static void loadRuleList() throws IOException, IllegalAccessException {
+    private void loadRuleList() throws IOException, IllegalAccessException {
         String ruleString1 = JsonParser.parseString(
                 "{" +
                         "EQ: [" +
@@ -151,10 +151,7 @@ public class MsgValidationTest {
                                 "}" +
                             "]" +
                       "}").toString();
-        Rule rule1 = new Rule("id1",ruleString1);
-        ruleList.add(rule1);
-
-
+        rule1 = new Rule("id1",ruleString1);
 
         String ruleString2 = JsonParser.parseString(
                 "{" +
@@ -185,8 +182,7 @@ public class MsgValidationTest {
                                 "}" +
                             "]" +
                     "}").toString();
-        Rule rule2 = new Rule("id2",ruleString2);
-        ruleList.add(rule2);
+        rule2 = new Rule("id2",ruleString2);
 
         String ruleString3 = JsonParser.parseString(
                 "{" +
@@ -199,8 +195,7 @@ public class MsgValidationTest {
                                 "}" +
                             "]" +
                     "}").toString();
-        Rule rule3 = new Rule("id3",ruleString3);
-        ruleList.add(rule3);
+        rule3 = new Rule("id3",ruleString3);
 
         String ruleString4 = JsonParser.parseString(
                 "{" +
@@ -213,8 +208,7 @@ public class MsgValidationTest {
                                 "}" +
                             "]" +
                       "}").toString();
-        Rule rule4 = new Rule("id4",ruleString4);
-        ruleList.add(rule4);
+        rule4 = new Rule("id4",ruleString4);
 
         String ruleString5 = JsonParser.parseString(
                 "{" +
@@ -227,8 +221,8 @@ public class MsgValidationTest {
                                 "}" +
                             "]" +
                       "}").toString();
-        Rule rule5 = new Rule("id4",ruleString5);
-        ruleList.add(rule5);
+        rule5 = new Rule("id5",ruleString5);
+
     }
 
     @BeforeAll
@@ -244,42 +238,42 @@ public class MsgValidationTest {
                     .add("asd",52,"aaa",23432)
                     .build())
                 .build();
-        msgList.add(map);
+        map1 = new HashMap<>(map);
 
         map = mapBuilder.get()
                 .put("array",listBuilder.get()
                         .add(51,52)
                         .build())
                 .build();
-        msgList.add(map);
+        map2 = new HashMap<>(map);
 
         map = mapBuilder.get()
                 .put("array",listBuilder.get()
                         .add("asd",53,"aaa",23432)
                         .build())
                 .build();
-        msgList.add(map);
+        map3 = new HashMap<>(map);
 
         map = mapBuilder.get()
                 .put("array",listBuilder.get()
-                    .add("asd","adsad","aaa",23432)
-                    .build())
+                        .add("asd","adsad","aaa",23432)
+                        .build())
                 .build();
-        msgList.add(map);
+        map4 = new HashMap<>(map);
 
         map = mapBuilder.get()
                 .put("array",listBuilder.get()
-                    .add("single_value")
-                    .build())
+                        .add("single-value")
+                        .build())
                 .build();
-        msgList.add(map);
+        map5 = new HashMap<>(map);
 
         map = mapBuilder.get()
                 .put("array",mapBuilder.get()
                         .put("1",52)
                         .build())
                 .build();
-        msgList.add(map);
+        map6 = new HashMap<>(map);
 
 //
         map = mapBuilder.get()
@@ -290,7 +284,7 @@ public class MsgValidationTest {
                 .put("text","Bye")
                 .put("group","FlockTesting")
                 .build();
-        msgList.add(map);
+        map7 = new HashMap<>(map);
 
         map = mapBuilder.get()
                 .put("from",mapBuilder.get()
@@ -300,7 +294,7 @@ public class MsgValidationTest {
                 .put("text","Hi")
                 .put("group","FlockTesting")
                 .build();
-        msgList.add(map);
+        map8 = new HashMap<>(map);
 
         map = mapBuilder.get()
                 .put("from",mapBuilder.get()
@@ -309,7 +303,7 @@ public class MsgValidationTest {
                 .put("text","Bye")
                 .put("group","FlockTesting")
                 .build();
-        msgList.add(map);
+        map9 = new HashMap<>(map);
 
 //
         map = mapBuilder.get()
@@ -318,7 +312,7 @@ public class MsgValidationTest {
                     .build())
                 .put("name","Anshul")
                 .build();
-        msgList.add(map);
+        map10 = new HashMap<>(map);
 
         map = mapBuilder.get()
                 .put("path_to",listBuilder.get()
@@ -330,7 +324,7 @@ public class MsgValidationTest {
                     .build())
                 .put("name","Anshul")
                 .build();
-        msgList.add(map);
+        map11 = new HashMap<>(map);
 
         map = mapBuilder.get()
                 .put("path_to",mapBuilder.get()
@@ -338,25 +332,25 @@ public class MsgValidationTest {
                     .build())
                 .put("name","Anshul")
                 .build();
-        msgList.add(map);
+        map12 = new HashMap<>(map);
 
         map = mapBuilder.get()
                 .put("path_to",100)
                 .put("name","Anshul")
                 .build();
-        msgList.add(map);
+        map13 = new HashMap<>(map);
 
         map = mapBuilder.get()
                 .put("path_to","name")
                 .put("name","Anshul")
                 .build();
-        msgList.add(map);
+        map14 = new HashMap<>(map);
 
         map = mapBuilder.get()
                 .put("path_to",true)
                 .put("name","Anshul")
                 .build();
-        msgList.add(map);
+        map15 = new HashMap<>(map);
 
         map = mapBuilder.get()
                 .put("path_to",listBuilder.get()
@@ -364,39 +358,36 @@ public class MsgValidationTest {
                     .build())
                 .put("name","Unknown")
                 .build();
-        msgList.add(map);
+        map16 = new HashMap<>(map);
 
         map = mapBuilder.get()
                 .put("path_to",listBuilder.get()
                     .add("name")
                     .build())
                 .build();
-        msgList.add(map);
+        map17 = new HashMap<>(map);
 
         map = mapBuilder.get()
                 .put("path_to",listBuilder.get()
                     .build())
                 .put("name","Anshul")
                 .build();
-        msgList.add(map);
+        map18 = new HashMap<>(map);
 
         map = mapBuilder.get()
                 .put("array",listBuilder.get()
                     .add(1,2,"flock")
                     .build())
                 .build();
-        msgList.add(map);
+        map19 = new HashMap<>(map);
 
         map = mapBuilder.get()
                 .put("array",listBuilder.get()
                     .add(1,2,3)
                     .build())
                 .build();
-        msgList.add(map);
-
-
-
-
+        map20 = new HashMap<>(map);
+        
     }
 
 }
