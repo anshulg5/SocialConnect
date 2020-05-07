@@ -1,5 +1,6 @@
 package org.example.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonParser;
@@ -27,7 +28,7 @@ public class RulesApiTest {
     private RuleApp ruleApp;
 
     private ObjectMapper mapper = new ObjectMapper();
-    private static String ruleString1, ruleString2, ruleString3;
+    private static String ruleString1, ruleString2, ruleString3, ruleString4, ruleString5;
 
     @ParameterizedTest
     @MethodSource("oneRuleIdAndOneRuleStringProvider")
@@ -118,6 +119,20 @@ public class RulesApiTest {
         ruleApp.deleteRule(id);
     }
 
+    @ParameterizedTest
+    @MethodSource
+    public void shouldThrowIllegalAccessException_whenKeyInRuleIsUnknown(String id, String ruleString) throws JsonProcessingException {
+        //given
+        Map<String,Object> rule = mapper.readValue(ruleString,new TypeReference<Map<String,Object>>(){});
+
+        //when_then
+        assertThrows(IllegalAccessException.class, () -> ruleApp.addRule(id,rule));
+        assertNull(ruleApp.fetchRules().get(id));
+
+        //clean
+        ruleApp.deleteRule(id);
+    }
+
     @Test
     public void shouldReturnFalse_whenRuleToBeDeletedIsNotPresent() {
         //given
@@ -145,6 +160,13 @@ public class RulesApiTest {
                 Arguments.of("id",ruleString2,ruleString3),
                 Arguments.of("id",ruleString3,ruleString1),
                 Arguments.of("id",ruleString1,ruleString1)
+        );
+    }
+
+    private static Stream<Arguments> shouldThrowIllegalAccessException_whenKeyInRuleIsUnknown(){
+        return Stream.of(
+                Arguments.of("id",ruleString4),
+                Arguments.of("id",ruleString5)
         );
     }
 
@@ -203,6 +225,31 @@ public class RulesApiTest {
                                 "}" +
                             "]" +
                     "}").toString();
+
+        ruleString4 =JsonParser.parseString(
+                "{" +
+                        "EQL: [" +
+                                "{" +
+                                    "PTH: { PTH: { STRLIST: [path_to] } }" +
+                                "}," +
+                                "{ " +
+                                    "STR: Anshul " +
+                                "}" +
+                            "]" +
+                    "}").toString();
+
+        ruleString5 =JsonParser.parseString(
+                "{" +
+                        "EQ: [" +
+                                "{" +
+                                    "PTH: { PATH: { STRLIST: [path_to] } }" +
+                                "}," +
+                                "{ " +
+                                    "STR: Anshul " +
+                                "}" +
+                            "]" +
+                    "}").toString();
+
     }
 
 
