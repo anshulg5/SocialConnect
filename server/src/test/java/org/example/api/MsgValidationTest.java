@@ -42,7 +42,7 @@ public class MsgValidationTest {
 
     @ParameterizedTest
     @MethodSource
-    public void shouldThrowNullPointerException_whenSomeKeyInRuleIsNotFoundInMsg(Rule rule, Map<String,?> msg){
+    public void shouldThrowNullPointerException_whenKeyInRuleIsNotFoundInMsg(Rule rule, Map<String,?> msg){
         assertThrows(NullPointerException.class, () -> rule.validate(msg));
     }
 
@@ -58,12 +58,21 @@ public class MsgValidationTest {
         assertThrows(NumberFormatException.class, () -> rule.validate(msg));
     }
 
+    @ParameterizedTest
+    @MethodSource
+    public void shouldThrowClassCastException_whenInnerPathInRuleDoesNotReturnList(Rule rule, Map<String,?> msg){
+        assertThrows(ClassCastException.class, () -> rule.validate(msg));
+    }
+
 
     private static Stream<Arguments> shouldReturnTrue_whenRulePassOnMsg(){
         return Stream.of(
                 Arguments.of(ruleList.get(0),msgList.get(0)),
                 Arguments.of(ruleList.get(0),msgList.get(1)),
-                Arguments.of(ruleList.get(1),msgList.get(6))
+                Arguments.of(ruleList.get(1),msgList.get(6)),
+                Arguments.of(ruleList.get(2),msgList.get(9)),
+                Arguments.of(ruleList.get(2),msgList.get(10)),
+                Arguments.of(ruleList.get(4),msgList.get(18))
         );
     }
 
@@ -71,11 +80,14 @@ public class MsgValidationTest {
         return Stream.of(
                 Arguments.of(ruleList.get(0),msgList.get(2)),
                 Arguments.of(ruleList.get(0),msgList.get(3)),
-                Arguments.of(ruleList.get(1),msgList.get(7))
+                Arguments.of(ruleList.get(1),msgList.get(7)),
+                Arguments.of(ruleList.get(2),msgList.get(15)),
+                Arguments.of(ruleList.get(2),msgList.get(17)),
+                Arguments.of(ruleList.get(4),msgList.get(19))
         );
     }
 
-    private static Stream<Arguments> shouldThrowNullPointerException_whenSomeKeyInRuleIsNotFoundInMsg(){
+    private static Stream<Arguments> shouldThrowNullPointerException_whenKeyInRuleIsNotFoundInMsg(){
         return Stream.of(
                 Arguments.of(ruleList.get(0),msgList.get(5)),
                 Arguments.of(ruleList.get(0),msgList.get(6)),
@@ -98,7 +110,8 @@ public class MsgValidationTest {
                 Arguments.of(ruleList.get(2),msgList.get(5)),
                 Arguments.of(ruleList.get(2),msgList.get(6)),
                 Arguments.of(ruleList.get(2),msgList.get(7)),
-                Arguments.of(ruleList.get(2),msgList.get(8))
+                Arguments.of(ruleList.get(2),msgList.get(8)),
+                Arguments.of(ruleList.get(2),msgList.get(16))
         );
     }
 
@@ -113,6 +126,17 @@ public class MsgValidationTest {
                 Arguments.of(ruleList.get(3),msgList.get(0))
         );
     }
+
+    private static Stream<Arguments> shouldThrowClassCastException_whenInnerPathInRuleDoesNotReturnList(){
+        return Stream.of(
+                Arguments.of(ruleList.get(2),msgList.get(11)),
+                Arguments.of(ruleList.get(2),msgList.get(12)),
+                Arguments.of(ruleList.get(2),msgList.get(13)),
+                Arguments.of(ruleList.get(2),msgList.get(14))
+        );
+    }
+
+
 
     @BeforeAll
     private static void loadRuleList() throws IOException, IllegalAccessException {
@@ -150,10 +174,10 @@ public class MsgValidationTest {
                                             "{" +
                                                 "EQ: [" +
                                                         "{" +
-                                                            "PTH: { STRLIST: [text] } " +
+                                                            "STR: Hi" +
                                                         "}," +
                                                         "{" +
-                                                            "STR: Hi" +
+                                                            "PTH: { STRLIST: [text] } " +
                                                         "}" +
                                                     "]" +
                                             "}" +
@@ -191,6 +215,20 @@ public class MsgValidationTest {
                       "}").toString();
         Rule rule4 = new Rule("id4",ruleString4);
         ruleList.add(rule4);
+
+        String ruleString5 = JsonParser.parseString(
+                "{" +
+                        "EQ: [" +
+                                "{" +
+                                    "PTH: { STRLIST: [array] }" +
+                                "}," +
+                                "{" +
+                                    "STRLIST: [1,2,flock]" +
+                                "}" +
+                            "]" +
+                      "}").toString();
+        Rule rule5 = new Rule("id4",ruleString5);
+        ruleList.add(rule5);
     }
 
     @BeforeAll
@@ -256,9 +294,9 @@ public class MsgValidationTest {
 
         map = mapBuilder.get()
                 .put("from",mapBuilder.get()
-                        .put("firstName","Anshul")
-                        .put("lastName","Gupta")
-                        .build())
+                    .put("firstName","Anshul")
+                    .put("lastName","Gupta")
+                    .build())
                 .put("text","Hi")
                 .put("group","FlockTesting")
                 .build();
@@ -266,14 +304,98 @@ public class MsgValidationTest {
 
         map = mapBuilder.get()
                 .put("from",mapBuilder.get()
-                        .put("lastName","Gupta")
-                        .build())
+                    .put("lastName","Gupta")
+                    .build())
                 .put("text","Bye")
                 .put("group","FlockTesting")
                 .build();
         msgList.add(map);
 
 //
+        map = mapBuilder.get()
+                .put("path_to",listBuilder.get()
+                    .add("name")
+                    .build())
+                .put("name","Anshul")
+                .build();
+        msgList.add(map);
+
+        map = mapBuilder.get()
+                .put("path_to",listBuilder.get()
+                    .add("from")
+                    .add("name")
+                    .build())
+                .put("from",mapBuilder.get()
+                    .put("name","Anshul")
+                    .build())
+                .put("name","Anshul")
+                .build();
+        msgList.add(map);
+
+        map = mapBuilder.get()
+                .put("path_to",mapBuilder.get()
+                    .put("name","Anshul")
+                    .build())
+                .put("name","Anshul")
+                .build();
+        msgList.add(map);
+
+        map = mapBuilder.get()
+                .put("path_to",100)
+                .put("name","Anshul")
+                .build();
+        msgList.add(map);
+
+        map = mapBuilder.get()
+                .put("path_to","name")
+                .put("name","Anshul")
+                .build();
+        msgList.add(map);
+
+        map = mapBuilder.get()
+                .put("path_to",true)
+                .put("name","Anshul")
+                .build();
+        msgList.add(map);
+
+        map = mapBuilder.get()
+                .put("path_to",listBuilder.get()
+                    .add("name")
+                    .build())
+                .put("name","Unknown")
+                .build();
+        msgList.add(map);
+
+        map = mapBuilder.get()
+                .put("path_to",listBuilder.get()
+                    .add("name")
+                    .build())
+                .build();
+        msgList.add(map);
+
+        map = mapBuilder.get()
+                .put("path_to",listBuilder.get()
+                    .build())
+                .put("name","Anshul")
+                .build();
+        msgList.add(map);
+
+        map = mapBuilder.get()
+                .put("array",listBuilder.get()
+                    .add(1,2,"flock")
+                    .build())
+                .build();
+        msgList.add(map);
+
+        map = mapBuilder.get()
+                .put("array",listBuilder.get()
+                    .add(1,2,3)
+                    .build())
+                .build();
+        msgList.add(map);
+
+
+
 
     }
 
