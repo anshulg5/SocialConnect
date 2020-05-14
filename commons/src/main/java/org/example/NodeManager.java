@@ -15,14 +15,17 @@ public class NodeManager {
         return hashMap.get(name);
     }
 
+    public static Boolean containsNode(String name) {
+        return hashMap.containsKey(name);
+    }
+
     public static Node create(String nodeName, Object nodeValue, Map<String,Object> symbolTable) throws IllegalAccessException {
         if(!hashMap.containsKey(nodeName)){
             System.out.println("cannot identify key: "+ nodeName);
             throw new IllegalAccessException();
         }
         NodeFactory nodeFactory = getNodeFactory(nodeName);
-        Node node = nodeFactory.getInstance(nodeValue,symbolTable);
-        return node;
+        return nodeFactory.getInstance(nodeValue,symbolTable);
     }
 
     public static Node create(Map<String, Object> ruleMap, Map<String,Object> symbolTable) throws IllegalAccessException {
@@ -33,8 +36,7 @@ public class NodeManager {
             throw new IllegalAccessException();
         }
         NodeFactory nodeFactory = getNodeFactory(nodeName);
-        Node node = nodeFactory.getInstance(nodeValue,symbolTable);
-        return node;
+        return nodeFactory.getInstance(nodeValue,symbolTable);
     }
 
     public static Node create(Map<String, Object> ruleMap) throws IllegalAccessException {
@@ -47,7 +49,6 @@ public class NodeManager {
             throw new IllegalAccessException();
         }
         NodeFactory nodeFactory = getNodeFactory(nodeName);
-        Node node = nodeFactory.getInstance(nodeValue);
-        return node;
+        return nodeFactory.getInstance(nodeValue);
     }
 }
