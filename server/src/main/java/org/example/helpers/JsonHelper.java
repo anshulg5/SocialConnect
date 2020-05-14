@@ -24,6 +24,7 @@ public class JsonHelper {
             List<Object> newList = new ArrayList<>();
             for (Object elem : list)
                 newList.add(createCopy(elem, message));
+            return newList;
         } else if (jsonElement instanceof Node) {
             return ((Node) jsonElement).apply(message);
         }
