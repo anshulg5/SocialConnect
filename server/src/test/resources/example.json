@@ -1,0 +1,7 @@
+{
+  "str1" : "some text",
+  "obj1": {
+    "o1_str1" : "some other text",
+    "o1_int2" : 123
+  }
+}
