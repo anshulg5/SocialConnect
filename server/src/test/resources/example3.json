@@ -1,0 +1,27 @@
+{
+  "text": {
+    "PTH": {
+      "STRLIST": [
+        "payload",
+        "text"
+      ]
+    }
+  },
+  "user": {
+    "PTH": {
+      "STRLIST": [
+        "payload",
+        "from",
+        "firstName"
+      ]
+    }
+  },
+  "group": {
+    "PTH": {
+      "STRLIST": [
+        "payload",
+        "group"
+      ]
+    }
+  }
+}

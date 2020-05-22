@@ -2,6 +2,8 @@ package org.example;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import org.example.helpers.GuavaMapBuilder;
 import org.example.model.Target;
@@ -59,6 +61,11 @@ public class TargetTest {
                 "}" +
             "}").toString();
         Map<String, Object> map = mapper.readValue(string,new TypeReference<Map<String,Object>>(){});
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        System.out.println(gson.toJson(map));
+
+
 
         Target target = new Target("id1",map);
 

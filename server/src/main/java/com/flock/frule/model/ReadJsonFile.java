@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.concurrent.CompletionException;
+import java.util.stream.Collectors;
 
 public class ReadJsonFile implements DataOperation<JsonData> {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
@@ -25,7 +26,8 @@ public class ReadJsonFile implements DataOperation<JsonData> {
             String fileName = arg.apply(input.asMap());
             log.debug("reading file: {}", fileName);
             JsonData jsonData = JsonData.fromJson(new BufferedReader(new InputStreamReader(new FileInputStream(fileName)))
-                    .lines().reduce("", (s1, s2) -> s1 + "\n" + s2));
+//                    .lines().reduce("", (s1, s2) -> s1 + "\n" + s2));
+                    .lines().collect(Collectors.joining("\n")));
             log.debug("read content: {}", jsonData);
             return jsonData;
         } catch (Exception e) {
