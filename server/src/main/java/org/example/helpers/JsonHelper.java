@@ -7,27 +7,45 @@ import java.util.*;
 
 public class JsonHelper {
 
-    public static Object createCopy(Object jsonElement, Map<String,?> message) throws IllegalAccessException {
-        if (jsonElement instanceof Map) {
-            Map<String, Object> map = (Map<String, Object>) jsonElement;
-            Set<String> keySet = map.keySet();
-            if (keySet.size() == 1 && NodeManager.containsNode(keySet.iterator().next())) {
-                return NodeManager.create(map);
+    public static <T> T createCopy(T jsonDataElement, Map<String,?> input) throws IllegalAccessException {
+        if(jsonDataElement instanceof Map){
+            Map<String, Object> map = (Map) jsonDataElement;
+            Map<String, Object> copy = new HashMap<>();
+            for(Map.Entry<String, Object> entry: map.entrySet()) {
+                String k = entry.getKey();
+                Object v = entry.getValue();
+                if(isNodeSpec(v))
+                    copy.put(k,NodeManager.create((Map) v));
+                else if(v instanceof Node)
+                    copy.put(k,((Node)v).apply(input));
+                else
+                    copy.put(k,createCopy(v,input));
             }
-            Map<String, Object> newMap = new HashMap<>();
-            for (String key : keySet) {
-                newMap.put(key, createCopy(map.get(key), message));
-            }
-            return newMap;
-        } else if (jsonElement instanceof List) {
-            List list = (List) jsonElement;
-            List<Object> newList = new ArrayList<>();
-            for (Object elem : list)
-                newList.add(createCopy(elem, message));
-            return newList;
-        } else if (jsonElement instanceof Node) {
-            return ((Node) jsonElement).apply(message);
+            return (T)copy;
         }
-        return jsonElement;
+        if(jsonDataElement instanceof List){
+            List list = (List) jsonDataElement;
+            List<Object> copy = new ArrayList<>();
+            for(Object elem: list){
+                if(isNodeSpec(elem))
+                    copy.add(NodeManager.create((Map) elem));
+                else if(elem instanceof Node)
+                    copy.add(((Node)elem).apply(input));
+                else
+                    copy.add(createCopy(elem,input));
+            }
+            return (T)copy;
+        }
+        return (T)jsonDataElement;
+    }
+
+    private static Boolean isNodeSpec(Object obj){
+        if(obj instanceof Map){
+            Map<String, Object> map = (Map) obj;
+            Set<String> keySet = map.keySet();
+            if (keySet.size() == 1 && NodeManager.containsNode(keySet.iterator().next()))
+                return true;
+        }
+        return false;
     }
 }
