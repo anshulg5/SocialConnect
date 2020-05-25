@@ -2,6 +2,7 @@ package org.example.app;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flock.frule.model.JsonData;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.example.Node;
@@ -83,7 +84,7 @@ public class MediatorApp {
             objectMap.put("msg",msg.getText());
         }
         System.out.println(objectMap);
-        if (ruleApp.validateByID("third",objectMap)) {  // check here
+        if (ruleApp.validateByID("third", JsonData.fromJson(objectMap.toString()))) {  // check here
             System.out.println(msg + "passed Rule");
             return MessageSender.send(msg.getChannelId(),msg.getText());
         } else {

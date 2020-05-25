@@ -1,6 +1,6 @@
 package org.example;
-import java.util.Map;
+import com.flock.frule.model.JsonData;
 
 public interface Node<T>{
-    T apply(Map<String,?> input);
+    T apply(JsonData input);
 }

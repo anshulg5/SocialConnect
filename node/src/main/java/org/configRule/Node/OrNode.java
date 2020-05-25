@@ -1,6 +1,7 @@
 package org.configRule.Node;
 
 
+import com.flock.frule.model.JsonData;
 import org.example.Node;
 import org.example.NodeFactory;
 
@@ -27,7 +28,7 @@ public class OrNode implements Node<Boolean> {
     }
 
     @Override
-    public Boolean apply(Map<String, ?> bindings) {
+    public Boolean apply(JsonData bindings) {
         Boolean result = false;
         Iterator< Node<Boolean> > iterator = nodeCollection.iterator();
         while(iterator.hasNext()) result |= iterator.next().apply(bindings);

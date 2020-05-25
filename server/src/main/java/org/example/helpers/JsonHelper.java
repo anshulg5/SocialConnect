@@ -1,5 +1,6 @@
 package org.example.helpers;
 
+import com.flock.frule.model.JsonData;
 import org.example.Node;
 import org.example.NodeManager;
 
@@ -7,7 +8,7 @@ import java.util.*;
 
 public class JsonHelper {
 
-    public static <T> T createCopy(T jsonDataElement, Map<String,?> input) throws IllegalAccessException {
+    public static <T> T createCopy(T jsonDataElement, JsonData input) throws IllegalAccessException {
         if(jsonDataElement instanceof Map){
             Map<String, Object> map = (Map) jsonDataElement;
             Map<String, Object> copy = new HashMap<>();

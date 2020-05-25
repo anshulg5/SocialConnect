@@ -1,8 +1,7 @@
 package org.configRule.Node.primitiveNode;
 
+import com.flock.frule.model.JsonData;
 import org.example.Node;
-
-import java.util.Map;
 
 public class StringNode implements Node<String> {
 
@@ -13,7 +12,7 @@ public class StringNode implements Node<String> {
     }
 
     @Override
-    public String apply(Map<String, ?> bindings) {
+    public String apply(JsonData bindings) {
         return this.value;
     }
 

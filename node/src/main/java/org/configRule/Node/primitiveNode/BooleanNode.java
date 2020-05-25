@@ -1,8 +1,7 @@
 package org.configRule.Node.primitiveNode;
 
+import com.flock.frule.model.JsonData;
 import org.example.Node;
-
-import java.util.Map;
 
 public class BooleanNode implements Node<Boolean> {
     private Boolean value;
@@ -26,7 +25,7 @@ public class BooleanNode implements Node<Boolean> {
     }
 
     @Override
-    public Boolean apply(Map<String, ?> bindings) {
+    public Boolean apply(JsonData bindings) {
         return this.value;
     }
 }

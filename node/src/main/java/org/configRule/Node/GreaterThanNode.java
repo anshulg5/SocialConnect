@@ -1,5 +1,6 @@
 package org.configRule.Node;
 
+import com.flock.frule.model.JsonData;
 import org.example.Node;
 import org.example.NodeManager;
 
@@ -35,7 +36,7 @@ public class GreaterThanNode implements Node<Boolean> {
     }
 
     @Override
-    public Boolean apply(Map<String, ?> input) {
+    public Boolean apply(JsonData input) {
         return null;
     }
 }

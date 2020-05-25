@@ -1,6 +1,7 @@
 package org.example.app;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.flock.frule.model.JsonData;
 import org.example.dao.RuleDao;
 import org.example.model.Rule;
 
@@ -69,10 +70,10 @@ public class RuleApp {
         return map;
     }
 
-    public Boolean validateByID(String ruleID, Map<String,?> msg){
+    public Boolean validateByID(String ruleID, JsonData input){
         Boolean match;
         try{
-            match =  rulesMap.get(ruleID).validate(msg);
+            match =  rulesMap.get(ruleID).validate(input);
         } catch (Exception e) {
             match = false;
         }

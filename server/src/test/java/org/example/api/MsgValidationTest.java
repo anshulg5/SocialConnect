@@ -1,6 +1,9 @@
 package org.example.api;
 
+import com.flock.frule.model.JsonData;
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
 import org.example.TestExtension;
 import org.example.helpers.GuavaListBuilder;
@@ -14,8 +17,6 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,42 +26,42 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MsgValidationTest {
 
     private static Rule rule1, rule2, rule3, rule4, rule5;
-    private static Map<String, Object> map1, map2, map3, map4, map5, map6, map7 ,map8, map9, map10,
+    private static JsonData map1, map2, map3, map4, map5, map6, map7 ,map8, map9, map10,
             map11, map12, map13, map14, map15, map16, map17 ,map18, map19, map20;
 
     @ParameterizedTest
     @MethodSource
-    public void shouldReturnTrue_whenRulePassOnMsg(Rule rule, Map<String,?> msg){
+    public void shouldReturnTrue_whenRulePassOnMsg(Rule rule, JsonData msg){
         assertTrue(rule.validate(msg));
     }
 
     @ParameterizedTest
     @MethodSource
-    public void shouldReturnFalse_whenSimilarStructureOfRuleAndMsg_and_whenRuleFailsOnMsg(Rule rule, Map<String,?> msg){
+    public void shouldReturnFalse_whenSimilarStructureOfRuleAndMsg_and_whenRuleFailsOnMsg(Rule rule, JsonData msg){
         assertFalse(rule.validate(msg));
     }
 
     @ParameterizedTest
     @MethodSource
-    public void shouldThrowNullPointerException_whenKeyInRuleIsNotFoundInMsg(Rule rule, Map<String,?> msg){
+    public void shouldThrowNullPointerException_whenKeyInRuleIsNotFoundInMsg(Rule rule, JsonData msg){
         assertThrows(NullPointerException.class, () -> rule.validate(msg));
     }
 
     @ParameterizedTest
     @MethodSource
-    public void shouldThrowIndexOutOfBoundsException_whenOutOfRangeIndexInListIsAccessedInMsg(Rule rule, Map<String,?> msg){
+    public void shouldThrowIndexOutOfBoundsException_whenOutOfRangeIndexInListIsAccessedInMsg(Rule rule, JsonData msg){
         assertThrows(IndexOutOfBoundsException.class, () -> rule.validate(msg));
     }
 
     @ParameterizedTest
     @MethodSource
-    public void shouldThrowNumberFormatException_whenListInMsgGetsANonNumericIndex(Rule rule, Map<String,?> msg){
+    public void shouldThrowNumberFormatException_whenListInMsgGetsANonNumericIndex(Rule rule, JsonData msg){
         assertThrows(NumberFormatException.class, () -> rule.validate(msg));
     }
 
     @ParameterizedTest
     @MethodSource
-    public void shouldThrowClassCastException_whenInnerPathInRuleDoesNotReturnList(Rule rule, Map<String,?> msg){
+    public void shouldThrowClassCastException_whenInnerPathInRuleDoesNotReturnList(Rule rule, JsonData msg){
         assertThrows(ClassCastException.class, () -> rule.validate(msg));
     }
 
@@ -229,6 +230,7 @@ public class MsgValidationTest {
     private static void loadMsgList(){
         GuavaMapBuilder<String, Object> mapBuilder = new GuavaMapBuilder<>();
         GuavaListBuilder<Object> listBuilder = new GuavaListBuilder<>();
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         ImmutableMap<String, Object> map;
 
@@ -238,42 +240,49 @@ public class MsgValidationTest {
                     .add("asd",52,"aaa",23432)
                     .build())
                 .build();
-        map1 = new HashMap<>(map);
+//        map1 = new HashMap<>(map);
+        map1 = JsonData.fromJson(gson.toJson(map));
+        System.out.println(map1);
 
         map = mapBuilder.get()
                 .put("array",listBuilder.get()
                         .add(51,52)
                         .build())
                 .build();
-        map2 = new HashMap<>(map);
+//        map2 = new HashMap<>(map);
+        map2 = JsonData.fromJson(gson.toJson(map));
 
         map = mapBuilder.get()
                 .put("array",listBuilder.get()
                         .add("asd",53,"aaa",23432)
                         .build())
                 .build();
-        map3 = new HashMap<>(map);
+//        map3 = new HashMap<>(map);
+        map3 = JsonData.fromJson(gson.toJson(map));
 
         map = mapBuilder.get()
                 .put("array",listBuilder.get()
                         .add("asd","adsad","aaa",23432)
                         .build())
                 .build();
-        map4 = new HashMap<>(map);
+//        map4 = new HashMap<>(map);
+        map4 = JsonData.fromJson(gson.toJson(map));
 
         map = mapBuilder.get()
                 .put("array",listBuilder.get()
                         .add("single-value")
                         .build())
                 .build();
-        map5 = new HashMap<>(map);
+//        map5 = new HashMap<>(map);
+        map5 = JsonData.fromJson(gson.toJson(map));
 
         map = mapBuilder.get()
                 .put("array",mapBuilder.get()
                         .put("1",52)
                         .build())
                 .build();
-        map6 = new HashMap<>(map);
+//        map6 = new HashMap<>(map);
+        map6 = JsonData.fromJson(gson.toJson(map));
 
 //
         map = mapBuilder.get()
@@ -284,7 +293,8 @@ public class MsgValidationTest {
                 .put("text","Bye")
                 .put("group","FlockTesting")
                 .build();
-        map7 = new HashMap<>(map);
+//        map7 = new HashMap<>(map);
+        map7 = JsonData.fromJson(gson.toJson(map));
 
         map = mapBuilder.get()
                 .put("from",mapBuilder.get()
@@ -294,7 +304,8 @@ public class MsgValidationTest {
                 .put("text","Hi")
                 .put("group","FlockTesting")
                 .build();
-        map8 = new HashMap<>(map);
+//        map8 = new HashMap<>(map);
+        map8 = JsonData.fromJson(gson.toJson(map));
 
         map = mapBuilder.get()
                 .put("from",mapBuilder.get()
@@ -303,7 +314,8 @@ public class MsgValidationTest {
                 .put("text","Bye")
                 .put("group","FlockTesting")
                 .build();
-        map9 = new HashMap<>(map);
+//        map9 = new HashMap<>(map);
+        map9 = JsonData.fromJson(gson.toJson(map));
 
 //
         map = mapBuilder.get()
@@ -312,7 +324,8 @@ public class MsgValidationTest {
                     .build())
                 .put("name","Anshul")
                 .build();
-        map10 = new HashMap<>(map);
+//        map10 = new HashMap<>(map);
+        map10 = JsonData.fromJson(gson.toJson(map));
 
         map = mapBuilder.get()
                 .put("path_to",listBuilder.get()
@@ -324,7 +337,8 @@ public class MsgValidationTest {
                     .build())
                 .put("name","Anshul")
                 .build();
-        map11 = new HashMap<>(map);
+//        map11 = new HashMap<>(map);
+        map11 = JsonData.fromJson(gson.toJson(map));
 
         map = mapBuilder.get()
                 .put("path_to",mapBuilder.get()
@@ -332,25 +346,29 @@ public class MsgValidationTest {
                     .build())
                 .put("name","Anshul")
                 .build();
-        map12 = new HashMap<>(map);
+//        map12 = new HashMap<>(map);
+        map12 = JsonData.fromJson(gson.toJson(map));
 
         map = mapBuilder.get()
                 .put("path_to",100)
                 .put("name","Anshul")
                 .build();
-        map13 = new HashMap<>(map);
+//        map13 = new HashMap<>(map);
+        map13 = JsonData.fromJson(gson.toJson(map));
 
         map = mapBuilder.get()
                 .put("path_to","name")
                 .put("name","Anshul")
                 .build();
-        map14 = new HashMap<>(map);
+//        map14 = new HashMap<>(map);
+        map14 = JsonData.fromJson(gson.toJson(map));
 
         map = mapBuilder.get()
                 .put("path_to",true)
                 .put("name","Anshul")
                 .build();
-        map15 = new HashMap<>(map);
+//        map15 = new HashMap<>(map);
+        map15 = JsonData.fromJson(gson.toJson(map));
 
         map = mapBuilder.get()
                 .put("path_to",listBuilder.get()
@@ -358,36 +376,41 @@ public class MsgValidationTest {
                     .build())
                 .put("name","Unknown")
                 .build();
-        map16 = new HashMap<>(map);
+//        map16 = new HashMap<>(map);
+        map16 = JsonData.fromJson(gson.toJson(map));
 
         map = mapBuilder.get()
                 .put("path_to",listBuilder.get()
                     .add("name")
                     .build())
                 .build();
-        map17 = new HashMap<>(map);
+//        map17 = new HashMap<>(map);
+        map17 = JsonData.fromJson(gson.toJson(map));
 
         map = mapBuilder.get()
                 .put("path_to",listBuilder.get()
                     .build())
                 .put("name","Anshul")
                 .build();
-        map18 = new HashMap<>(map);
+//        map18 = new HashMap<>(map);
+        map18 = JsonData.fromJson(gson.toJson(map));
 
         map = mapBuilder.get()
                 .put("array",listBuilder.get()
                     .add(1,2,"flock")
                     .build())
                 .build();
-        map19 = new HashMap<>(map);
+//        map19 = new HashMap<>(map);
+        map19 = JsonData.fromJson(gson.toJson(map));
 
         map = mapBuilder.get()
                 .put("array",listBuilder.get()
                     .add(1,2,3)
                     .build())
                 .build();
-        map20 = new HashMap<>(map);
-        
+//        map20 = new HashMap<>(map);
+        map20 = JsonData.fromJson(gson.toJson(map));
+
     }
 
 }

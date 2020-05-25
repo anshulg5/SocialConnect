@@ -1,5 +1,6 @@
 package org.configRule.Node;
 
+import com.flock.frule.model.JsonData;
 import org.example.Node;
 
 import java.util.Map;
@@ -14,7 +15,7 @@ public class VarNode<T> implements Node<T> {
     }
 
     @Override
-    public T apply(Map<String, ?> input) {
+    public T apply(JsonData input) {
         return (T) symbolTable.get(name);
     }
 }

@@ -1,5 +1,6 @@
 package org.configRule.Node;
 
+import com.flock.frule.model.JsonData;
 import org.example.Node;
 import org.example.NodeManager;
 
@@ -33,10 +34,16 @@ public class PathNode<T> implements Node<T> {
     }
 
     @Override
-    public T apply(Map<String,?> input){
+    public T apply(JsonData input){
         Collection<String> collection = collectionNode.apply(input);
         Iterator<String> iterator = collection.iterator();
         Object object = input;
+
+        if(iterator.hasNext())
+            object = input.get(iterator.next(),Object.class);
+        if(object==null)
+            throw new NullPointerException();
+
         while(iterator.hasNext()) {
             if(object instanceof Map)
                 object = ((Map) object).get(iterator.next());

@@ -23,7 +23,7 @@ public class ReadJsonFile implements DataOperation<JsonData> {
     @Override
     public JsonData execute(JsonData input) {
         try {
-            String fileName = arg.apply(input.asMap());
+            String fileName = arg.apply(input);
             log.debug("reading file: {}", fileName);
             JsonData jsonData = JsonData.fromJson(new BufferedReader(new InputStreamReader(new FileInputStream(fileName)))
 //                    .lines().reduce("", (s1, s2) -> s1 + "\n" + s2));

@@ -1,9 +1,9 @@
 package org.configRule.Node;
 
+import com.flock.frule.model.JsonData;
 import org.example.Node;
 
 import java.util.Collection;
-import java.util.Map;
 
 public class CollectionStringNode implements Node<Collection<String>> {
 
@@ -21,7 +21,7 @@ public class CollectionStringNode implements Node<Collection<String>> {
     }
 
     @Override
-    public Collection<String> apply(Map<String, ?> input) {
+    public Collection<String> apply(JsonData input) {
         return stringCollection;
     }
 

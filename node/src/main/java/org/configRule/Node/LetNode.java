@@ -1,5 +1,6 @@
 package org.configRule.Node;
 
+import com.flock.frule.model.JsonData;
 import org.example.Node;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class LetNode<T> implements Node<T> {
 //    }
 
     @Override
-    public T apply(Map<String, ?> input) {
+    public T apply(JsonData input) {
         List<String> list = def.apply(input);
         T result = (T)body.apply(input);
         for(String string : list)symbolTable.remove(string);

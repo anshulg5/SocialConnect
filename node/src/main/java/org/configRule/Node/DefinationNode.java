@@ -1,5 +1,6 @@
 package org.configRule.Node;
 
+import com.flock.frule.model.JsonData;
 import org.example.Node;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class DefinationNode implements Node<List<String>> {
     }
 
     @Override
-    public List<String> apply(Map<String, ?> input) {
+    public List<String> apply(JsonData input) {
         Iterator<String> iterator = list.keySet().iterator();
         List<String> ans = new ArrayList<>();
         while(iterator.hasNext()){

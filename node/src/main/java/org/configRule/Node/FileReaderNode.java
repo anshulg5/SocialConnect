@@ -1,5 +1,6 @@
 package org.configRule.Node;
 
+import com.flock.frule.model.JsonData;
 import org.example.Node;
 import org.example.NodeManager;
 
@@ -24,7 +25,7 @@ public class FileReaderNode implements Node<String> {
     }
 
     @Override
-    public String apply(Map<String, ?> input) {
+    public String apply(JsonData input) {
         Collection<String> path = node.apply(input);
         String url = "";
         for(String string : path){

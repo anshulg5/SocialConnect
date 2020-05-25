@@ -85,7 +85,7 @@ public interface JsonData {
                     String k = entry.getKey();
                     Object v = entry.getValue();
                     if(v instanceof Node)
-                        copy.put(k,((Node)v).apply(input.asMap()));
+                        copy.put(k,((Node)v).apply(input));
                     else
                         copy.put(k,recursivelyApply(v,input));
                 }
@@ -96,7 +96,7 @@ public interface JsonData {
                 List<Object> copy = new ArrayList<>();
                 for(Object elem: list){
                     if(elem instanceof Node)
-                        copy.add(((Node)elem).apply(input.asMap()));
+                        copy.add(((Node)elem).apply(input));
                     else
                         copy.add(recursivelyApply(elem,input));
                 }

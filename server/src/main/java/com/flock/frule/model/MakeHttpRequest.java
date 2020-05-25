@@ -27,7 +27,7 @@ public class MakeHttpRequest implements DataOperation<JsonData>{
     //TODO: handle GET request
     @Override
     public JsonData execute(JsonData input) {
-        String endpoint = url.apply(input.asMap());
+        String endpoint = url.apply(input);
         JsonData filledData = postData.execute(input);
 
         CompletionStage<Void> stage = httpClient.execute(method, endpoint, filledData);

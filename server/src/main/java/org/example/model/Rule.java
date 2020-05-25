@@ -3,6 +3,7 @@ package org.example.model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flock.frule.model.JsonData;
 import org.example.Node;
 import org.example.NodeManager;
 
@@ -31,7 +32,7 @@ public class Rule {
         rootNode = NodeManager.create(ruleMap);
     }
 
-    public Boolean validate(Map<String, ?> input){
+    public Boolean validate(JsonData input){
         return (Boolean) rootNode.apply(input);
     }
 
