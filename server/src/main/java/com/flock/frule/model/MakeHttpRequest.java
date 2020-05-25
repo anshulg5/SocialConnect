@@ -17,14 +17,14 @@ public class MakeHttpRequest implements DataOperation<JsonData>{
 
     private final HttpClientWrapper httpClient;
 
-    public MakeHttpRequest(HttpMethod method, Node<String> url, FillJsonData postData, HttpClientWrapper httpClient) {
+    public MakeHttpRequest(HttpMethod method, Node<String> url, ApplyOnInput postData, HttpClientWrapper httpClient) {
         this.method = method;
         this.url = url;
         this.postData = postData;
         this.httpClient = httpClient;
     }
 
-
+    //TODO: handle GET request
     @Override
     public JsonData execute(JsonData input) {
         String endpoint = url.apply(input.asMap());

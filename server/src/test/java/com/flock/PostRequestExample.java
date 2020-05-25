@@ -26,7 +26,7 @@ public class PostRequestExample {
         Map<String, DataOperation<JsonData>> vars = ImmutableMap.of(
                 "var_httprequestdata", new MakeHttpRequest(HttpMethod.POST,
                         new PathNode<>(ImmutableMap.of("STRLIST", Arrays.asList("endpoint"))),
-                        new FillJsonData(new ReadJsonFile(
+                        new ApplyOnInput(new ReadJsonFile(
                                 new PathNode<>(ImmutableMap.of("STRLIST", Arrays.asList("filelocation"))))),
                         httpClient),
 
