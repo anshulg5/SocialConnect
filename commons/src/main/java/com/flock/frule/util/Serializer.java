@@ -30,4 +30,8 @@ public class Serializer {
             throw new CompletionException(e);
         }
     }
+
+    public static <T> String toJson(T data ){
+        return gson.toJson(data);
+    }
 }

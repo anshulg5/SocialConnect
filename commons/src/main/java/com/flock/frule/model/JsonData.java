@@ -74,7 +74,7 @@ public interface JsonData {
 
         @Override
         public String toString() {
-            return underlying.toString();
+            return Serializer.toJson(underlying);
         }
 
         private <T> T recursivelyApply(T root, JsonData input) {
