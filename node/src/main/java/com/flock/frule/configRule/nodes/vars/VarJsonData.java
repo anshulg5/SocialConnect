@@ -17,7 +17,7 @@ public class VarJsonData implements Node<JsonData> {
 
     VarJsonData(JsonData jsonData) {
         JsonData copy = JsonData.createEmpty();
-        List<String> keyList = jsonData.Keys();
+        List<String> keyList = jsonData.keys();
         keyList.forEach(k -> copy.put(k,recursivelyApply(jsonData.get(k,Object.class),null)));
         this.arg = copy;
         log.debug("replaced node spec by node object in JsonData: {}",this.arg);
@@ -26,7 +26,7 @@ public class VarJsonData implements Node<JsonData> {
     @Override
     public JsonData apply(JsonData input) {
         JsonData copy = JsonData.createEmpty();
-        List<String> keyList = arg.Keys();
+        List<String> keyList = arg.keys();
         keyList.forEach(k -> copy.put(k,recursivelyApply(arg.get(k,Object.class),input)));
         log.debug(" applied input to node objects in JsonData {}",copy);
         return copy;

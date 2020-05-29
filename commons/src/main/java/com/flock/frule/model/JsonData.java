@@ -1,11 +1,12 @@
 package com.flock.frule.model;
 
-import com.flock.frule.NodeManager;
 import com.flock.frule.util.Serializer;
 import com.google.common.collect.Maps;
 
-import java.util.*;
-import java.util.concurrent.CompletionException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public interface JsonData {
 
@@ -15,9 +16,7 @@ public interface JsonData {
 
     <T> T get(String key, Class<T> type);
 
-    List<String> Keys();
-
-    JsonData applyOn(JsonData input);
+    List<String> keys();
 
     static JsonData createEmpty() {
         return new MapJsonDataImpl("{}");
@@ -26,9 +25,6 @@ public interface JsonData {
     static JsonData fromJson(String json) {
         return new MapJsonDataImpl(json);
     }
-
-    // TODO: remove this, this is temporary till we migrate Node.apply() to work on JsonData
-    Map<String, ?> asMap();
 
     // TODO: implement this
     class MapJsonDataImpl implements JsonData {
@@ -40,7 +36,10 @@ public interface JsonData {
 
         @Override
         public void merge(JsonData other) {
-            underlying.putAll(other.asMap());
+            Map<String, Object> otherMap = new HashMap<>();
+            List<String> keyList = other.keys();
+            keyList.forEach(key -> otherMap.put(key,other.get(key,Object.class)));
+            underlying.putAll(otherMap);
         }
 
         @Override
@@ -60,21 +59,8 @@ public interface JsonData {
         }
 
         @Override
-        public List<String> Keys() {
+        public List<String> keys() {
             return new ArrayList<>(underlying.keySet());
-        }
-
-        @Override
-        public JsonData applyOn(JsonData input) {
-            JsonData copy = JsonData.createEmpty();
-            recursivelyApply(underlying,input)
-                    .forEach((k,v) -> copy.put(k,v));
-            return copy;
-        }
-
-        @Override
-        public Map<String, ?> asMap() {
-            return underlying;
         }
 
         @Override
@@ -82,46 +68,5 @@ public interface JsonData {
             return Serializer.toJson(underlying);
         }
 
-        private <T> T recursivelyApply(T root, JsonData input) {
-            // how node is cast to map using generics?
-            if(isNodeSpec(root)) {
-                try {
-                    root = (T) NodeManager.create((Map) root);
-                } catch (IllegalAccessException e) {
-                    throw new CompletionException(e);
-                }
-            }
-            if(root instanceof Map){
-                Map<String, Object> map = (Map) root;
-                Map<String, Object> copy = new HashMap<>();
-                for(Map.Entry<String, Object> entry: map.entrySet()) {
-                    String k = entry.getKey();
-                    Object v = entry.getValue();
-                    copy.put(k,recursivelyApply(v,input));
-                }
-                return (T)copy;
-            }
-            if(root instanceof List){
-                List list = (List) root;
-                List<Object> copy = new ArrayList<>();
-                for(Object elem: list){
-                    copy.add(recursivelyApply(elem,input));
-                }
-                return (T)copy;
-            }
-            if(root instanceof Node)
-                return (T)((Node)root).apply(input);
-            return root;
-        }
-
-        private Boolean isNodeSpec(Object obj){
-            if(obj instanceof Map){
-                Map<String, Object> map = (Map) obj;
-                Set<String> keySet = map.keySet();
-                if (keySet.size() == 1 && NodeManager.containsNode(keySet.iterator().next()))
-                    return true;
-            }
-            return false;
-        }
     }
 }
