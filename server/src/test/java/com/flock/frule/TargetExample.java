@@ -1,4 +1,4 @@
-package com.flock;
+package com.flock.frule;
 
 import com.flock.frule.configRule.nodes.primitivenodes.StringNode;
 import com.flock.frule.model.*;
