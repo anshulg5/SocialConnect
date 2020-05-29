@@ -1,14 +1,8 @@
 package com.flock;
 
+import com.flock.frule.configRule.nodes.primitivenodes.StringNode;
 import com.flock.frule.model.*;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import org.configRule.Node.PathNode;
-import org.configRule.Node.primitiveNode.StringNode;
-import org.configRule.NodeFactory.CollectionStringNodeFactory;
-import org.configRule.NodeFactory.PathNodeFactory;
-import org.example.Node;
-import org.example.NodeManager;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;

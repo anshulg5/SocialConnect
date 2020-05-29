@@ -1,9 +1,8 @@
 package com.flock.frule.model;
 
+import com.flock.frule.NodeManager;
 import com.flock.frule.util.Serializer;
 import com.google.common.collect.Maps;
-import org.example.Node;
-import org.example.NodeManager;
 
 import java.util.*;
 import java.util.concurrent.CompletionException;

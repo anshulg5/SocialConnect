@@ -1,13 +1,13 @@
 package com.flock;
 
+import com.flock.frule.configRule.nodes.PathNode;
+import com.flock.frule.configRule.nodes.primitivenodes.StringNode;
+import com.flock.frule.helpers.GuavaMapBuilder;
+import com.flock.frule.main.Main;
 import com.flock.frule.model.*;
 import com.flock.frule.util.HttpClientWrapper;
 import com.google.common.collect.ImmutableMap;
-import org.configRule.Node.PathNode;
-import org.configRule.Node.primitiveNode.StringNode;
 import org.eclipse.jetty.http.HttpMethod;
-import org.example.helpers.GuavaMapBuilder;
-import org.example.main.Main;
 
 import java.util.Arrays;
 import java.util.Map;

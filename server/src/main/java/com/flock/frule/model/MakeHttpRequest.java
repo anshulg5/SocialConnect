@@ -2,7 +2,6 @@ package com.flock.frule.model;
 
 import com.flock.frule.util.HttpClientWrapper;
 import org.eclipse.jetty.http.HttpMethod;
-import org.example.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

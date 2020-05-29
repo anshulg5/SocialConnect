@@ -1,0 +1,55 @@
+{
+  "id": "id1",
+  "prepare": {
+    "var1": {
+      "API": {
+        "endpoint": "http://localhost:1080/rulemanager/fetch",
+        "post_data": {
+          "key1": {
+            "PTH": {
+              "STRLIST": [
+                "payload",
+                "text"
+              ]
+            }
+          },
+          "key2": {
+            "key2.1": 123,
+            "key2.2": "string",
+            "key2.3": "$var1.some.path"
+          },
+          "key3": "hi"
+        }
+      }
+    }
+  },
+  "action": {
+    "API": {
+      "endpoint": "http://localhost:1080/rulemanager/fetch",
+      "post_data": {
+        "key1": {
+          "PTH": {
+            "STRLIST": [
+              "payload",
+              "text"
+            ]
+          }
+        },
+        "key2": {
+          "key2.1": 123,
+          "key2.2": "string",
+          "key2.3": "$var1.some.path"
+        },
+        "key3": {
+          "PTH": {
+            "STRLIST": [
+              "payload",
+              "from",
+              "firstName"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
