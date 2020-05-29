@@ -3,11 +3,10 @@ package com.flock.frule.model;
 import com.flock.frule.util.Serializer;
 import com.google.common.collect.Maps;
 import org.example.Node;
+import org.example.NodeManager;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.CompletionException;
 
 public interface JsonData {
 
@@ -16,6 +15,8 @@ public interface JsonData {
     void put(String key, Object val);
 
     <T> T get(String key, Class<T> type);
+
+    List<String> Keys();
 
     JsonData applyOn(JsonData input);
 
@@ -60,6 +61,11 @@ public interface JsonData {
         }
 
         @Override
+        public List<String> Keys() {
+            return new ArrayList<>(underlying.keySet());
+        }
+
+        @Override
         public JsonData applyOn(JsonData input) {
             JsonData copy = JsonData.createEmpty();
             recursivelyApply(underlying,input)
@@ -78,16 +84,21 @@ public interface JsonData {
         }
 
         private <T> T recursivelyApply(T root, JsonData input) {
+            // how node is cast to map using generics?
+            if(isNodeSpec(root)) {
+                try {
+                    root = (T) NodeManager.create((Map) root);
+                } catch (IllegalAccessException e) {
+                    throw new CompletionException(e);
+                }
+            }
             if(root instanceof Map){
                 Map<String, Object> map = (Map) root;
                 Map<String, Object> copy = new HashMap<>();
                 for(Map.Entry<String, Object> entry: map.entrySet()) {
                     String k = entry.getKey();
                     Object v = entry.getValue();
-                    if(v instanceof Node)
-                        copy.put(k,((Node)v).apply(input));
-                    else
-                        copy.put(k,recursivelyApply(v,input));
+                    copy.put(k,recursivelyApply(v,input));
                 }
                 return (T)copy;
             }
@@ -95,14 +106,23 @@ public interface JsonData {
                 List list = (List) root;
                 List<Object> copy = new ArrayList<>();
                 for(Object elem: list){
-                    if(elem instanceof Node)
-                        copy.add(((Node)elem).apply(input));
-                    else
-                        copy.add(recursivelyApply(elem,input));
+                    copy.add(recursivelyApply(elem,input));
                 }
                 return (T)copy;
             }
+            if(root instanceof Node)
+                return (T)((Node)root).apply(input);
             return root;
+        }
+
+        private Boolean isNodeSpec(Object obj){
+            if(obj instanceof Map){
+                Map<String, Object> map = (Map) obj;
+                Set<String> keySet = map.keySet();
+                if (keySet.size() == 1 && NodeManager.containsNode(keySet.iterator().next()))
+                    return true;
+            }
+            return false;
         }
     }
 }
