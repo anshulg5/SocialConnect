@@ -1,7 +1,6 @@
 package com.flock.frule.configRule.util;
 
 import com.flock.frule.util.Serializer;
-import com.sun.istack.internal.Nullable;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.BasicHttpEntity;
@@ -9,6 +8,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.HttpClients;
 import org.eclipse.jetty.http.HttpMethod;
 
+import javax.annotation.Nullable;
 import java.io.ByteArrayInputStream;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionStage;

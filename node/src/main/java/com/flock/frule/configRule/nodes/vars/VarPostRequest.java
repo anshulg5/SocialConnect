@@ -3,12 +3,12 @@ package com.flock.frule.configRule.nodes.vars;
 import com.flock.frule.configRule.util.HttpClientWrapper;
 import com.flock.frule.model.JsonData;
 import com.flock.frule.model.Node;
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.eclipse.jetty.http.HttpMethod;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.concurrent.CompletionException;

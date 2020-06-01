@@ -1,7 +1,5 @@
 package com.flock.frule.util;
 
-import com.sun.istack.internal.Nullable;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.BasicHttpEntity;
@@ -9,14 +7,10 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.HttpClients;
 import org.eclipse.jetty.http.HttpMethod;
 
-import java.io.BufferedReader;
+import javax.annotation.Nullable;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.concurrent.Callable;
-import java.util.concurrent.CompletionException;
 import java.util.concurrent.CompletionStage;
-import java.util.stream.Collectors;
 
 public class HttpClientWrapper {
 
@@ -50,18 +44,18 @@ public class HttpClientWrapper {
                 });
     }
 
-    private <T,U> CompletionStage<U> getResponse(Callable<T> call) {
-        return FutureUtil.async(call, Runnable::run)
-                .thenApply(resp -> {
-                    try {
-                        String responseContent = new BufferedReader(new InputStreamReader(((HttpResponse)resp)
-                                .getEntity().getContent())).lines()
-                                .collect(Collectors.joining("\n"));
-                        return (U)responseContent;
-                    } catch (IOException e) {
-                        throw new CompletionException(e);
-                    }
-
-                });
-    }
+//    private <T,U> CompletionStage<U> getResponse(Callable<T> call) {
+//        return FutureUtil.async(call, Runnable::run)
+//                .thenApply(resp -> {
+//                    try {
+//                        String responseContent = new BufferedReader(new InputStreamReader(((HttpResponse)resp)
+//                                .getEntity().getContent())).lines()
+//                                .collect(Collectors.joining("\n"));
+//                        return (U)responseContent;
+//                    } catch (IOException e) {
+//                        throw new CompletionException(e);
+//                    }
+//
+//                });
+//    }
 }
