@@ -33,7 +33,7 @@ class VarsTest {
         ).toString();
         System.out.println(jsonString);
         JsonData jsonData = JsonData.fromJson(jsonString);
-        VarJsonData varJsonData = new VarJsonData(jsonData);
+        VarJsonObjectNode varJsonObjectNode = new VarJsonObjectNode(jsonData);
 
         String inputJsonString = JsonParser.parseString(
                 "{" +
@@ -50,7 +50,7 @@ class VarsTest {
         JsonData input = JsonData.fromJson(inputJsonString);
 
 
-        JsonData varOutput = varJsonData.apply(input);
+        JsonData varOutput = varJsonObjectNode.apply(input);
 
     }
 
@@ -67,9 +67,9 @@ class VarsTest {
         ).toString();
         System.out.println(jsonString);
         JsonData jsonData = JsonData.fromJson(jsonString);
-        VarJsonData varJsonData = new VarJsonData(jsonData);
+        VarJsonObjectNode varJsonObjectNode = new VarJsonObjectNode(jsonData);
 
-        VarGetRequest varGetRequest = new VarGetRequest(varJsonData,httpClient);
+        VarGetRequest varGetRequest = new VarGetRequest(varJsonObjectNode,httpClient);
 
         String inputJsonString = JsonParser.parseString(
                 "{" +

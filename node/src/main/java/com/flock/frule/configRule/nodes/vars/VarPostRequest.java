@@ -17,10 +17,10 @@ import java.util.concurrent.CompletionStage;
 public class VarPostRequest implements Node<JsonData> {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    private final VarJsonData arg;
+    private final VarJsonObjectNode arg;
     private final HttpClientWrapper httpClient;
 
-    public VarPostRequest(VarJsonData arg, HttpClientWrapper httpClient) {
+    public VarPostRequest(VarJsonObjectNode arg, HttpClientWrapper httpClient) {
         this.arg = arg;
         this.httpClient = httpClient;
     }
