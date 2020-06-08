@@ -14,11 +14,11 @@ public class PathNodeFactory implements NodeFactory {
     }
     @Override
     public Node getInstance(Object value, Map<String, Object> symbolTable) throws IllegalAccessException {
-        return new PathNode((Map<NodeFactory, Object>) value,symbolTable);
+        return new PathNode((Map<String, Object>) value,symbolTable);
     }
 
     @Override
     public Node getInstance(Object value) throws IllegalAccessException {
-        return new PathNode((Map<NodeFactory, Object>) value);
+        return new PathNode((Map<String, Object>) value);
     }
 }

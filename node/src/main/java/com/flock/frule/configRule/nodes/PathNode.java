@@ -1,62 +1,79 @@
 package com.flock.frule.configRule.nodes;
 
 import com.flock.frule.NodeManager;
-import com.flock.frule.model.JsonData;
 import com.flock.frule.model.Node;
+import com.flock.frule.model.jsondata.JsonType;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
-public class PathNode<T> implements Node<T> {
+public class PathNode implements Node<JsonType> {
 
+    /*
+        {
+            "PTH" : {
+                "STRLIST" : ["", "", ""]
+         
+        }
+
+
+            "PTH" : ["", "", ""]
+        }
+     */
+    private static final String TYPE = "PTH";
     Node<Collection<String>> collectionNode;
 
-    public PathNode(Map<String,Object> map, Map<String,Object> symbolTable) throws IllegalAccessException {
-        if(map.size()==1) {
+//    PathNode(JsonObject json) {
+//        JsonType arg = json.get(TYPE);
+//        if (arg.isObject()) {
+//            collectionNode = NodeManager.create(arg.asObject(), );
+//        } else if (arg.isArray(TYPE)) {
+//            collectionNode = NodeManager.create(CollectionStringNode.TYPE, arg.asArray(), null);
+//        }
+//    }
+
+    public PathNode(Map<String, Object> map, Map<String, Object> symbolTable) throws IllegalAccessException {
+        if (map.size() == 1) {
             Iterator<String> iterator = map.keySet().iterator();
             while (iterator.hasNext()) {
                 String key = iterator.next();
-                collectionNode = NodeManager.create(key,map.get(key),symbolTable);;
+                collectionNode = NodeManager.create(key, map.get(key), symbolTable);
+                ;
             }
         }
     }
 
-    public PathNode(Map<String,Object> map) throws IllegalAccessException {
-        if(map.size()==1) {
+    public PathNode(Map<String, Object> map) throws IllegalAccessException {
+        if (map.size() == 1) {
             Iterator<String> iterator = map.keySet().iterator();
             while (iterator.hasNext()) {
                 String key = iterator.next();
-                collectionNode = NodeManager.create(map);;
+                collectionNode = NodeManager.create(map);
+                ;
             }
         }
     }
 
+
+    //TODO: Object type of key might be changed to String type
+    // and add null check
     @Override
-    public T apply(JsonData input){
+    public JsonType apply(JsonType input) {
         Collection<String> collection = collectionNode.apply(input);
-        Iterator<String> iterator = collection.iterator();
-        Object object = input;
 
-        if(iterator.hasNext())
-            object = input.get(iterator.next(),Object.class);
-        if(object==null)
-            throw new NullPointerException();
-
-        while(iterator.hasNext()) {
-            if(object instanceof Map)
-                object = ((Map) object).get(iterator.next());
-            else {
-                Object index = iterator.next();
-                if(index instanceof String)
-                    index = Integer.valueOf((String) index);
-                object = ((List) object).get((Integer) index);
+        JsonType current = input;
+        for (Object key : collection) {
+            if (current.isArray()){
+                int index = (key instanceof String?Integer.parseInt((String)key):(Integer)key);
+                current = current.asArray().get(index);
+            }else if (current.isObject()){
+                current = current.asObject().get((String)key);
+            }else {
+                throw new RuntimeException();
             }
-            if(object==null)
-                throw new NullPointerException();
         }
-        return (T)object;
+        return current;
     }
 
 }

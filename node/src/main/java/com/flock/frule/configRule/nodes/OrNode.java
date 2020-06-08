@@ -1,9 +1,9 @@
 package com.flock.frule.configRule.nodes;
 
 
-import com.flock.frule.model.JsonData;
 import com.flock.frule.model.Node;
 import com.flock.frule.model.NodeFactory;
+import com.flock.frule.model.jsondata.JsonType;
 
 import java.util.*;
 
@@ -28,10 +28,9 @@ public class OrNode implements Node<Boolean> {
     }
 
     @Override
-    public Boolean apply(JsonData bindings) {
+    public Boolean apply(JsonType bindings) {
         Boolean result = false;
-        Iterator< Node<Boolean> > iterator = nodeCollection.iterator();
-        while(iterator.hasNext()) result |= iterator.next().apply(bindings);
+        for (Node<Boolean> booleanNode : nodeCollection) result |= booleanNode.apply(bindings);
         return result;
     }
 

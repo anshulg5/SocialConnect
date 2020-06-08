@@ -1,8 +1,8 @@
 package com.flock.frule.configRule.nodes;
 
 import com.flock.frule.NodeManager;
-import com.flock.frule.model.JsonData;
 import com.flock.frule.model.Node;
+import com.flock.frule.model.jsondata.JsonType;
 
 import java.util.*;
 
@@ -42,11 +42,10 @@ public class AndNode implements Node<Boolean> {
     }
 
     @Override
-    public Boolean apply(JsonData input){
+    public Boolean apply(JsonType input){
         Boolean result = true;
-        Iterator<Node<Boolean>> iterator = nodeCollection.iterator();
-        while(iterator.hasNext()) {
-            result &= iterator.next().apply(input);
+        for (Node<Boolean> booleanNode : nodeCollection) {
+            result &= booleanNode.apply(input);
         }
         return result;
     }

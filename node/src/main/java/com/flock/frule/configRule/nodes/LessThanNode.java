@@ -1,8 +1,8 @@
 package com.flock.frule.configRule.nodes;
 
 import com.flock.frule.NodeManager;
-import com.flock.frule.model.JsonData;
 import com.flock.frule.model.Node;
+import com.flock.frule.model.jsondata.JsonType;
 
 import java.util.Iterator;
 import java.util.List;
@@ -37,7 +37,7 @@ public class LessThanNode implements Node<Boolean> {
 
 
     @Override
-    public Boolean apply(JsonData input) {
+    public Boolean apply(JsonType input) {
         return null;
     }
 }

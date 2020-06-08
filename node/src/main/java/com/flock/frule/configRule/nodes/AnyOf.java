@@ -1,7 +1,7 @@
 package com.flock.frule.configRule.nodes;
 
-import com.flock.frule.model.JsonData;
 import com.flock.frule.model.Node;
+import com.flock.frule.model.jsondata.JsonType;
 
 import java.util.Collection;
 
@@ -12,7 +12,7 @@ public class AnyOf<T> implements Node<Boolean> {
     Collection<Node<T>> nodeCollection;
 
     @Override
-    public Boolean apply(JsonData bindings) {
+    public Boolean apply(JsonType input) {
         return null;
     }
 }
