@@ -6,7 +6,6 @@ import com.flock.frule.model.jsondata.JsonArray;
 import com.flock.frule.model.jsondata.JsonObject;
 import com.flock.frule.model.jsondata.JsonPrimitive;
 import com.flock.frule.model.jsondata.JsonType;
-import com.google.gson.JsonParser;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -80,7 +79,9 @@ public class MsgValidationTest {
                 Arguments.of(rule1, jsonObject3),
                 Arguments.of(rule1, jsonObject4),
                 Arguments.of(rule2, jsonObject8),
+                Arguments.of(rule2, jsonObject9),
                 Arguments.of(rule3, jsonObject16),
+                Arguments.of(rule3, jsonObject17),
                 Arguments.of(rule3, jsonObject18),
                 Arguments.of(rule5, jsonObject20)
         );
@@ -99,7 +100,7 @@ public class MsgValidationTest {
                 Arguments.of(rule2, jsonObject4),
                 Arguments.of(rule2, jsonObject5),
                 Arguments.of(rule2, jsonObject6),
-                Arguments.of(rule2, jsonObject9),
+
 
                 Arguments.of(rule3, jsonObject1),
                 Arguments.of(rule3, jsonObject2),
@@ -109,8 +110,8 @@ public class MsgValidationTest {
                 Arguments.of(rule3, jsonObject6),
                 Arguments.of(rule3, jsonObject7),
                 Arguments.of(rule3, jsonObject8),
-                Arguments.of(rule3, jsonObject9),
-                Arguments.of(rule3, jsonObject17)
+                Arguments.of(rule3, jsonObject9)
+
         );
     }
 
@@ -139,89 +140,60 @@ public class MsgValidationTest {
     @BeforeAll
     private void loadRuleList() throws IOException, IllegalAccessException {
 
+        JsonObject ruleObjec1 = obj(
+                "EQ", arr(
+                        singletonListObject("PTH","array", 1),
+                        obj("INT", of(52))
+                )
+        );
+        rule1 = new Rule("id1", ruleObjec1);
 
-        String ruleString1 = JsonParser.parseString(
-                "{" +
-                        "EQ: [" +
-                                "{" +
-                                    "PTH: { STRLIST: [array,1] }" +
-                                "}," +
-                                "{" +
-                                    "INT: 52" +
-                                "}" +
-                            "]" +
-                      "}").toString();
-        rule1 = new Rule("id1",ruleString1);
+        JsonObject ruleObject2 = obj(
+                "AND", arr(
+                        obj(
+                                "EQ", arr(
+                                        obj("STR", of("Anshul")),
+                                        singletonListObject("PTH", "from", "firstName")
 
-        String ruleString2 = JsonParser.parseString(
-                "{" +
-                        "AND: [" +
-                                "{" +
-                                    "EQ: [" +
-                                            "{" +
-                                                "PTH: { STRLIST: [from,firstName] } " +
-                                            "}," +
-                                            "{" +
-                                                "STR: Anshul" +
-                                            "}" +
-                                        "]" +
-                                "}," +
-                                "{" +
-                                    "NOT: [" +
-                                            "{" +
-                                                "EQ: [" +
-                                                        "{" +
-                                                            "STR: Hi" +
-                                                        "}," +
-                                                        "{" +
-                                                            "PTH: { STRLIST: [text] } " +
-                                                        "}" +
-                                                    "]" +
-                                            "}" +
-                                        "]" +
-                                "}" +
-                            "]" +
-                    "}").toString();
-        rule2 = new Rule("id2",ruleString2);
+                                )
+                        ),
+                        obj(
+                                "NOT", arr(
+                                        obj(
+                                                "EQ", arr(
+                                                        obj("STR", of("Hi")),
+                                                        singletonListObject("PTH", "text")
+                                                )
+                                        )
+                                )
+                        )
+                )
+        );
+        rule2 = new Rule("id2", ruleObject2);
 
-        String ruleString3 = JsonParser.parseString(
-                "{" +
-                        "EQ: [" +
-                                "{" +
-                                    "PTH: { PTH: { STRLIST: [path_to] } }" +
-                                "}," +
-                                "{ " +
-                                    "STR: Anshul " +
-                                "}" +
-                            "]" +
-                    "}").toString();
-        rule3 = new Rule("id3",ruleString3);
+        JsonObject ruleObject3 = obj(
+                "EQ", arr(
+                        obj("STR", of("Anshul")),
+                        obj("PTH", singletonListObject("PTH", "path_to"))
+                )
+        );
+        rule3 = new Rule("id3", ruleObject3);
 
-        String ruleString4 = JsonParser.parseString(
-                "{" +
-                        "EQ: [" +
-                                "{" +
-                                    "PTH: { STRLIST: [array,non-numeric-index] }" +
-                                "}," +
-                                "{" +
-                                    "INT: 52" +
-                                "}" +
-                            "]" +
-                      "}").toString();
-        rule4 = new Rule("id4",ruleString4);
+        JsonObject ruleObject4 = obj(
+                "EQ", arr(
+                        singletonListObject("PTH", "array", "non-numeric-index"),
+                        obj("INT", of(52))
+                )
+        );
+        rule4 = new Rule("id4", ruleObject4);
 
-        String ruleString5 = JsonParser.parseString(
-                "{" +
-                        "EQ: [" +
-                                "{" +
-                                    "PTH: { STRLIST: [array] }" +
-                                "}," +
-                                "{" +
-                                    "STRLIST: [1,2,flock]" +
-                                "}" +
-                            "]" +
-                      "}").toString();
-        rule5 = new Rule("id5",ruleString5);
+        JsonObject ruleObject5 = obj(
+                "EQ", arr(
+                        singletonListObject("PTH", "array"),
+                        singletonListObject("JSONArr", 1, 2, "flock")
+                )
+        );
+        rule5 = new Rule("id5", ruleObject5);
 
     }
 
@@ -232,7 +204,7 @@ public class MsgValidationTest {
 
         jsonObject2 = singletonListObject("array", 51, 52);
 
-        jsonObject3 = singletonListObject("arrar", "asd", 53, "aaa", 23432);
+        jsonObject3 = singletonListObject("array", "asd", 53, "aaa", 23432);
 
         jsonObject4 = singletonListObject("array", "asd", "adsad", "aaa", 23432);
 

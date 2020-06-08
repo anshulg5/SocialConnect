@@ -8,8 +8,12 @@ public class JsonArrayNode implements Node<JsonArray> {
     public static final String TYPE = "JSONArr";
     private final JsonArray jsonArray;
 
-    public JsonArrayNode(JsonArray jsonArray) {
-        this.jsonArray = jsonArray;
+    public JsonArrayNode(JsonType json) {
+        if(json.isArray()) {
+            this.jsonArray = json.asArray();
+        } else {
+            this.jsonArray = json.asObject().get(TYPE).asArray();
+        }
     }
 
     @Override

@@ -70,8 +70,7 @@ public class NodeManager {
                 throw new InvalidObjectException("Only one key expected in the JsonObject");
             }
             String nodeType = keySet.iterator().next();
-            log.debug(nodeType);
-            log.debug("     child:" + jsonObject.get(nodeType));
+            log.debug(nodeType + " : " + jsonObject.get(nodeType));
             if(!hashMap.containsKey(nodeType))
                 throw new IllegalAccessException("cannot identify key: "+ nodeType);
             return getNodeFactory(nodeType).getInstance(jsonObject);
@@ -81,8 +80,7 @@ public class NodeManager {
     }
     
     public static Node create(String nodeType, JsonType json) throws IllegalAccessException, InvalidObjectException {
-        log.debug(nodeType);
-        log.debug("     child:" + json);
+        log.debug(nodeType + " : " + json);
         if(!hashMap.containsKey(nodeType))
             throw new IllegalAccessException("cannot identify key: "+ nodeType);
         return getNodeFactory(nodeType).getInstance(json);
