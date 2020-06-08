@@ -1,13 +1,11 @@
 package com.flock.frule.api;
 
 import com.flock.frule.TestExtension;
-import com.flock.frule.helpers.GuavaListBuilder;
-import com.flock.frule.helpers.GuavaMapBuilder;
-import com.flock.frule.model.JsonData;
 import com.flock.frule.model.Rule;
-import com.google.common.collect.ImmutableMap;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.flock.frule.model.jsondata.JsonArray;
+import com.flock.frule.model.jsondata.JsonObject;
+import com.flock.frule.model.jsondata.JsonPrimitive;
+import com.flock.frule.model.jsondata.JsonType;
 import com.google.gson.JsonParser;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
@@ -26,121 +24,122 @@ import static org.junit.jupiter.api.Assertions.*;
 public class MsgValidationTest {
 
     private static Rule rule1, rule2, rule3, rule4, rule5;
-    private static JsonData jsonData1, jsonData2, jsonData3, jsonData4, jsonData5, jsonData6, jsonData7 ,jsonData8, jsonData9, jsonData10,
-            jsonData11, jsonData12, jsonData13, jsonData14, jsonData15, jsonData16, jsonData17 ,jsonData18, jsonData19, jsonData20;
+    private static JsonObject jsonObject1, jsonObject2, jsonObject3, jsonObject4, jsonObject5, jsonObject6, jsonObject7, jsonObject8, jsonObject9, jsonObject10,
+            jsonObject11, jsonObject12, jsonObject13, jsonObject14, jsonObject15, jsonObject16, jsonObject17, jsonObject18, jsonObject19, jsonObject20;
 
     @ParameterizedTest
     @MethodSource
-    public void shouldReturnTrue_whenRulePassOnMsg(Rule rule, JsonData input){
+    public void shouldReturnTrue_whenRulePassOnMsg(Rule rule, JsonObject input) {
         assertTrue(rule.validate(input));
     }
 
     @ParameterizedTest
     @MethodSource
-    public void shouldReturnFalse_whenSimilarStructureOfRuleAndMsg_and_whenRuleFailsOnMsg(Rule rule, JsonData input){
+    public void shouldReturnFalse_whenSimilarStructureOfRuleAndMsg_and_whenRuleFailsOnMsg(Rule rule, JsonObject input) {
         assertFalse(rule.validate(input));
     }
 
     @ParameterizedTest
     @MethodSource
-    public void shouldThrowNullPointerException_whenKeyInRuleIsNotFoundInMsg(Rule rule, JsonData input){
+    public void shouldThrowNullPointerException_whenKeyInRuleIsNotFoundInMsg(Rule rule, JsonObject input) {
         assertThrows(NullPointerException.class, () -> rule.validate(input));
     }
 
     @ParameterizedTest
     @MethodSource
-    public void shouldThrowIndexOutOfBoundsException_whenOutOfRangeIndexInListIsAccessedInMsg(Rule rule, JsonData input){
+    public void shouldThrowIndexOutOfBoundsException_whenOutOfRangeIndexInListIsAccessedInMsg(Rule rule, JsonObject input) {
         assertThrows(IndexOutOfBoundsException.class, () -> rule.validate(input));
     }
 
     @ParameterizedTest
     @MethodSource
-    public void shouldThrowNumberFormatException_whenListInMsgGetsANonNumericIndex(Rule rule, JsonData input){
+    public void shouldThrowNumberFormatException_whenListInMsgGetsANonNumericIndex(Rule rule, JsonObject input) {
         assertThrows(NumberFormatException.class, () -> rule.validate(input));
     }
 
     @ParameterizedTest
     @MethodSource
-    public void shouldThrowClassCastException_whenInnerPathInRuleDoesNotReturnList(Rule rule, JsonData input){
+    public void shouldThrowClassCastException_whenInnerPathInRuleDoesNotReturnList(Rule rule, JsonObject input) {
         assertThrows(ClassCastException.class, () -> rule.validate(input));
     }
 
 
-    private static Stream<Arguments> shouldReturnTrue_whenRulePassOnMsg(){
+    private static Stream<Arguments> shouldReturnTrue_whenRulePassOnMsg() {
         return Stream.of(
-                Arguments.of(rule1,jsonData1),
-                Arguments.of(rule1,jsonData2),
-                Arguments.of(rule2,jsonData7),
-                Arguments.of(rule3,jsonData10),
-                Arguments.of(rule3,jsonData11),
-                Arguments.of(rule5,jsonData19)
+                Arguments.of(rule1, jsonObject1),
+                Arguments.of(rule1, jsonObject2),
+                Arguments.of(rule2, jsonObject7),
+                Arguments.of(rule3, jsonObject10),
+                Arguments.of(rule3, jsonObject11),
+                Arguments.of(rule5, jsonObject19)
         );
     }
 
-    private static Stream<Arguments> shouldReturnFalse_whenSimilarStructureOfRuleAndMsg_and_whenRuleFailsOnMsg(){
+    private static Stream<Arguments> shouldReturnFalse_whenSimilarStructureOfRuleAndMsg_and_whenRuleFailsOnMsg() {
         return Stream.of(
-                Arguments.of(rule1,jsonData3),
-                Arguments.of(rule1,jsonData4),
-                Arguments.of(rule2,jsonData8),
-                Arguments.of(rule3,jsonData16),
-                Arguments.of(rule3,jsonData18),
-                Arguments.of(rule5,jsonData20)
+                Arguments.of(rule1, jsonObject3),
+                Arguments.of(rule1, jsonObject4),
+                Arguments.of(rule2, jsonObject8),
+                Arguments.of(rule3, jsonObject16),
+                Arguments.of(rule3, jsonObject18),
+                Arguments.of(rule5, jsonObject20)
         );
     }
 
-    private static Stream<Arguments> shouldThrowNullPointerException_whenKeyInRuleIsNotFoundInMsg(){
+    private static Stream<Arguments> shouldThrowNullPointerException_whenKeyInRuleIsNotFoundInMsg() {
         return Stream.of(
-                Arguments.of(rule1,jsonData6),
-                Arguments.of(rule1,jsonData7),
-                Arguments.of(rule1,jsonData8),
-                Arguments.of(rule1,jsonData9),
+                Arguments.of(rule1, jsonObject6),
+                Arguments.of(rule1, jsonObject7),
+                Arguments.of(rule1, jsonObject8),
+                Arguments.of(rule1, jsonObject9),
 
-                Arguments.of(rule2,jsonData1),
-                Arguments.of(rule2,jsonData2),
-                Arguments.of(rule2,jsonData3),
-                Arguments.of(rule2,jsonData4),
-                Arguments.of(rule2,jsonData5),
-                Arguments.of(rule2,jsonData6),
-                Arguments.of(rule2,jsonData9),
+                Arguments.of(rule2, jsonObject1),
+                Arguments.of(rule2, jsonObject2),
+                Arguments.of(rule2, jsonObject3),
+                Arguments.of(rule2, jsonObject4),
+                Arguments.of(rule2, jsonObject5),
+                Arguments.of(rule2, jsonObject6),
+                Arguments.of(rule2, jsonObject9),
 
-                Arguments.of(rule3,jsonData1),
-                Arguments.of(rule3,jsonData2),
-                Arguments.of(rule3,jsonData3),
-                Arguments.of(rule3,jsonData4),
-                Arguments.of(rule3,jsonData5),
-                Arguments.of(rule3,jsonData6),
-                Arguments.of(rule3,jsonData7),
-                Arguments.of(rule3,jsonData8),
-                Arguments.of(rule3,jsonData9),
-                Arguments.of(rule3,jsonData17)
+                Arguments.of(rule3, jsonObject1),
+                Arguments.of(rule3, jsonObject2),
+                Arguments.of(rule3, jsonObject3),
+                Arguments.of(rule3, jsonObject4),
+                Arguments.of(rule3, jsonObject5),
+                Arguments.of(rule3, jsonObject6),
+                Arguments.of(rule3, jsonObject7),
+                Arguments.of(rule3, jsonObject8),
+                Arguments.of(rule3, jsonObject9),
+                Arguments.of(rule3, jsonObject17)
         );
     }
 
-    private static Stream<Arguments> shouldThrowIndexOutOfBoundsException_whenOutOfRangeIndexInListIsAccessedInMsg(){
+    private static Stream<Arguments> shouldThrowIndexOutOfBoundsException_whenOutOfRangeIndexInListIsAccessedInMsg() {
         return Stream.of(
-                Arguments.of(rule1,jsonData5)
+                Arguments.of(rule1, jsonObject5)
         );
     }
 
-    private static Stream<Arguments> shouldThrowNumberFormatException_whenListInMsgGetsANonNumericIndex(){
+    private static Stream<Arguments> shouldThrowNumberFormatException_whenListInMsgGetsANonNumericIndex() {
         return Stream.of(
-                Arguments.of(rule4,jsonData1)
+                Arguments.of(rule4, jsonObject1)
         );
     }
 
-    private static Stream<Arguments> shouldThrowClassCastException_whenInnerPathInRuleDoesNotReturnList(){
+    private static Stream<Arguments> shouldThrowClassCastException_whenInnerPathInRuleDoesNotReturnList() {
         return Stream.of(
-                Arguments.of(rule3,jsonData12),
-                Arguments.of(rule3,jsonData13),
-                Arguments.of(rule3,jsonData14),
-                Arguments.of(rule3,jsonData15)
+                Arguments.of(rule3, jsonObject12),
+                Arguments.of(rule3, jsonObject13),
+                Arguments.of(rule3, jsonObject14),
+                Arguments.of(rule3, jsonObject15)
         );
     }
-
 
 
     @BeforeAll
     private void loadRuleList() throws IOException, IllegalAccessException {
+
+
         String ruleString1 = JsonParser.parseString(
                 "{" +
                         "EQ: [" +
@@ -227,190 +226,142 @@ public class MsgValidationTest {
     }
 
     @BeforeAll
-    private static void loadMsgList(){
-        GuavaMapBuilder<String, Object> mapBuilder = new GuavaMapBuilder<>();
-        GuavaListBuilder<Object> listBuilder = new GuavaListBuilder<>();
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static void loadMsgList() {
 
-        ImmutableMap<String, Object> map;
+        jsonObject1 = singletonListObject("array", "asd", 52, "aaa", 23432);
 
+        jsonObject2 = singletonListObject("array", 51, 52);
+
+        jsonObject3 = singletonListObject("arrar", "asd", 53, "aaa", 23432);
+
+        jsonObject4 = singletonListObject("array", "asd", "adsad", "aaa", 23432);
+
+        jsonObject5 = singletonListObject("array", "single-value");
+
+        jsonObject6 = obj("1", of(52));
+
+        jsonObject7 = obj(
+                "from", obj(
+                        "firstName", of("Anshul"),
+                        "lastName", of("Gupta")
+                ),
+                "text", of("Bye"),
+                "group", of("FlockTesting")
+        );
+
+        jsonObject8 = obj(
+                "from", obj(
+                        "firstName", of("Anshul"),
+                        "lastName", of("Gupta")
+                ),
+                "text", of("Hi"),
+                "group", of("FlockTesting")
+        );
+
+        jsonObject9 = obj(
+                "from", obj(
+                        "lastName", of("Gupta")
+                ),
+                "text", of("Bye"),
+                "group", of("FlockTesting")
+        );
+
+        jsonObject10 = obj(
+                "path_to", arr("name"),
+                "name", of("Anshul")
+        );
+
+        jsonObject11 = obj(
+                "path_to", arr("from", "name"),
+                "from", obj("name", of("Anshul")),
+                "name", of("Anshul")
+        );
+
+        jsonObject12 = obj(
+                "path_to", obj("name", of("Anshul")),
+                "name", of("Anshul")
+        );
+
+        jsonObject13 = obj(
+                "path_to", of(100),
+                "name", of("Anshul")
+        );
+
+        jsonObject14 = obj(
+                "path_to", of("name"),
+                "name", of("Anshul")
+        );
+
+        jsonObject15 = obj(
+                "path_to", of(true),
+                "name", of("Anshul")
+        );
+
+        jsonObject16 = obj(
+                "path_to", arr("name"),
+                "name", of("Unknown")
+        );
+
+        jsonObject17 = singletonListObject("path_to", "name");
+
+        jsonObject18 = obj(
+                "path_to", arr(),
+                "name", of("Anshul")
+        );
+
+        jsonObject19 = singletonListObject("array",1, 2, "flock");
+
+        jsonObject20 = singletonListObject("array", 1, 2, 3);
+
+    }
+
+    private static JsonObject singletonListObject(String key, Object ... listItems) {
+        return obj(key, arr(listItems));
+    }
+
+    private static JsonArray arr(Object... entries) {
+        JsonArray result = new JsonArray();
+        for (Object entry : entries) {
+            result.add(of(entry));
+        }
+        return result;
+    }
+
+    static JsonType of(Object entry) {
+        if (entry instanceof JsonType) return (JsonType) entry;
+        if (entry instanceof String || entry instanceof Boolean || entry instanceof Number) {
+//            return JsonPrimitive.of(entry);
+            return new JsonPrimitive(entry);
+        }
+        else
+            throw new RuntimeException();
+//        else if (entry instanceof Collection || entry.getClass().isArray()) {
+////            return JsonArray.of(entry);
+//            JsonArray jsonArray = new JsonArray();
 //
-        map = mapBuilder.get()
-                .put("array",listBuilder.get()
-                    .add("asd",52,"aaa",23432)
-                    .build())
-                .build();
-//        jsonData1 = new HashMap<>(map);
-        jsonData1 = JsonData.fromJson(gson.toJson(map));
-        System.out.println("yup "+jsonData1);
-
-        map = mapBuilder.get()
-                .put("array",listBuilder.get()
-                        .add(51,52)
-                        .build())
-                .build();
-//        jsonData2 = new HashMap<>(map);
-        jsonData2 = JsonData.fromJson(gson.toJson(map));
-
-        map = mapBuilder.get()
-                .put("array",listBuilder.get()
-                        .add("asd",53,"aaa",23432)
-                        .build())
-                .build();
-//        jsonData3 = new HashMap<>(map);
-        jsonData3 = JsonData.fromJson(gson.toJson(map));
-
-        map = mapBuilder.get()
-                .put("array",listBuilder.get()
-                        .add("asd","adsad","aaa",23432)
-                        .build())
-                .build();
-//        jsonData4 = new HashMap<>(map);
-        jsonData4 = JsonData.fromJson(gson.toJson(map));
-
-        map = mapBuilder.get()
-                .put("array",listBuilder.get()
-                        .add("single-value")
-                        .build())
-                .build();
-//        jsonData5 = new HashMap<>(map);
-        jsonData5 = JsonData.fromJson(gson.toJson(map));
-
-        map = mapBuilder.get()
-                .put("array",mapBuilder.get()
-                        .put("1",52)
-                        .build())
-                .build();
-//        jsonData6 = new HashMap<>(map);
-        jsonData6 = JsonData.fromJson(gson.toJson(map));
-
 //
-        map = mapBuilder.get()
-                .put("from",mapBuilder.get()
-                    .put("firstName","Anshul")
-                    .put("lastName","Gupta")
-                    .build())
-                .put("text","Bye")
-                .put("group","FlockTesting")
-                .build();
-//        jsonData7 = new HashMap<>(map);
-        jsonData7 = JsonData.fromJson(gson.toJson(map));
+//        }
+    }
 
-        map = mapBuilder.get()
-                .put("from",mapBuilder.get()
-                    .put("firstName","Anshul")
-                    .put("lastName","Gupta")
-                    .build())
-                .put("text","Hi")
-                .put("group","FlockTesting")
-                .build();
-//        jsonData8 = new HashMap<>(map);
-        jsonData8 = JsonData.fromJson(gson.toJson(map));
+    static JsonObject obj(String k1, JsonType v1) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.put(k1,v1);
+        return jsonObject;
+    }
 
-        map = mapBuilder.get()
-                .put("from",mapBuilder.get()
-                    .put("lastName","Gupta")
-                    .build())
-                .put("text","Bye")
-                .put("group","FlockTesting")
-                .build();
-//        jsonData9 = new HashMap<>(map);
-        jsonData9 = JsonData.fromJson(gson.toJson(map));
+    static JsonObject obj(String k1, JsonType v1, String k2, JsonType v2) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.put(k1,v1);
+        jsonObject.put(k2,v2);
+        return jsonObject;
+    }
 
-//
-        map = mapBuilder.get()
-                .put("path_to",listBuilder.get()
-                    .add("name")
-                    .build())
-                .put("name","Anshul")
-                .build();
-//        jsonData10 = new HashMap<>(map);
-        jsonData10 = JsonData.fromJson(gson.toJson(map));
-
-        map = mapBuilder.get()
-                .put("path_to",listBuilder.get()
-                    .add("from")
-                    .add("name")
-                    .build())
-                .put("from",mapBuilder.get()
-                    .put("name","Anshul")
-                    .build())
-                .put("name","Anshul")
-                .build();
-//        jsonData11 = new HashMap<>(map);
-        jsonData11 = JsonData.fromJson(gson.toJson(map));
-
-        map = mapBuilder.get()
-                .put("path_to",mapBuilder.get()
-                    .put("name","Anshul")
-                    .build())
-                .put("name","Anshul")
-                .build();
-//        jsonData12 = new HashMap<>(map);
-        jsonData12 = JsonData.fromJson(gson.toJson(map));
-
-        map = mapBuilder.get()
-                .put("path_to",100)
-                .put("name","Anshul")
-                .build();
-//        jsonData13 = new HashMap<>(map);
-        jsonData13 = JsonData.fromJson(gson.toJson(map));
-
-        map = mapBuilder.get()
-                .put("path_to","name")
-                .put("name","Anshul")
-                .build();
-//        jsonData14 = new HashMap<>(map);
-        jsonData14 = JsonData.fromJson(gson.toJson(map));
-
-        map = mapBuilder.get()
-                .put("path_to",true)
-                .put("name","Anshul")
-                .build();
-//        jsonData15 = new HashMap<>(map);
-        jsonData15 = JsonData.fromJson(gson.toJson(map));
-
-        map = mapBuilder.get()
-                .put("path_to",listBuilder.get()
-                    .add("name")
-                    .build())
-                .put("name","Unknown")
-                .build();
-//        jsonData16 = new HashMap<>(map);
-        jsonData16 = JsonData.fromJson(gson.toJson(map));
-
-        map = mapBuilder.get()
-                .put("path_to",listBuilder.get()
-                    .add("name")
-                    .build())
-                .build();
-//        jsonData17 = new HashMap<>(map);
-        jsonData17 = JsonData.fromJson(gson.toJson(map));
-
-        map = mapBuilder.get()
-                .put("path_to",listBuilder.get()
-                    .build())
-                .put("name","Anshul")
-                .build();
-//        jsonData18 = new HashMap<>(map);
-        jsonData18 = JsonData.fromJson(gson.toJson(map));
-
-        map = mapBuilder.get()
-                .put("array",listBuilder.get()
-                    .add(1,2,"flock")
-                    .build())
-                .build();
-//        jsonData19 = new HashMap<>(map);
-        jsonData19 = JsonData.fromJson(gson.toJson(map));
-
-        map = mapBuilder.get()
-                .put("array",listBuilder.get()
-                    .add(1,2,3)
-                    .build())
-                .build();
-//        jsonData20 = new HashMap<>(map);
-        jsonData20 = JsonData.fromJson(gson.toJson(map));
-
+    static JsonObject obj(String k1, JsonType v1, String k2, JsonType v2, String k3, JsonType v3) {
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.put(k1,v1);
+        jsonObject.put(k2,v2);
+        jsonObject.put(k3,v3);
+        return jsonObject;
     }
 
 }
