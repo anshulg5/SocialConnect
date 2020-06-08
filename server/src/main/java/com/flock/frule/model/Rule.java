@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flock.frule.NodeManager;
+import com.flock.frule.model.jsondata.JsonType;
 
 import java.io.IOException;
 import java.util.Map;
@@ -30,7 +31,7 @@ public class Rule {
         rootNode = NodeManager.create(ruleMap);
     }
 
-    public Boolean validate(JsonData input){
+    public Boolean validate(JsonType input){
         return (Boolean) rootNode.apply(input);
     }
 

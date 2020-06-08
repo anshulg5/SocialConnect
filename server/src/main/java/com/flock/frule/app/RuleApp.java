@@ -2,8 +2,8 @@ package com.flock.frule.app;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.flock.frule.dao.RuleDao;
-import com.flock.frule.model.JsonData;
 import com.flock.frule.model.Rule;
+import com.flock.frule.model.jsondata.JsonType;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -70,7 +70,7 @@ public class RuleApp {
         return map;
     }
 
-    public Boolean validateByID(String ruleID, JsonData input){
+    public Boolean validateByID(String ruleID, JsonType input){
         Boolean match;
         try{
             match =  rulesMap.get(ruleID).validate(input);
