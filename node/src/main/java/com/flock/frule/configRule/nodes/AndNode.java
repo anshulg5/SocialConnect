@@ -2,13 +2,31 @@ package com.flock.frule.configRule.nodes;
 
 import com.flock.frule.NodeManager;
 import com.flock.frule.model.Node;
+import com.flock.frule.model.jsondata.JsonArray;
+import com.flock.frule.model.jsondata.JsonObject;
 import com.flock.frule.model.jsondata.JsonType;
 
+import java.io.InvalidObjectException;
 import java.util.*;
 
 public class AndNode implements Node<Boolean> {
+    public static final String TYPE = "AND";
+    private Collection< Node<Boolean>> nodeCollection;
 
-    Collection< Node<Boolean> > nodeCollection;
+    public AndNode(JsonObject json) throws InvalidObjectException, IllegalAccessException {
+        JsonType arg = json.get(TYPE);
+        nodeCollection = new ArrayList<>();
+        if(arg.isArray()){
+            JsonArray jsonArray = arg.asArray();
+            int size = jsonArray.size();
+            for(int i=0;i<size;++i){
+                nodeCollection.add(NodeManager.create(jsonArray.get(i)));
+            }
+        } else {
+            throw new InvalidObjectException("Expected JsonArray");
+        }
+
+    }
 
     public AndNode(List<Map<String,Object>> ruleMap, Map<String,Object> symbolTable) throws IllegalAccessException {
         nodeCollection = new ArrayList<>();

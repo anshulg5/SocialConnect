@@ -1,13 +1,14 @@
 package com.flock.frule.configRule.nodes;
 
-import com.flock.frule.model.JsonData;
 import com.flock.frule.model.Node;
+import com.flock.frule.model.jsondata.JsonType;
 
 import java.util.Collection;
 
 public class CollectionStringNode implements Node<Collection<String>> {
 
-    Collection<String>stringCollection;
+    public static final String TYPE = "STRLIST";
+    Collection<String> stringCollection;
 
     public Collection<String> getStringCollection() {
         return stringCollection;
@@ -21,7 +22,7 @@ public class CollectionStringNode implements Node<Collection<String>> {
     }
 
     @Override
-    public Collection<String> apply(JsonData input) {
+    public Collection<String> apply(JsonType input) {
         return stringCollection;
     }
 

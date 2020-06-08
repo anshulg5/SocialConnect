@@ -3,6 +3,7 @@ package com.flock.frule.model.jsondata;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class JsonObject extends JsonType {
     private final Map<String, JsonType> underlyingMap;
@@ -20,12 +21,16 @@ public class JsonObject extends JsonType {
         return null;
     }
 
-    public void merge(JsonObject other) {
-        underlyingMap.putAll(other.underlyingMap);
-    }
-
     public JsonType get(String key) {
         return underlyingMap.get(key);
+    }
+
+    public Set<String> getKeys(){
+        return underlyingMap.keySet();
+    }
+
+    public void merge(JsonObject other) {
+        underlyingMap.putAll(other.underlyingMap);
     }
 
     @Override

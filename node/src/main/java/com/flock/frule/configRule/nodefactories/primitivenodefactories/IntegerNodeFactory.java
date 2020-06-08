@@ -4,7 +4,9 @@ import com.flock.frule.NodeManager;
 import com.flock.frule.configRule.nodes.primitivenodes.IntegerNode;
 import com.flock.frule.model.Node;
 import com.flock.frule.model.NodeFactory;
+import com.flock.frule.model.jsondata.JsonType;
 
+import java.io.InvalidObjectException;
 import java.util.Map;
 
 public class IntegerNodeFactory implements NodeFactory {
@@ -21,5 +23,10 @@ public class IntegerNodeFactory implements NodeFactory {
     @Override
     public Node getInstance(Object value) {
         return new IntegerNode(value);
+    }
+
+    @Override
+    public Node getInstance(JsonType json) throws InvalidObjectException, IllegalAccessException {
+        return new IntegerNode(json.asObject());
     }
 }

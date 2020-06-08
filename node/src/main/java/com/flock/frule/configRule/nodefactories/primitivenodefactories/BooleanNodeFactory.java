@@ -4,7 +4,9 @@ import com.flock.frule.NodeManager;
 import com.flock.frule.configRule.nodes.primitivenodes.BooleanNode;
 import com.flock.frule.model.Node;
 import com.flock.frule.model.NodeFactory;
+import com.flock.frule.model.jsondata.JsonType;
 
+import java.io.InvalidObjectException;
 import java.util.Map;
 
 public class BooleanNodeFactory implements NodeFactory {
@@ -21,5 +23,10 @@ public class BooleanNodeFactory implements NodeFactory {
     @Override
     public Node getInstance(Object value) throws IllegalAccessException {
         return new BooleanNode(value);
+    }
+
+    @Override
+    public Node getInstance(JsonType json) throws InvalidObjectException, IllegalAccessException {
+        return new BooleanNode(json.asObject());
     }
 }

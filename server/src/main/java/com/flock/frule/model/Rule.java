@@ -4,9 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flock.frule.NodeManager;
+import com.flock.frule.model.jsondata.JsonObject;
 import com.flock.frule.model.jsondata.JsonType;
 
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.util.Map;
 
 public class Rule {
@@ -29,6 +31,11 @@ public class Rule {
         this.ruleMap = mapper.readValue(ruleString,new TypeReference<Map<String,Object>>(){});
         this.ruleString = ruleString;
         rootNode = NodeManager.create(ruleMap);
+    }
+
+    public Rule(String ID, JsonObject json) throws InvalidObjectException, IllegalAccessException {
+        this.ID = ID;
+        rootNode = NodeManager.create(json);
     }
 
     public Boolean validate(JsonType input){

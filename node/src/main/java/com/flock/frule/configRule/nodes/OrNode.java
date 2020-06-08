@@ -1,30 +1,33 @@
 package com.flock.frule.configRule.nodes;
 
 
+import com.flock.frule.NodeManager;
 import com.flock.frule.model.Node;
-import com.flock.frule.model.NodeFactory;
+import com.flock.frule.model.jsondata.JsonArray;
+import com.flock.frule.model.jsondata.JsonObject;
 import com.flock.frule.model.jsondata.JsonType;
 
-import java.util.*;
+import java.io.InvalidObjectException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class OrNode implements Node<Boolean> {
+    public static final String TYPE = "OR";
+    private Collection< Node<Boolean>> nodeCollection;
 
-    Collection< Node<Boolean> > nodeCollection;
-
-    public OrNode(List<Map<NodeFactory,Object>> ruleMap, Map<String,Object> symbolTable) throws IllegalAccessException {
+    public OrNode(JsonObject json) throws InvalidObjectException, IllegalAccessException {
+        JsonType arg = json.get(TYPE);
         nodeCollection = new ArrayList<>();
-        Iterator<Map<NodeFactory, Object>> iterator = ruleMap.iterator();
-        while(iterator.hasNext()){
-            Map<NodeFactory,Object> map = iterator.next();
-            if(map.size() == 1) {
-                NodeFactory key = map.keySet().iterator().next();
-                Node<Boolean> node = key.getInstance(map.get(key),symbolTable);
-                nodeCollection.add(node);
+        if(arg.isArray()){
+            JsonArray jsonArray = arg.asArray();
+            int size = jsonArray.size();
+            for(int i=0;i<size;++i){
+                nodeCollection.add(NodeManager.create(jsonArray.get(i)));
             }
-            else {
-                System.out.println("Invalid 'OR' format");
-            }
+        } else {
+            throw new InvalidObjectException("Expected JsonArray");
         }
+
     }
 
     @Override

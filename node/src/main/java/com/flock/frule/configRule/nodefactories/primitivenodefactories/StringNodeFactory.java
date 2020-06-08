@@ -4,7 +4,9 @@ import com.flock.frule.NodeManager;
 import com.flock.frule.configRule.nodes.primitivenodes.StringNode;
 import com.flock.frule.model.Node;
 import com.flock.frule.model.NodeFactory;
+import com.flock.frule.model.jsondata.JsonType;
 
+import java.io.InvalidObjectException;
 import java.util.Map;
 
 public class StringNodeFactory implements NodeFactory {
@@ -20,5 +22,10 @@ public class StringNodeFactory implements NodeFactory {
     @Override
     public Node getInstance(Object value) {
         return new StringNode((String) value);
+    }
+
+    @Override
+    public Node getInstance(JsonType json) throws InvalidObjectException, IllegalAccessException {
+        return new StringNode(json.asObject());
     }
 }

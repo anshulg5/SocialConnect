@@ -22,6 +22,10 @@ public class JsonArray extends JsonType {
         return underlyingList.get(index);
     }
 
+    public int size() {
+        return underlyingList.size();
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(obj==null)
