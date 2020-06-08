@@ -4,7 +4,7 @@ package com.flock.frule.model.jsondata;
 import java.util.HashMap;
 import java.util.Map;
 
-public class JsonObject implements JsonType {
+public class JsonObject extends JsonType {
     private final Map<String, JsonType> underlyingMap;
 
     public JsonObject() {
@@ -15,15 +15,32 @@ public class JsonObject implements JsonType {
         underlyingMap.put(key,val);
     }
 
+    //TODO: complete or remove this method
     public <T> T get(String key, Class<T> type) {
         return null;
     }
 
-    public void merge(Map<String, JsonType> map) {
-        underlyingMap.putAll(map);
+    public void merge(JsonObject other) {
+        underlyingMap.putAll(other.underlyingMap);
     }
 
     public JsonType get(String key) {
         return underlyingMap.get(key);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj==null)
+            return false;
+        if(this==obj)
+            return true;
+        if(getClass()!=obj.getClass())
+            return false;
+        return ((JsonObject)obj).underlyingMap.equals(underlyingMap);
+    }
+
+    @Override
+    public int hashCode() {
+        return underlyingMap.hashCode();
     }
 }
