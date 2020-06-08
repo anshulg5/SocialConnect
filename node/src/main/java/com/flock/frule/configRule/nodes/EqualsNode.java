@@ -3,6 +3,7 @@ package com.flock.frule.configRule.nodes;
 import com.flock.frule.NodeManager;
 import com.flock.frule.model.Node;
 import com.flock.frule.model.jsondata.JsonArray;
+import com.flock.frule.model.jsondata.JsonNull;
 import com.flock.frule.model.jsondata.JsonObject;
 import com.flock.frule.model.jsondata.JsonType;
 
@@ -78,8 +79,10 @@ public class EqualsNode implements Node<Boolean> {
 
     @Override
     public Boolean apply(JsonType input) {
-        if (left.apply(input).equals(right.apply(input)))
-            return true;
-        return false;
+        Object obj1 = left.apply(input);
+        Object obj2 = right.apply(input);
+        if(obj1 instanceof JsonNull || obj2 instanceof JsonNull)
+            return false;
+        return left.apply(input).equals(right.apply(input));
     }
 }

@@ -22,9 +22,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(TestExtension.class)
 public class MsgValidationTest {
 
-    private static Rule rule1, rule2, rule3, rule4, rule5;
-    private static JsonObject jsonObject1, jsonObject2, jsonObject3, jsonObject4, jsonObject5, jsonObject6, jsonObject7, jsonObject8, jsonObject9, jsonObject10,
-            jsonObject11, jsonObject12, jsonObject13, jsonObject14, jsonObject15, jsonObject16, jsonObject17, jsonObject18, jsonObject19, jsonObject20;
+    private static Rule rule1, rule2, rule3, rule4, rule5, rule6;
+    private static JsonObject input1, input2, input3, input4, input5, input6, input7, input8, input9, input10,
+            input11, input12, input13, input14, input15, input16, input17, input18, input19, input20;
 
     @ParameterizedTest
     @MethodSource
@@ -65,50 +65,52 @@ public class MsgValidationTest {
 
     private static Stream<Arguments> shouldReturnTrue_whenRulePassOnMsg() {
         return Stream.of(
-                Arguments.of(rule1, jsonObject1),
-                Arguments.of(rule1, jsonObject2),
-                Arguments.of(rule2, jsonObject7),
-                Arguments.of(rule3, jsonObject10),
-                Arguments.of(rule3, jsonObject11),
-                Arguments.of(rule5, jsonObject19)
+                Arguments.of(rule1, input1),
+                Arguments.of(rule1, input2),
+                Arguments.of(rule2, input7),
+                Arguments.of(rule3, input10),
+                Arguments.of(rule3, input11),
+                Arguments.of(rule5, input19)
         );
     }
 
     private static Stream<Arguments> shouldReturnFalse_whenSimilarStructureOfRuleAndMsg_and_whenRuleFailsOnMsg() {
         return Stream.of(
-                Arguments.of(rule1, jsonObject3),
-                Arguments.of(rule1, jsonObject4),
-                Arguments.of(rule2, jsonObject8),
-                Arguments.of(rule2, jsonObject9),
-                Arguments.of(rule3, jsonObject16),
-                Arguments.of(rule3, jsonObject17),
-                Arguments.of(rule3, jsonObject18),
-                Arguments.of(rule5, jsonObject20),
+                Arguments.of(rule1, input3),
+                Arguments.of(rule1, input4),
+                Arguments.of(rule2, input8),
+                Arguments.of(rule2, input9),
+                Arguments.of(rule3, input16),
+                Arguments.of(rule3, input17),
+                Arguments.of(rule3, input18),
+                Arguments.of(rule5, input20),
 
                 // earlier threw NullPointer Exception
 
-                Arguments.of(rule1, jsonObject6),
-                Arguments.of(rule1, jsonObject7),
-                Arguments.of(rule1, jsonObject8),
-                Arguments.of(rule1, jsonObject9),
+                Arguments.of(rule1, input6),
+                Arguments.of(rule1, input7),
+                Arguments.of(rule1, input8),
+                Arguments.of(rule1, input9),
 
-                Arguments.of(rule2, jsonObject1),
-                Arguments.of(rule2, jsonObject2),
-                Arguments.of(rule2, jsonObject3),
-                Arguments.of(rule2, jsonObject4),
-                Arguments.of(rule2, jsonObject5),
-                Arguments.of(rule2, jsonObject6),
+                Arguments.of(rule2, input1),
+                Arguments.of(rule2, input2),
+                Arguments.of(rule2, input3),
+                Arguments.of(rule2, input4),
+                Arguments.of(rule2, input5),
+                Arguments.of(rule2, input6),
 
 
-                Arguments.of(rule3, jsonObject1),
-                Arguments.of(rule3, jsonObject2),
-                Arguments.of(rule3, jsonObject3),
-                Arguments.of(rule3, jsonObject4),
-                Arguments.of(rule3, jsonObject5),
-                Arguments.of(rule3, jsonObject6),
-                Arguments.of(rule3, jsonObject7),
-                Arguments.of(rule3, jsonObject8),
-                Arguments.of(rule3, jsonObject9)
+                Arguments.of(rule3, input1),
+                Arguments.of(rule3, input2),
+                Arguments.of(rule3, input3),
+                Arguments.of(rule3, input4),
+                Arguments.of(rule3, input5),
+                Arguments.of(rule3, input6),
+                Arguments.of(rule3, input7),
+                Arguments.of(rule3, input8),
+                Arguments.of(rule3, input9),
+
+                Arguments.of(rule6, input1)
         );
     }
 
@@ -121,22 +123,22 @@ public class MsgValidationTest {
 
     private static Stream<Arguments> shouldThrowIndexOutOfBoundsException_whenOutOfRangeIndexInListIsAccessedInMsg() {
         return Stream.of(
-                Arguments.of(rule1, jsonObject5)
+                Arguments.of(rule1, input5)
         );
     }
 
     private static Stream<Arguments> shouldThrowNumberFormatException_whenListInMsgGetsANonNumericIndex() {
         return Stream.of(
-                Arguments.of(rule4, jsonObject1)
+                Arguments.of(rule4, input1)
         );
     }
 
     private static Stream<Arguments> shouldThrowClassCastException_whenInnerPathInRuleDoesNotReturnList() {
         return Stream.of(
-                Arguments.of(rule3, jsonObject12),
-                Arguments.of(rule3, jsonObject13),
-                Arguments.of(rule3, jsonObject14),
-                Arguments.of(rule3, jsonObject15)
+                Arguments.of(rule3, input12),
+                Arguments.of(rule3, input13),
+                Arguments.of(rule3, input14),
+                Arguments.of(rule3, input15)
         );
     }
 
@@ -199,24 +201,32 @@ public class MsgValidationTest {
         );
         rule5 = new Rule("id5", ruleObject5);
 
+        JsonObject ruleObject6 = obj(
+                "EQ", arr(
+                        singletonListObject("PTH", "invalid-key"),
+                        singletonListObject("PTH", "invalid-key")
+                )
+        );
+        rule6 = new Rule("id6", ruleObject6);
+
     }
 
     @BeforeAll
     private static void loadMsgList() {
 
-        jsonObject1 = singletonListObject("array", "asd", 52, "aaa", 23432);
+        input1 = singletonListObject("array", "asd", 52, "aaa", 23432);
 
-        jsonObject2 = singletonListObject("array", 51, 52);
+        input2 = singletonListObject("array", 51, 52);
 
-        jsonObject3 = singletonListObject("array", "asd", 53, "aaa", 23432);
+        input3 = singletonListObject("array", "asd", 53, "aaa", 23432);
 
-        jsonObject4 = singletonListObject("array", "asd", "adsad", "aaa", 23432);
+        input4 = singletonListObject("array", "asd", "adsad", "aaa", 23432);
 
-        jsonObject5 = singletonListObject("array", "single-value");
+        input5 = singletonListObject("array", "single-value");
 
-        jsonObject6 = obj("1", of(52));
+        input6 = obj("1", of(52));
 
-        jsonObject7 = obj(
+        input7 = obj(
                 "from", obj(
                         "firstName", of("Anshul"),
                         "lastName", of("Gupta")
@@ -225,7 +235,7 @@ public class MsgValidationTest {
                 "group", of("FlockTesting")
         );
 
-        jsonObject8 = obj(
+        input8 = obj(
                 "from", obj(
                         "firstName", of("Anshul"),
                         "lastName", of("Gupta")
@@ -234,7 +244,7 @@ public class MsgValidationTest {
                 "group", of("FlockTesting")
         );
 
-        jsonObject9 = obj(
+        input9 = obj(
                 "from", obj(
                         "lastName", of("Gupta")
                 ),
@@ -242,52 +252,52 @@ public class MsgValidationTest {
                 "group", of("FlockTesting")
         );
 
-        jsonObject10 = obj(
+        input10 = obj(
                 "path_to", arr("name"),
                 "name", of("Anshul")
         );
 
-        jsonObject11 = obj(
+        input11 = obj(
                 "path_to", arr("from", "name"),
                 "from", obj("name", of("Anshul")),
                 "name", of("Anshul")
         );
 
-        jsonObject12 = obj(
+        input12 = obj(
                 "path_to", obj("name", of("Anshul")),
                 "name", of("Anshul")
         );
 
-        jsonObject13 = obj(
+        input13 = obj(
                 "path_to", of(100),
                 "name", of("Anshul")
         );
 
-        jsonObject14 = obj(
+        input14 = obj(
                 "path_to", of("name"),
                 "name", of("Anshul")
         );
 
-        jsonObject15 = obj(
+        input15 = obj(
                 "path_to", of(true),
                 "name", of("Anshul")
         );
 
-        jsonObject16 = obj(
+        input16 = obj(
                 "path_to", arr("name"),
                 "name", of("Unknown")
         );
 
-        jsonObject17 = singletonListObject("path_to", "name");
+        input17 = singletonListObject("path_to", "name");
 
-        jsonObject18 = obj(
+        input18 = obj(
                 "path_to", arr(),
                 "name", of("Anshul")
         );
 
-        jsonObject19 = singletonListObject("array",1, 2, "flock");
+        input19 = singletonListObject("array",1, 2, "flock");
 
-        jsonObject20 = singletonListObject("array", 1, 2, 3);
+        input20 = singletonListObject("array", 1, 2, 3);
 
     }
 
@@ -320,24 +330,24 @@ public class MsgValidationTest {
     }
 
     static JsonObject obj(String k1, JsonType v1) {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.put(k1,v1);
-        return jsonObject;
+        JsonObject input = new JsonObject();
+        input.put(k1,v1);
+        return input;
     }
 
     static JsonObject obj(String k1, JsonType v1, String k2, JsonType v2) {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.put(k1,v1);
-        jsonObject.put(k2,v2);
-        return jsonObject;
+        JsonObject input = new JsonObject();
+        input.put(k1,v1);
+        input.put(k2,v2);
+        return input;
     }
 
     static JsonObject obj(String k1, JsonType v1, String k2, JsonType v2, String k3, JsonType v3) {
-        JsonObject jsonObject = new JsonObject();
-        jsonObject.put(k1,v1);
-        jsonObject.put(k2,v2);
-        jsonObject.put(k3,v3);
-        return jsonObject;
+        JsonObject input = new JsonObject();
+        input.put(k1,v1);
+        input.put(k2,v2);
+        input.put(k3,v3);
+        return input;
     }
 
 }
