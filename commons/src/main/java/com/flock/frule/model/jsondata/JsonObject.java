@@ -16,12 +16,14 @@ public class JsonObject extends JsonType {
         underlyingMap.put(key,val);
     }
 
-    //TODO: complete or remove this method
+    //TODO: complete or remove this method, if not needed
     public <T> T get(String key, Class<T> type) {
         return null;
     }
 
     public JsonType get(String key) {
+        if(!underlyingMap.containsKey(key))
+            return JsonNull.get();
         return underlyingMap.get(key);
     }
 

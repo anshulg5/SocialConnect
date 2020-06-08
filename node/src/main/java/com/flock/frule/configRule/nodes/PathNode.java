@@ -17,10 +17,10 @@ public class PathNode implements Node<JsonType> {
         {
             "PTH" : {
                 "PTH" : ["", "", ""]
-         
+            }
         }
 
-
+        {
             "PTH" : ["", "", ""]
         }
      */
@@ -42,7 +42,6 @@ public class PathNode implements Node<JsonType> {
             while (iterator.hasNext()) {
                 String key = iterator.next();
                 collectionNode = NodeManager.create(key, map.get(key), symbolTable);
-                ;
             }
         }
     }
@@ -53,7 +52,6 @@ public class PathNode implements Node<JsonType> {
             while (iterator.hasNext()) {
                 String key = iterator.next();
                 collectionNode = NodeManager.create(map);
-                ;
             }
         }
     }
@@ -62,11 +60,14 @@ public class PathNode implements Node<JsonType> {
     //TODO: add null check
     @Override
     public JsonType apply(JsonType input) {
-//        Collection<String> collection = collectionNode.apply(input);
+        JsonType returnedValue = collectionNode.apply(input);
+        if(returnedValue.isNull())
+            return returnedValue;
 
-        JsonArray collection = collectionNode.apply(input).asArray();
+        JsonArray collection = returnedValue.asArray();
         int size = collection.size();
         JsonType current = input;
+
         for (int i=0;i<size;++i) {
             JsonPrimitive collectionElem = collection.get(i).asPrimitive();
             if (current.isArray()){
@@ -75,6 +76,8 @@ public class PathNode implements Node<JsonType> {
             }else if (current.isObject()){
                 String key = collectionElem.getAsString();
                 current = current.asObject().get(key);
+            }else if(current.isNull()) {
+                return current;
             }else {
                 throw new RuntimeException();
             }

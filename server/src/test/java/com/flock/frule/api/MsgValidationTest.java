@@ -38,7 +38,7 @@ public class MsgValidationTest {
         assertFalse(rule.validate(input));
     }
 
-    @ParameterizedTest
+//    @ParameterizedTest
     @MethodSource
     public void shouldThrowNullPointerException_whenKeyInRuleIsNotFoundInMsg(Rule rule, JsonObject input) {
         assertThrows(NullPointerException.class, () -> rule.validate(input));
@@ -83,12 +83,10 @@ public class MsgValidationTest {
                 Arguments.of(rule3, jsonObject16),
                 Arguments.of(rule3, jsonObject17),
                 Arguments.of(rule3, jsonObject18),
-                Arguments.of(rule5, jsonObject20)
-        );
-    }
+                Arguments.of(rule5, jsonObject20),
 
-    private static Stream<Arguments> shouldThrowNullPointerException_whenKeyInRuleIsNotFoundInMsg() {
-        return Stream.of(
+                // earlier threw NullPointer Exception
+
                 Arguments.of(rule1, jsonObject6),
                 Arguments.of(rule1, jsonObject7),
                 Arguments.of(rule1, jsonObject8),
@@ -111,6 +109,12 @@ public class MsgValidationTest {
                 Arguments.of(rule3, jsonObject7),
                 Arguments.of(rule3, jsonObject8),
                 Arguments.of(rule3, jsonObject9)
+        );
+    }
+
+    private static Stream<Arguments> shouldThrowNullPointerException_whenKeyInRuleIsNotFoundInMsg() {
+        return Stream.of(
+
 
         );
     }

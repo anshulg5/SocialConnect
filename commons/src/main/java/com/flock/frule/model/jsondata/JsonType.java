@@ -14,6 +14,8 @@ public class JsonType {
         return this instanceof JsonPrimitive;
     }
 
+    public boolean isNull() { return this instanceof JsonNull;}
+
     public JsonObject asObject(){
         if(this instanceof JsonObject)
             return (JsonObject)this;
@@ -29,6 +31,12 @@ public class JsonType {
     public JsonPrimitive asPrimitive(){
         if(this instanceof JsonPrimitive)
             return (JsonPrimitive)this;
+        throw new ClassCastException();
+    }
+
+    public JsonNull asNull(){
+        if(this instanceof JsonNull)
+            return (JsonNull)this;
         throw new ClassCastException();
     }
 
