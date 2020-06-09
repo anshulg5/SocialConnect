@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flock.frule.dao.ConnectionDetailDao;
 import com.flock.frule.model.AppMessage;
 import com.flock.frule.model.ConnectionDetail;
-import com.flock.frule.model.JsonData;
 import com.flock.frule.model.Node;
+import com.flock.frule.model.jsondata.JsonObject;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -84,7 +84,12 @@ public class MediatorApp {
             objectMap.put("msg",msg.getText());
         }
         System.out.println(objectMap);
-        if (ruleApp.validateByID("third", JsonData.fromJson(objectMap.toString()))) {  // check here
+
+        // TODO: replace empty jsonObject
+        JsonObject jsonObject = new JsonObject(); //
+
+        boolean success = ruleApp.validateByID("third", jsonObject);
+        if (success) {  // check here
             System.out.println(msg + "passed Rule");
             return MessageSender.send(msg.getChannelId(),msg.getText());
         } else {
