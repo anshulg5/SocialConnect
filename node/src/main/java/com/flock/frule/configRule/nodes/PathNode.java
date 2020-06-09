@@ -57,7 +57,6 @@ public class PathNode implements Node<JsonType> {
     }
 
 
-    //TODO: add null check
     @Override
     public JsonType apply(JsonType input) {
         JsonType returnedValue = collectionNode.apply(input);

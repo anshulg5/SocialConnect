@@ -83,6 +83,6 @@ public class EqualsNode implements Node<Boolean> {
         Object obj2 = right.apply(input);
         if(obj1 instanceof JsonNull || obj2 instanceof JsonNull)
             return false;
-        return left.apply(input).equals(right.apply(input));
+        return obj1.equals(obj2);
     }
 }
