@@ -12,6 +12,10 @@ public class JsonObject extends JsonType {
         this.underlyingMap = new HashMap<>();
     }
 
+    public static JsonObject createEmpty() {
+        return new JsonObject();
+    }
+
     public void put(String key, JsonType val) {
         underlyingMap.put(key,val);
     }
