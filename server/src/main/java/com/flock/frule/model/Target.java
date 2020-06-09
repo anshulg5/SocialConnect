@@ -1,5 +1,7 @@
 package com.flock.frule.model;
 
+import com.flock.frule.model.jsondata.JsonObject;
+import com.flock.frule.model.jsondata.JsonType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,24 +11,24 @@ import java.util.concurrent.CompletionStage;
 public class Target {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    private final Map<String, DataOperation<JsonData>> vars;
+    private final Map<String, Node<JsonType>> vars;
     private final TargetAction action;
 
-    public Target(Map<String, DataOperation<JsonData>> vars, TargetAction action) {
+    public Target(Map<String, Node<JsonType>> vars, TargetAction action) {
         this.vars = vars;
         this.action = action;
     }
 
-    public CompletionStage<Void> execute(JsonData input) {
-        JsonData moreJsonData = decorate(input);
-        log.debug("executing action with: {}", moreJsonData);
-        return action.execute(moreJsonData);
+    public CompletionStage<Void> execute(JsonType input) {
+        JsonType moreJson = decorate(input);
+        log.debug("executing action with: {}", moreJson);
+        return action.apply(moreJson);
     }
 
-    private JsonData decorate(JsonData jsonData) {
-        JsonData copy = JsonData.createEmpty();
-        copy.merge(jsonData);
-        vars.forEach((var, mapper) -> copy.put(var, mapper.execute(jsonData)));
+    private JsonType decorate(JsonType input) {
+        JsonObject copy = new JsonObject();
+        copy.merge(input.asObject());
+        vars.forEach((var, mapper) -> copy.put(var, mapper.apply(input)));
         return copy;
     }
 }
