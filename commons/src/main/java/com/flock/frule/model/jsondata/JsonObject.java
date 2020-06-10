@@ -35,6 +35,10 @@ public class JsonObject extends JsonType {
         return underlyingMap.keySet();
     }
 
+    public Set<Map.Entry<String, JsonType>> entrySet() {
+        return underlyingMap.entrySet();
+    }
+
     public void merge(JsonObject other) {
         underlyingMap.putAll(other.underlyingMap);
     }
