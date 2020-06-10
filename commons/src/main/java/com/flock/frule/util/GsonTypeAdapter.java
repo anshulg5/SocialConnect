@@ -9,8 +9,6 @@ import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
 import java.util.Map;
 
-//import com.google.gson.*;
-
 public class GsonTypeAdapter extends TypeAdapter<JsonType> {
 
     @Override
