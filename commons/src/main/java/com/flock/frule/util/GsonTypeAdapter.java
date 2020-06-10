@@ -29,13 +29,9 @@ public class GsonTypeAdapter extends TypeAdapter<JsonType> {
 
         } else if (value.isArray()) {
             out.beginArray();
-            JsonArray array = value.asArray();
-            int size = array.size();
-            for(int i=0;i<size;++i)
-                write(out,array.get(i));
-//            for (JsonElement e : value.getAsJsonArray()) {
-//                write(out, e);
-//            }
+            for (JsonType e : value.asArray()) {
+                write(out, e);
+            }
             out.endArray();
 
         } else if (value.isObject()) {

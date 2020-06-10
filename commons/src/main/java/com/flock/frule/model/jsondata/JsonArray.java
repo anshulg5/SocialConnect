@@ -1,9 +1,10 @@
 package com.flock.frule.model.jsondata;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class JsonArray extends JsonType {
+public class JsonArray extends JsonType implements Iterable<JsonType>{
     private final List<JsonType> underlyingList;
 
     public JsonArray() {
@@ -24,6 +25,11 @@ public class JsonArray extends JsonType {
 
     public int size() {
         return underlyingList.size();
+    }
+
+    @Override
+    public Iterator<JsonType> iterator() {
+        return underlyingList.iterator();
     }
 
     @Override

@@ -40,12 +40,11 @@ public class PathNode implements Node<JsonType> {
         if(returnedValue.isNull())
             return returnedValue;
 
-        JsonArray collection = returnedValue.asArray();
-        int size = collection.size();
+        JsonArray path = returnedValue.asArray();
         JsonType current = input;
 
-        for (int i=0;i<size;++i) {
-            JsonPrimitive collectionElem = collection.get(i).asPrimitive();
+        for (JsonType p: path) {
+            JsonPrimitive collectionElem = p.asPrimitive();
             if (current.isArray()){
                 int index = collectionElem.getAsInteger();
                 current = current.asArray().get(index);
