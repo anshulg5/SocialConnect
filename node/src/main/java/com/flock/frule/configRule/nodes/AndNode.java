@@ -7,7 +7,8 @@ import com.flock.frule.model.jsondata.JsonObject;
 import com.flock.frule.model.jsondata.JsonType;
 
 import java.io.InvalidObjectException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 public class AndNode implements Node<Boolean> {
     public static final String TYPE = "AND";
@@ -26,37 +27,6 @@ public class AndNode implements Node<Boolean> {
             throw new InvalidObjectException("Expected JsonArray");
         }
 
-    }
-
-    public AndNode(List<Map<String,Object>> ruleMap, Map<String,Object> symbolTable) throws IllegalAccessException {
-        nodeCollection = new ArrayList<>();
-        Iterator<Map<String, Object>> iterator = ruleMap.iterator();
-        while(iterator.hasNext()){
-            Map<String, Object> map = iterator.next();
-            if(map.size() == 1) {
-                String key = map.keySet().iterator().next();
-                Node<Boolean> node = NodeManager.create(key,map.get(key),symbolTable);
-                nodeCollection.add(node);
-            }
-            else {
-                System.out.println("Invalid 'AND' format");
-            }
-        }
-    }
-
-    public AndNode(List<Map<String,Object>> ruleMap) throws IllegalAccessException {
-        nodeCollection = new ArrayList<>();
-        Iterator<Map<String, Object>> iterator = ruleMap.iterator();
-        while(iterator.hasNext()){
-            Map<String, Object> map = iterator.next();
-            if(map.size() == 1) {
-                Node<Boolean> node = NodeManager.create(map);
-                nodeCollection.add(node);
-            }
-            else {
-                System.out.println("Invalid 'AND' format");
-            }
-        }
     }
 
     @Override

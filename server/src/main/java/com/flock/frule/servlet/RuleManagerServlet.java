@@ -1,9 +1,8 @@
 package com.flock.frule.servlet;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flock.frule.app.RuleApp;
+import com.flock.frule.model.jsondata.JsonType;
+import com.flock.frule.util.Serializer;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
@@ -12,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 import java.io.PrintWriter;
 import java.util.Map;
 
@@ -64,21 +64,20 @@ public class RuleManagerServlet extends HttpServlet {
 
     private void addRule(HttpServletRequest req, HttpServletResponse resp){
         String ID = req.getParameter("id");
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String,Object> rule = null;
+        JsonType jsonRule;
         try {
             String ruleString = req.getParameter("rule");
             if(ID==null || ruleString==null)
                 throw new NullPointerException();
-            rule = mapper.readValue(ruleString,new TypeReference<Map<String,Object>>(){});
-        } catch (NullPointerException | IOException e){
+            jsonRule = Serializer.fromJson(ruleString);
+        } catch (NullPointerException e){
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
         Boolean success=false;
         try {
-            success = ruleApp.addRule(ID, rule);
-        } catch (IllegalAccessException | JsonProcessingException e) {
+            success = ruleApp.addRule(ID, jsonRule);
+        } catch (IllegalAccessException | InvalidObjectException e) {
             e.printStackTrace();
         }
         setSuccessMsg(resp,success,"added","duplicate");    //used to set Error 403 in case of duplicacy
@@ -90,29 +89,28 @@ public class RuleManagerServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
-        Boolean success=false;
+        Boolean success;
         success = ruleApp.deleteRule(ID);
         setSuccessMsg(resp,success,"deleted","not present");
     }
 
     private void updateRule(HttpServletRequest req, HttpServletResponse resp){
         String ID = req.getParameter("id");
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String,Object> rule = null;
+        JsonType jsonRule;
         try {
             String ruleString = req.getParameter("rule");
             if(ID==null || ruleString==null)
                 throw new NullPointerException();
-            rule = mapper.readValue(ruleString,new TypeReference<Map<String,Object>>(){});
-        } catch (NullPointerException | IOException e){
+            jsonRule = Serializer.fromJson(ruleString);
+        } catch (NullPointerException e){
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
         Boolean success=false;
         try {
-            success = ruleApp.updateRule(ID, rule);
+            success = ruleApp.updateRule(ID, jsonRule);
             System.out.println(success);
-        } catch (IllegalAccessException | JsonProcessingException e) {
+        } catch (IllegalAccessException | InvalidObjectException e) {
             e.printStackTrace();
         }
         setSuccessMsg(resp,success,"updated","not present");

@@ -1,12 +1,12 @@
 package com.flock.frule.app;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.flock.frule.dao.RuleDao;
 import com.flock.frule.model.Rule;
 import com.flock.frule.model.jsondata.JsonType;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import java.io.InvalidObjectException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,12 +26,12 @@ public class RuleApp {
         rulesMap = ruleDao.getRules();
     }
 
-    public Boolean addRule(String ruleID, Map<String, Object> ruleMap) throws IllegalAccessException, JsonProcessingException {
+    public Boolean addRule(String ruleID, JsonType jsonRule) throws IllegalAccessException, InvalidObjectException {
         if(rulesMap.containsKey(ruleID)) {
             System.out.println("rule already there");
             return false;
         }
-        Rule rule = new Rule(ruleID,ruleMap);
+        Rule rule = new Rule(ruleID, jsonRule);
         ruleDao.addRule(rule);
         rulesMap.put(ruleID,rule);
         return true;
@@ -47,13 +47,13 @@ public class RuleApp {
         return true;
     }
 
-    public Boolean updateRule(String ruleID, Map<String, Object> ruleMap) throws IllegalAccessException, JsonProcessingException {
+    public Boolean updateRule(String ruleID, JsonType jsonRule) throws IllegalAccessException, InvalidObjectException {
         if(!rulesMap.containsKey(ruleID)) {
             System.out.println("non-existent rule");
             return false;
         }
         ruleDao.deleteRule(ruleID);
-        Rule rule = new Rule(ruleID,ruleMap);
+        Rule rule = new Rule(ruleID, jsonRule);
         ruleDao.addRule(rule);
         rulesMap.put(ruleID,rule);
         return true;

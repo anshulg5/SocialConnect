@@ -1,5 +1,7 @@
 package com.flock.frule.model.jsondata;
 
+import com.flock.frule.util.Serializer;
+
 public class JsonType {
 
     public boolean isObject() {
@@ -40,5 +42,8 @@ public class JsonType {
         throw new ClassCastException();
     }
 
-
+    @Override
+    public String toString() {
+        return Serializer.toJson(this);
+    }
 }

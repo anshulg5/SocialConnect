@@ -8,8 +8,6 @@ import com.flock.frule.model.jsondata.JsonPrimitive;
 import com.flock.frule.model.jsondata.JsonType;
 
 import java.io.InvalidObjectException;
-import java.util.Iterator;
-import java.util.Map;
 
 public class PathNode implements Node<JsonType> {
 
@@ -35,27 +33,6 @@ public class PathNode implements Node<JsonType> {
             collectionNode = NodeManager.create(JsonArrayNode.TYPE, arg.asArray());
         }
     }
-
-    public PathNode(Map<String, Object> map, Map<String, Object> symbolTable) throws IllegalAccessException {
-        if (map.size() == 1) {
-            Iterator<String> iterator = map.keySet().iterator();
-            while (iterator.hasNext()) {
-                String key = iterator.next();
-                collectionNode = NodeManager.create(key, map.get(key), symbolTable);
-            }
-        }
-    }
-
-    public PathNode(Map<String, Object> map) throws IllegalAccessException {
-        if (map.size() == 1) {
-            Iterator<String> iterator = map.keySet().iterator();
-            while (iterator.hasNext()) {
-                String key = iterator.next();
-                collectionNode = NodeManager.create(map);
-            }
-        }
-    }
-
 
     @Override
     public JsonType apply(JsonType input) {

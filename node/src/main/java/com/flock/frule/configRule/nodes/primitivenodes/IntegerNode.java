@@ -7,18 +7,7 @@ import com.flock.frule.model.jsondata.JsonType;
 
 public class IntegerNode implements Node<JsonPrimitive> {
     private final static String TYPE = "INT";
-
     private final JsonPrimitive jsonInteger;
-
-
-    public IntegerNode(Object value) {
-        Integer val;
-        if(value instanceof String)
-            val = Integer.parseInt((String)value);
-        else
-            val = (Integer)value;
-        jsonInteger = new JsonPrimitive(val);
-    }
 
     public IntegerNode(JsonObject json) {
         JsonType val = json.get(TYPE);

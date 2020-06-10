@@ -1,37 +1,28 @@
 package com.flock.frule.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.flock.frule.model.jsondata.JsonType;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import java.util.Map;
 import java.util.concurrent.CompletionException;
 
 public class Serializer {
-    private static final Gson gson = new Gson();
-    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final GsonBuilder gsonBuilder = new GsonBuilder();
+    private static final Gson gson = gsonBuilder.registerTypeAdapter(JsonType.class, new GsonTypeAdapter()).create();
 
     public static <T> byte[] getJsonBytes(T data, String charset) {
         try {
-            return gson.toJson(data).getBytes(charset);
+            return gson.toJson(data, JsonType.class).getBytes(charset);
         } catch (Exception e) {
             throw new CompletionException(e);
         }
     }
 
-//    public static Map fromJson(String json) {
-//        return gson.fromJson(json, Map.class);
-//    }
-
-    public static Map fromJson(String json) {
-        try {
-            return mapper.readValue(json, Map.class);
-        } catch (JsonProcessingException e) {
-            throw new CompletionException(e);
-        }
+    public static JsonType fromJson(String json) {
+        return gson.fromJson(json, JsonType.class);
     }
 
     public static <T> String toJson(T data ){
-        return gson.toJson(data);
+        return gson.toJson(data, JsonType.class);
     }
 }

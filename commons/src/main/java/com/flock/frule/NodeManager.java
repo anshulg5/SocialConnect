@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.InvalidObjectException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 public class NodeManager {
@@ -29,54 +28,18 @@ public class NodeManager {
         return hashMap.containsKey(nodeType);
     }
 
-    public static Node create(String nodeType, Object nodeValue, Map<String,Object> symbolTable) throws IllegalAccessException {
-        if(!hashMap.containsKey(nodeType)){
-            System.out.println("cannot identify key: "+ nodeType);
-            throw new IllegalAccessException();
-        }
-        NodeFactory nodeFactory = getNodeFactory(nodeType);
-        return nodeFactory.getInstance(nodeValue,symbolTable);
-    }
-
-    public static Node create(Map<String, Object> ruleMap, Map<String,Object> symbolTable) throws IllegalAccessException {
-        String nodeType = ruleMap.keySet().iterator().next();
-        Object nodeValue = ruleMap.get(nodeType);
-        if(!hashMap.containsKey(nodeType)){
-            System.out.println("cannot identify key: "+ nodeType);
-            throw new IllegalAccessException();
-        }
-        NodeFactory nodeFactory = getNodeFactory(nodeType);
-        return nodeFactory.getInstance(nodeValue,symbolTable);
-    }
-
-    public static Node create(Map<String, Object> ruleMap) throws IllegalAccessException {
-        String nodeType = ruleMap.keySet().iterator().next();
-        Object nodeValue = ruleMap.get(nodeType);
-        System.out.println(nodeType);
-        System.out.println("    child: "+nodeValue);
-        if(!hashMap.containsKey(nodeType)){
-            System.out.println("cannot identify key: "+ nodeType);
-            throw new IllegalAccessException();
-        }
-        NodeFactory nodeFactory = getNodeFactory(nodeType);
-        return nodeFactory.getInstance(nodeValue);
-    }
-
     public static Node create(JsonType json) throws IllegalAccessException, InvalidObjectException {
-        if(json.isObject()){
-            JsonObject jsonObject = json.asObject();
-            Set<String> keySet = jsonObject.getKeys();
-            if(keySet.size()!=1){
-                throw new InvalidObjectException("Only one key expected in the JsonObject");
-            }
-            String nodeType = keySet.iterator().next();
-            log.debug(nodeType + " : " + jsonObject.get(nodeType));
-            if(!hashMap.containsKey(nodeType))
-                throw new IllegalAccessException("cannot identify key: "+ nodeType);
-            return getNodeFactory(nodeType).getInstance(jsonObject);
+        JsonObject jsonObject = json.asObject();
+        Set<String> keySet = jsonObject.getKeys();
+        if(keySet.size()!=1){
+            throw new InvalidObjectException("Only one key expected in the JsonObject");
         }
-        else
-            throw new InvalidObjectException("Expected JsonObject");
+        String nodeType = keySet.iterator().next();
+        log.debug(nodeType + " : " + jsonObject.get(nodeType));
+        if(!hashMap.containsKey(nodeType))
+            throw new IllegalAccessException("cannot identify key: "+ nodeType);
+        return getNodeFactory(nodeType).getInstance(jsonObject);
+
     }
     
     public static Node create(String nodeType, JsonType json) throws IllegalAccessException, InvalidObjectException {

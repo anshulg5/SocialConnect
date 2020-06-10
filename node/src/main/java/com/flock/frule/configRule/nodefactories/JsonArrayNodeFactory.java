@@ -6,21 +6,10 @@ import com.flock.frule.model.Node;
 import com.flock.frule.model.NodeFactory;
 import com.flock.frule.model.jsondata.JsonType;
 
-import java.util.Map;
-
 public class JsonArrayNodeFactory implements NodeFactory {
     static {
         JsonArrayNodeFactory jsonArrayOperator = new JsonArrayNodeFactory();
         NodeManager.registerNodeFactory("JSONArr",jsonArrayOperator);
-    }
-    @Override
-    public Node getInstance(Object value, Map<String, Object> symbolTable) {
-        return null;
-    }
-
-    @Override
-    public Node getInstance(Object value) {
-        return null;
     }
 
     @Override

@@ -7,13 +7,7 @@ import com.flock.frule.model.jsondata.JsonType;
 
 public class StringNode implements Node<JsonPrimitive> {
     private final static String TYPE = "STR";
-
     private final JsonPrimitive jsonString;
-
-
-    public StringNode(Object value) {
-        jsonString = new JsonPrimitive(String.valueOf(value));
-    }
 
     public StringNode(JsonObject json) {
         JsonType val = json.get(TYPE);

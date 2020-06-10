@@ -7,21 +7,11 @@ import com.flock.frule.model.NodeFactory;
 import com.flock.frule.model.jsondata.JsonType;
 
 import java.io.InvalidObjectException;
-import java.util.Map;
 
 public class PathNodeFactory implements NodeFactory {
     static {
         PathNodeFactory pathOperator = new PathNodeFactory();
         NodeManager.registerNodeFactory("PTH",pathOperator);
-    }
-    @Override
-    public Node getInstance(Object value, Map<String, Object> symbolTable) throws IllegalAccessException {
-        return new PathNode((Map<String, Object>) value,symbolTable);
-    }
-
-    @Override
-    public Node getInstance(Object value) throws IllegalAccessException {
-        return new PathNode((Map<String, Object>) value);
     }
 
     @Override

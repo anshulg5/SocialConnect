@@ -6,22 +6,10 @@ import com.flock.frule.model.Node;
 import com.flock.frule.model.NodeFactory;
 import com.flock.frule.model.jsondata.JsonType;
 
-import java.util.Map;
-
 public class IntegerNodeFactory implements NodeFactory {
     static {
         IntegerNodeFactory integerNodeOperator = new IntegerNodeFactory();
         NodeManager.registerNodeFactory("INT",integerNodeOperator);
-    }
-
-    @Override
-    public Node getInstance(Object value, Map<String, Object> symbolTable) {
-        return new IntegerNode(value);
-    }
-
-    @Override
-    public Node getInstance(Object value) {
-        return new IntegerNode(value);
     }
 
     @Override

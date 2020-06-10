@@ -1,10 +1,11 @@
 package com.flock.frule.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flock.frule.TestExtension;
 import com.flock.frule.app.RuleApp;
+import com.flock.frule.model.jsondata.JsonType;
+import com.flock.frule.util.Serializer;
 import com.google.gson.JsonParser;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,7 +17,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.util.Map;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,10 +34,10 @@ public class RulesApiTest {
     @MethodSource("oneRuleIdAndOneRuleStringProvider")
     public void shouldReturnTrue_whenNewCorrectRuleIsAdded(String id, String ruleString) throws IOException, IllegalAccessException {
         //given
-        Map<String,Object> rule = mapper.readValue(ruleString,new TypeReference<Map<String,Object>>(){});
+        JsonType jsonRule = Serializer.fromJson(ruleString);
 
         //when
-        Boolean status = ruleApp.addRule(id,rule);
+        Boolean status = ruleApp.addRule(id,jsonRule);
 
         //then
         assertTrue(status);
@@ -51,12 +51,12 @@ public class RulesApiTest {
     @MethodSource("oneRuleIdAndTwoRuleStringProvider")
     public void shouldReturnFalse_whenDuplicateCorrectRuleIsAdded(String id, String ruleString1, String ruleString2) throws IOException, IllegalAccessException {
         //given
-        Map<String,Object> rule1 = mapper.readValue(ruleString1,new TypeReference<Map<String,Object>>(){});
-        Map<String,Object> rule2 = mapper.readValue(ruleString2,new TypeReference<Map<String,Object>>(){});
+        JsonType jsonRule1 = Serializer.fromJson(ruleString1);
+        JsonType jsonRule2 = Serializer.fromJson(ruleString2);
 
         //when
-        ruleApp.addRule(id,rule1);
-        Boolean status = ruleApp.addRule(id,rule2);
+        ruleApp.addRule(id,jsonRule1);
+        Boolean status = ruleApp.addRule(id,jsonRule2);
 
         //then
         assertFalse(status);
@@ -69,12 +69,12 @@ public class RulesApiTest {
     @MethodSource("oneRuleIdAndTwoRuleStringProvider")
     public void shouldReturnTrue_whenRuleIsUpdated(String id, String ruleString1, String ruleString2) throws IOException, IllegalAccessException {
         //given
-        Map<String,Object> rule = mapper.readValue(ruleString1,new TypeReference<Map<String,Object>>(){});
-        Map<String,Object> newRule = mapper.readValue(ruleString2,new TypeReference<Map<String,Object>>(){});
+        JsonType jsonRule1 = Serializer.fromJson(ruleString1);
+        JsonType jsonRule2 = Serializer.fromJson(ruleString2);
 
         //when
-        ruleApp.addRule(id,rule);
-        Boolean status = ruleApp.updateRule(id,newRule);
+        ruleApp.addRule(id,jsonRule1);
+        Boolean status = ruleApp.updateRule(id,jsonRule2);
 
         //then
         assertTrue(status);
@@ -88,10 +88,10 @@ public class RulesApiTest {
     @MethodSource("oneRuleIdAndOneRuleStringProvider")
     public void shouldReturnFalse_whenRuleToBeUpdatedIsNotPresent(String id, String ruleString) throws IOException, IllegalAccessException {
         //given
-        Map<String,Object> rule = mapper.readValue(ruleString,new TypeReference<Map<String,Object>>(){});
+        JsonType jsonRule = Serializer.fromJson(ruleString);
 
         //when
-        Boolean status = ruleApp.updateRule(id,rule);
+        Boolean status = ruleApp.updateRule(id,jsonRule);
 
         //then
         assertFalse(status);
@@ -105,10 +105,10 @@ public class RulesApiTest {
     @MethodSource("oneRuleIdAndOneRuleStringProvider")
     public void shouldReturnTrue_whenRuleIsDeleted(String id, String ruleString) throws IOException, IllegalAccessException {
         //given
-        Map<String,Object> rule = mapper.readValue(ruleString,new TypeReference<Map<String,Object>>(){});
+        JsonType jsonRule = Serializer.fromJson(ruleString);
 
         //when
-        ruleApp.addRule(id,rule);
+        ruleApp.addRule(id,jsonRule);
         Boolean status = ruleApp.deleteRule(id);
 
         //then
@@ -123,10 +123,10 @@ public class RulesApiTest {
     @MethodSource
     public void shouldThrowIllegalAccessException_whenKeyInRuleIsUnknown(String id, String ruleString) throws JsonProcessingException {
         //given
-        Map<String,Object> rule = mapper.readValue(ruleString,new TypeReference<Map<String,Object>>(){});
+        JsonType jsonRule = Serializer.fromJson(ruleString);
 
         //when_then
-        assertThrows(IllegalAccessException.class, () -> ruleApp.addRule(id,rule));
+        assertThrows(IllegalAccessException.class, () -> ruleApp.addRule(id,jsonRule));
         assertNull(ruleApp.fetchRules().get(id));
 
         //clean
@@ -176,7 +176,7 @@ public class RulesApiTest {
                 "{" +
                         "EQ: [" +
                                 "{" +
-                                    "PTH: { STRLIST: [arr,1] }" +
+                                    "PTH: [arr,1]" +
                                 "}," +
                                 "{" +
                                     "INT: 52" +
@@ -190,7 +190,7 @@ public class RulesApiTest {
                                 "{" +
                                     "EQ: [" +
                                             "{" +
-                                                "PTH: { STRLIST: [from,firstName] } " +
+                                                "PTH: [from,firstName] " +
                                             "}," +
                                             "{" +
                                                 "STR: Anshul" +
@@ -202,7 +202,7 @@ public class RulesApiTest {
                                             "{" +
                                                 "EQ: [" +
                                                         "{" +
-                                                            "PTH: { STRLIST: [text] } " +
+                                                            "PTH: [text]" +
                                                         "}," +
                                                         "{" +
                                                             "STR: Hi" +
@@ -218,7 +218,7 @@ public class RulesApiTest {
                 "{" +
                         "EQ: [" +
                                 "{" +
-                                    "PTH: { PTH: { STRLIST: [path_to] } }" +
+                                    "PTH: { PTH: [path_to] }" +
                                 "}," +
                                 "{ " +
                                     "STR: Anshul " +
@@ -230,7 +230,7 @@ public class RulesApiTest {
                 "{" +
                         "EQL: [" +
                                 "{" +
-                                    "PTH: { PTH: { STRLIST: [path_to] } }" +
+                                    "PTH: { PTH: [path_to] }" +
                                 "}," +
                                 "{ " +
                                     "STR: Anshul " +
@@ -242,7 +242,7 @@ public class RulesApiTest {
                 "{" +
                         "EQ: [" +
                                 "{" +
-                                    "PTH: { PATH: { STRLIST: [path_to] } }" +
+                                    "PTH: { PATH: [path_to] }" +
                                 "}," +
                                 "{ " +
                                     "STR: Anshul " +

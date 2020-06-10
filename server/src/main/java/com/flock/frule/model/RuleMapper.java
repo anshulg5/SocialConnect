@@ -1,6 +1,7 @@
 package com.flock.frule.model;
 
 
+import com.flock.frule.util.Serializer;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ public class RuleMapper implements RowMapper<Rule> {
         String JSONString = resultSet.getString("JSONString");
         Rule rule = null;
         try {
-            rule = new Rule(ID, JSONString);
+            rule = new Rule(ID, Serializer.fromJson(JSONString));
         } catch (IllegalAccessException | IOException e) {
             e.printStackTrace();
         }

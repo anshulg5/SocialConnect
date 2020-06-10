@@ -7,17 +7,7 @@ import com.flock.frule.model.jsondata.JsonType;
 
 public class BooleanNode implements Node<JsonPrimitive> {
     private final static String TYPE = "BOOL";
-
     private final JsonPrimitive jsonBoolean;
-
-    public BooleanNode(Object value) {
-        Boolean val;
-        if(value instanceof String)
-            val = Boolean.valueOf((String) value);
-        else
-            val = (Boolean) value;
-        jsonBoolean = new JsonPrimitive(val);
-    }
 
     public BooleanNode(JsonObject json) {
         JsonType val = json.get(TYPE);
