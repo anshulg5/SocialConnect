@@ -9,7 +9,7 @@ import java.io.InvalidObjectException;
 public class Rule {
     private final String ID;
     private final String ruleString;
-    private final Node rootNode;
+    private final Node<Boolean> rootNode;
 
     public Rule(String ID, JsonType json) throws InvalidObjectException, IllegalAccessException {
         this.ID = ID;
@@ -18,7 +18,7 @@ public class Rule {
     }
 
     public Boolean validate(JsonType input){
-        return (Boolean) rootNode.apply(input);
+        return rootNode.apply(input);
     }
 
     public String getID() {

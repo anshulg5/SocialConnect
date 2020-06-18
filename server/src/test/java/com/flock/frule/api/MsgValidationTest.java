@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(TestExtension.class)
 public class MsgValidationTest {
 
-    private static Rule rule1, copyrule1, rule2, rule3, copyrule3, rule4, rule5, rule6, rule7;
+    private static Rule rule1, copyrule1, rule2, rule3, copyrule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10;
     private static JsonObject input1, input2, input3, input4, input5, input6, input7, input8, input9, input10,
             input11, input12, input13, input14, input15, input16, input17, input18, input19, input20;
 
@@ -72,6 +72,10 @@ public class MsgValidationTest {
                 Arguments.of(rule3, input11),
                 Arguments.of(rule5, input19),
                 Arguments.of(rule7, input1),
+                Arguments.of(rule8, input10),
+
+                // Path returns JsonObject! when collectionNode returns empty JsonArray
+                Arguments.of(rule9, input18),
 
                 //copies
                 Arguments.of(copyrule1, input1),
@@ -130,7 +134,8 @@ public class MsgValidationTest {
                 Arguments.of(rule3, input12),
                 Arguments.of(rule3, input13),
                 Arguments.of(rule3, input14),
-                Arguments.of(rule3, input15)
+                Arguments.of(rule3, input15),
+                Arguments.of(rule10, input18)
 
         );
     }
@@ -254,6 +259,42 @@ public class MsgValidationTest {
                 )
         );
         rule7 = new Rule("id7", ruleObject7);
+
+        JsonObject ruleObject8 = obj(
+                "EQ", arr(
+                        obj(
+                                "PTH", singletonListObject("PTH", "path_to")
+                        ),
+                        obj("JSONPrimitive", of("Anshul"))
+                )
+        );
+        rule8 = new Rule("id8", ruleObject8);
+
+        JsonObject ruleObject9 = obj(
+                "EQ", arr(
+                        obj(
+                                "PTH", singletonListObject("PTH", "path_to")
+                        ),
+                        obj("JSONObj", obj(
+                                "path_to", arr(),
+                                "name", of("Anshul")
+                                )
+                        )
+                )
+        );
+        rule9 = new Rule("id9", ruleObject9);
+
+        JsonObject ruleObject10 = obj(
+                "EQ", arr(
+                        obj(
+                                "BOOL", obj(
+                                        "PTH", singletonListObject("PTH", "path_to")
+                                )
+                        ),
+                        obj("BOOL",of(true))
+                )
+        );
+        rule10 = new Rule("id10", ruleObject10);
 
     }
 

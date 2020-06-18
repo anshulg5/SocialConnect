@@ -14,7 +14,7 @@ public class JsonObjectNode implements Node<JsonObject> {
         if(json.isObject()) {
             JsonObject temp;
             try{
-                temp = json.asObject().get("TYPE").asObject();
+                temp = json.asObject().get(TYPE).asObject();
             } catch(Exception e){
                 temp = json.asObject();
             }
