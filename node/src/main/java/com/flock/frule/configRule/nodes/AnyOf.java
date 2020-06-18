@@ -5,7 +5,7 @@ import com.flock.frule.model.jsondata.JsonType;
 
 import java.util.Collection;
 
-// Does Nothing for now.
+// Does Nothing for now. Is it even reqd., when we already have OrNode
 public class AnyOf<T> implements Node<Boolean> {
 
     Node<T> object;

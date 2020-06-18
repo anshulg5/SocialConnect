@@ -1,22 +1,22 @@
 package com.flock.frule.configRule.nodefactories;
 
 import com.flock.frule.NodeManager;
-import com.flock.frule.configRule.nodes.EqualsNode;
+import com.flock.frule.configRule.nodes.GreaterThanNode;
 import com.flock.frule.model.Node;
 import com.flock.frule.model.NodeFactory;
 import com.flock.frule.model.jsondata.JsonType;
 
 import java.io.InvalidObjectException;
 
-public class EqualsNodeFactory implements NodeFactory<Boolean> {
+public class GreaterThanNodeFactory implements NodeFactory<Boolean> {
 
     static {
-        EqualsNodeFactory equalsOperator = new EqualsNodeFactory();
-        NodeManager.registerNodeFactory("EQ",equalsOperator);
+        GreaterThanNodeFactory equalsOperator = new GreaterThanNodeFactory();
+        NodeManager.registerNodeFactory("GTR",equalsOperator);
     }
 
     @Override
     public Node<Boolean> getInstance(JsonType json) throws InvalidObjectException, IllegalAccessException {
-        return new EqualsNode(json.asObject());
+        return new GreaterThanNode(json.asObject());
     }
 }

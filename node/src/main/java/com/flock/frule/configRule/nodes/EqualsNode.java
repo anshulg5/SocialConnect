@@ -24,14 +24,19 @@ public class EqualsNode implements Node<Boolean> {
             left = NodeManager.create(jsonArray.get(0));
             right = NodeManager.create(jsonArray.get(1));
         } else {
-            throw new InvalidObjectException("Expected JsonArray");
+            throw new IllegalArgumentException("Expected JsonArray");
         }
     }
 
     @Override
     public Boolean apply(JsonType input) {
-        Object obj1 = left.apply(input);
-        Object obj2 = right.apply(input);
+        Object obj1, obj2;
+        try {
+            obj1 = left.apply(input);
+            obj2 = right.apply(input);
+        } catch(Exception e){
+            return false;
+        }
         if(obj1 instanceof JsonNull || obj2 instanceof JsonNull)
             return false;
         return obj1.equals(obj2);

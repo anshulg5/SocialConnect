@@ -1,4 +1,4 @@
-package com.flock.frule.configRule.nodes;
+package com.flock.frule.configRule.nodes.jsonnodes;
 
 import com.flock.frule.model.Node;
 import com.flock.frule.model.jsondata.JsonArray;
@@ -11,8 +11,10 @@ public class JsonArrayNode implements Node<JsonArray> {
     public JsonArrayNode(JsonType json) {
         if(json.isArray()) {
             this.jsonArray = json.asArray();
-        } else {
+        } else if(json.isObject()) {
             this.jsonArray = json.asObject().get(TYPE).asArray();
+        } else {
+            throw new IllegalArgumentException("type-mismatch");
         }
     }
 

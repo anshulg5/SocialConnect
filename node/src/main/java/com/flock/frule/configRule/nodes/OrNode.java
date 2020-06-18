@@ -6,12 +6,16 @@ import com.flock.frule.model.Node;
 import com.flock.frule.model.jsondata.JsonArray;
 import com.flock.frule.model.jsondata.JsonObject;
 import com.flock.frule.model.jsondata.JsonType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.Collection;
 
 public class OrNode implements Node<Boolean> {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     public static final String TYPE = "OR";
     private Collection< Node<Boolean>> nodeCollection;
 
@@ -20,21 +24,24 @@ public class OrNode implements Node<Boolean> {
         nodeCollection = new ArrayList<>();
         if(arg.isArray()){
             JsonArray jsonArray = arg.asArray();
-            int size = jsonArray.size();
-            for(int i=0;i<size;++i){
-                nodeCollection.add(NodeManager.create(jsonArray.get(i)));
-            }
+            for(JsonType elem: jsonArray)
+                nodeCollection.add(NodeManager.create(elem));
         } else {
-            throw new InvalidObjectException("Expected JsonArray");
+            throw new IllegalArgumentException("Expected JsonArray");
         }
 
     }
 
     @Override
-    public Boolean apply(JsonType bindings) {
-        Boolean result = false;
-        for (Node<Boolean> booleanNode : nodeCollection) result |= booleanNode.apply(bindings);
-        return result;
+    public Boolean apply(JsonType input) {
+        boolean orResult = false;
+        for (Node<Boolean> booleanNode : nodeCollection)
+            try {
+                orResult = orResult || booleanNode.apply(input);
+            } catch(Exception e){
+                log.info(e.toString());
+            }
+        return orResult;
     }
 
 }

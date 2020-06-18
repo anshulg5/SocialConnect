@@ -6,14 +6,16 @@ import com.flock.frule.model.Node;
 import com.flock.frule.model.NodeFactory;
 import com.flock.frule.model.jsondata.JsonType;
 
-public class IntegerNodeFactory implements NodeFactory {
+import java.io.InvalidObjectException;
+
+public class IntegerNodeFactory implements NodeFactory<Integer> {
     static {
         IntegerNodeFactory integerNodeOperator = new IntegerNodeFactory();
-        NodeManager.registerNodeFactory("INT",integerNodeOperator);
+        NodeManager.registerNodeFactory("INT", integerNodeOperator);
     }
 
     @Override
-    public Node getInstance(JsonType json) {
+    public Node<Integer> getInstance(JsonType json) throws InvalidObjectException, IllegalAccessException {
         return new IntegerNode(json.asObject());
     }
 }

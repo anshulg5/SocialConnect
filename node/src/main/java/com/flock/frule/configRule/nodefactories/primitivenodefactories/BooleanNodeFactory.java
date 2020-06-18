@@ -6,14 +6,15 @@ import com.flock.frule.model.Node;
 import com.flock.frule.model.NodeFactory;
 import com.flock.frule.model.jsondata.JsonType;
 
-public class BooleanNodeFactory implements NodeFactory {
+import java.io.InvalidObjectException;
+
+public class BooleanNodeFactory implements NodeFactory<Boolean> {
     static {
         BooleanNodeFactory booleanNodeOperator = new BooleanNodeFactory();
-        NodeManager.registerNodeFactory("BOOL",booleanNodeOperator);
+        NodeManager.registerNodeFactory("BOOL", booleanNodeOperator);
     }
-
     @Override
-    public Node getInstance(JsonType json) {
+    public Node<Boolean> getInstance(JsonType json) throws InvalidObjectException, IllegalAccessException {
         return new BooleanNode(json.asObject());
     }
 }

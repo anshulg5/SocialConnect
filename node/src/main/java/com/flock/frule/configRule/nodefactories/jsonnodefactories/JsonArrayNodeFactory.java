@@ -1,19 +1,20 @@
-package com.flock.frule.configRule.nodefactories;
+package com.flock.frule.configRule.nodefactories.jsonnodefactories;
 
 import com.flock.frule.NodeManager;
-import com.flock.frule.configRule.nodes.JsonArrayNode;
+import com.flock.frule.configRule.nodes.jsonnodes.JsonArrayNode;
 import com.flock.frule.model.Node;
 import com.flock.frule.model.NodeFactory;
+import com.flock.frule.model.jsondata.JsonArray;
 import com.flock.frule.model.jsondata.JsonType;
 
-public class JsonArrayNodeFactory implements NodeFactory {
+public class JsonArrayNodeFactory implements NodeFactory<JsonArray> {
     static {
         JsonArrayNodeFactory jsonArrayOperator = new JsonArrayNodeFactory();
         NodeManager.registerNodeFactory("JSONArr",jsonArrayOperator);
     }
 
     @Override
-    public Node getInstance(JsonType json) {
+    public Node<JsonArray> getInstance(JsonType json) {
         return new JsonArrayNode(json);
     }
 }

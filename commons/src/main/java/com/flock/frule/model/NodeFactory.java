@@ -4,6 +4,6 @@ import com.flock.frule.model.jsondata.JsonType;
 
 import java.io.InvalidObjectException;
 
-public interface NodeFactory {
-    Node getInstance(JsonType json) throws InvalidObjectException, IllegalAccessException;
+public interface NodeFactory<T> {
+    Node<T> getInstance(JsonType json) throws InvalidObjectException, IllegalAccessException;
 }

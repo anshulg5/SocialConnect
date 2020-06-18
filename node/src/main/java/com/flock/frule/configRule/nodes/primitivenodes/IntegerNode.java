@@ -1,26 +1,31 @@
 package com.flock.frule.configRule.nodes.primitivenodes;
 
+import com.flock.frule.NodeManager;
+import com.flock.frule.configRule.nodes.jsonnodes.JsonPrimitiveNode;
 import com.flock.frule.model.Node;
 import com.flock.frule.model.jsondata.JsonObject;
 import com.flock.frule.model.jsondata.JsonPrimitive;
 import com.flock.frule.model.jsondata.JsonType;
 
-public class IntegerNode implements Node<JsonPrimitive> {
-    private final static String TYPE = "INT";
-    private final JsonPrimitive jsonInteger;
+import java.io.InvalidObjectException;
 
-    public IntegerNode(JsonObject json) {
-        JsonType val = json.get(TYPE);
-        if(val.isPrimitive())
-            jsonInteger = val.asPrimitive();
-        else{
-            String message = String.format("type-mismatch while creating BooleanNode. EXPECTED: %s, PROVIDED: %s", JsonPrimitive.class, val.getClass());
-            throw new RuntimeException(message);
-        }
+public class IntegerNode implements Node<Integer> {
+    public static final String TYPE = "INT";
+    private final Node<JsonPrimitive> arg;
+
+    public IntegerNode(JsonObject json) throws InvalidObjectException, IllegalAccessException {
+        JsonType arg = json.get(TYPE);
+        if(arg.isObject())
+            this.arg = NodeManager.create(arg);
+        else if(arg.isPrimitive())
+            this.arg = new JsonPrimitiveNode(arg.asPrimitive());
+        else
+            throw new IllegalArgumentException("type-mismatch");
     }
 
+
     @Override
-    public JsonPrimitive apply(JsonType input) {
-        return jsonInteger;
+    public Integer apply(JsonType input) {
+        return arg.apply(input).getAsInteger();
     }
 }

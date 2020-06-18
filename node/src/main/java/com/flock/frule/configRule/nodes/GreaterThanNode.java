@@ -5,12 +5,16 @@ import com.flock.frule.model.Node;
 import com.flock.frule.model.jsondata.JsonArray;
 import com.flock.frule.model.jsondata.JsonObject;
 import com.flock.frule.model.jsondata.JsonType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InvalidObjectException;
 
 public class GreaterThanNode implements Node<Boolean> {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     private static final String TYPE = "GTR";
-    private Node left,right;
+    private Node<Integer> left,right;
 
     public GreaterThanNode(JsonObject json) throws InvalidObjectException, IllegalAccessException {
         JsonType arg = json.get(TYPE);
@@ -23,12 +27,17 @@ public class GreaterThanNode implements Node<Boolean> {
             left = NodeManager.create(jsonArray.get(0));
             right = NodeManager.create(jsonArray.get(1));
         } else {
-            throw new InvalidObjectException("Expected JsonArray");
+            throw new IllegalArgumentException("Expected JsonArray");
         }
     }
 
     @Override
     public Boolean apply(JsonType input) {
-        return null;
+        try{
+            return left.apply(input) > right.apply(input);
+        } catch(Exception e){
+            log.info(e.toString());
+            return false;
+        }
     }
 }

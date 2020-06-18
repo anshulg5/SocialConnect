@@ -8,7 +8,7 @@ import com.flock.frule.model.jsondata.JsonType;
 
 import java.io.InvalidObjectException;
 
-public class AndNodeFactory implements NodeFactory {
+public class AndNodeFactory implements NodeFactory<Boolean> {
 
     static {
         AndNodeFactory andOperator = new AndNodeFactory();
@@ -16,7 +16,7 @@ public class AndNodeFactory implements NodeFactory {
     }
 
     @Override
-    public Node getInstance(JsonType json) throws InvalidObjectException, IllegalAccessException {
+    public Node<Boolean> getInstance(JsonType json) throws InvalidObjectException, IllegalAccessException {
         return new AndNode(json.asObject());
     }
 }

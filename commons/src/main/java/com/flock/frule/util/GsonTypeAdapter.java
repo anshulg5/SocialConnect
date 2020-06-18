@@ -18,7 +18,10 @@ public class GsonTypeAdapter extends TypeAdapter<JsonType> {
         } else if (value.isPrimitive()) {
             JsonPrimitive primitive = value.asPrimitive();
             if (primitive.isNumber()) {
-                out.value(primitive.getAsNumber());
+                if(primitive.isIntegral())
+                    out.value(primitive.getAsLong());
+                else
+                    out.value(primitive.getAsNumber());
             } else if (primitive.isBoolean()) {
                 out.value(primitive.getAsBoolean());
             } else {

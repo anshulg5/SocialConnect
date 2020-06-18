@@ -1,6 +1,7 @@
 package com.flock.frule.configRule.nodes;
 
 import com.flock.frule.NodeManager;
+import com.flock.frule.configRule.nodes.jsonnodes.JsonArrayNode;
 import com.flock.frule.model.Node;
 import com.flock.frule.model.jsondata.JsonArray;
 import com.flock.frule.model.jsondata.JsonObject;
@@ -9,7 +10,7 @@ import com.flock.frule.model.jsondata.JsonType;
 
 import java.io.InvalidObjectException;
 
-public class PathNode implements Node<JsonType> {
+public class PathNode<T> implements Node<T> {
 
     /*
         {
@@ -30,19 +31,17 @@ public class PathNode implements Node<JsonType> {
         if (arg.isObject()) {
             collectionNode = NodeManager.create(arg.asObject());
         } else if (arg.isArray()) {
-            collectionNode = NodeManager.create(JsonArrayNode.TYPE, arg.asArray());
+            collectionNode = new JsonArrayNode(arg.asArray());
+        } else {
+            throw new IllegalArgumentException("type-mismatch");
         }
     }
 
     @Override
-    public JsonType apply(JsonType input) {
-        JsonType returnedValue = collectionNode.apply(input);
-        if(returnedValue.isNull())
-            return returnedValue;
+    public T apply(JsonType input) {
+        JsonArray path = collectionNode.apply(input);
 
-        JsonArray path = returnedValue.asArray();
         JsonType current = input;
-
         for (JsonType p: path) {
             JsonPrimitive collectionElem = p.asPrimitive();
             if (current.isArray()){
@@ -51,13 +50,11 @@ public class PathNode implements Node<JsonType> {
             }else if (current.isObject()){
                 String key = collectionElem.getAsString();
                 current = current.asObject().get(key);
-            }else if(current.isNull()) {
-                return current;
             }else {
-                throw new RuntimeException();
+                throw new IllegalArgumentException("cannot iterate over path on given input: " + input);
             }
         }
-        return current;
+        return (T) current;
     }
 
 }

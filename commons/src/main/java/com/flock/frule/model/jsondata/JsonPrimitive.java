@@ -32,6 +32,7 @@ public class JsonPrimitive extends JsonType {
         return underlyingValue.toString();
     }
 
+    //Converting string to number or not can be based on strictness
     public Number getAsNumber() {
         if(isString())
             return (getAsString().contains(".") ? Double.parseDouble(getAsString()) : Long.parseLong(getAsString()));
