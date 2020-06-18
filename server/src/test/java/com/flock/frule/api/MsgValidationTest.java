@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(TestExtension.class)
 public class MsgValidationTest {
 
-    private static Rule rule1, rule2, rule3, rule4, rule5, rule6;
+    private static Rule rule1, copyrule1, rule2, rule3, copyrule3, rule4, rule5, rule6, rule7;
     private static JsonObject input1, input2, input3, input4, input5, input6, input7, input8, input9, input10,
             input11, input12, input13, input14, input15, input16, input17, input18, input19, input20;
 
@@ -44,19 +44,19 @@ public class MsgValidationTest {
         assertThrows(NullPointerException.class, () -> rule.validate(input));
     }
 
-    @ParameterizedTest
+//    @ParameterizedTest
     @MethodSource
     public void shouldThrowIndexOutOfBoundsException_whenOutOfRangeIndexInListIsAccessedInMsg(Rule rule, JsonObject input) {
         assertThrows(IndexOutOfBoundsException.class, () -> rule.validate(input));
     }
 
-    @ParameterizedTest
+//    @ParameterizedTest
     @MethodSource
     public void shouldThrowNumberFormatException_whenListInMsgGetsANonNumericIndex(Rule rule, JsonObject input) {
         assertThrows(NumberFormatException.class, () -> rule.validate(input));
     }
 
-    @ParameterizedTest
+//    @ParameterizedTest
     @MethodSource
     public void shouldThrowClassCastException_whenInnerPathInRuleDoesNotReturnList(Rule rule, JsonObject input) {
         assertThrows(ClassCastException.class, () -> rule.validate(input));
@@ -70,7 +70,14 @@ public class MsgValidationTest {
                 Arguments.of(rule2, input7),
                 Arguments.of(rule3, input10),
                 Arguments.of(rule3, input11),
-                Arguments.of(rule5, input19)
+                Arguments.of(rule5, input19),
+                Arguments.of(rule7, input1),
+
+                //copies
+                Arguments.of(copyrule1, input1),
+                Arguments.of(copyrule1, input2),
+                Arguments.of(copyrule3, input10),
+                Arguments.of(copyrule3, input11)
         );
     }
 
@@ -110,7 +117,21 @@ public class MsgValidationTest {
                 Arguments.of(rule3, input8),
                 Arguments.of(rule3, input9),
 
-                Arguments.of(rule6, input1)
+                // JsonNulls equality return false
+                Arguments.of(rule6, input1),
+
+                //IndexOutOfBoundsException
+                Arguments.of(rule1, input5),
+
+                //NumberFormatException
+                Arguments.of(rule4, input1),
+
+                //ClassCastException
+                Arguments.of(rule3, input12),
+                Arguments.of(rule3, input13),
+                Arguments.of(rule3, input14),
+                Arguments.of(rule3, input15)
+
         );
     }
 
@@ -123,22 +144,19 @@ public class MsgValidationTest {
 
     private static Stream<Arguments> shouldThrowIndexOutOfBoundsException_whenOutOfRangeIndexInListIsAccessedInMsg() {
         return Stream.of(
-                Arguments.of(rule1, input5)
+
         );
     }
 
     private static Stream<Arguments> shouldThrowNumberFormatException_whenListInMsgGetsANonNumericIndex() {
         return Stream.of(
-                Arguments.of(rule4, input1)
+
         );
     }
 
     private static Stream<Arguments> shouldThrowClassCastException_whenInnerPathInRuleDoesNotReturnList() {
         return Stream.of(
-                Arguments.of(rule3, input12),
-                Arguments.of(rule3, input13),
-                Arguments.of(rule3, input14),
-                Arguments.of(rule3, input15)
+
         );
     }
 
@@ -146,20 +164,31 @@ public class MsgValidationTest {
     @BeforeAll
     private void loadRuleList() throws IOException, IllegalAccessException {
 
-        JsonObject ruleObjec1 = obj(
+        JsonObject ruleObject1 = obj(
                 "EQ", arr(
-                        singletonListObject("PTH","array", 1),
+                        obj("INT", singletonListObject("PTH","array", 1)),
                         obj("INT", of(52))
                 )
         );
-        rule1 = new Rule("id1", ruleObjec1);
+        rule1 = new Rule("id1", ruleObject1);
+
+        //copy rule1
+        JsonObject copyruleObject1 = obj(
+                "EQ", arr(
+                        singletonListObject("PTH","array", 1),
+                        obj("JSONPrimitive", of(52))
+                )
+        );
+        copyrule1 = new Rule("copyid1", copyruleObject1);
+
+
 
         JsonObject ruleObject2 = obj(
                 "AND", arr(
                         obj(
                                 "EQ", arr(
                                         obj("STR", of("Anshul")),
-                                        singletonListObject("PTH", "from", "firstName")
+                                        obj("STR", singletonListObject("PTH", "from", "firstName"))
 
                                 )
                         ),
@@ -168,7 +197,7 @@ public class MsgValidationTest {
                                         obj(
                                                 "EQ", arr(
                                                         obj("STR", of("Hi")),
-                                                        singletonListObject("PTH", "text")
+                                                        obj("STR", singletonListObject("PTH", "text"))
                                                 )
                                         )
                                 )
@@ -180,14 +209,23 @@ public class MsgValidationTest {
         JsonObject ruleObject3 = obj(
                 "EQ", arr(
                         obj("STR", of("Anshul")),
-                        obj("PTH", singletonListObject("PTH", "path_to"))
+                        obj("STR", obj("PTH", singletonListObject("PTH", "path_to")))
                 )
         );
         rule3 = new Rule("id3", ruleObject3);
 
+        //copy rule3
+        JsonObject copyruleObject3 = obj(
+                "EQ", arr(
+                        obj("JSONPrimitive", of("Anshul")),
+                        obj("PTH", singletonListObject("PTH", "path_to"))
+                )
+        );
+        copyrule3 = new Rule("copyid3", copyruleObject3);
+
         JsonObject ruleObject4 = obj(
                 "EQ", arr(
-                        singletonListObject("PTH", "array", "non-numeric-index"),
+                        obj("INT", singletonListObject("PTH", "array", "non-numeric-index")), //make copy
                         obj("INT", of(52))
                 )
         );
@@ -208,6 +246,14 @@ public class MsgValidationTest {
                 )
         );
         rule6 = new Rule("id6", ruleObject6);
+
+        JsonObject ruleObject7 = obj(
+                "AND", arr(
+                        obj("BOOL", of(true)),
+                        obj("BOOL", of(true))
+                )
+        );
+        rule7 = new Rule("id7", ruleObject7);
 
     }
 
