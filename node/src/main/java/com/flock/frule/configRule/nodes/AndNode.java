@@ -25,7 +25,7 @@ public class AndNode implements Node<Boolean> {
             for(JsonType elem: jsonArray)
                 nodeCollection.add(NodeManager.create(elem));
         } else {
-            throw new IllegalArgumentException("Expected JsonArray");
+            throw new InvalidObjectException("Expected JsonArray");
         }
 
     }

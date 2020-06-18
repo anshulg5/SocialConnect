@@ -7,6 +7,8 @@ import com.flock.frule.model.NodeFactory;
 import com.flock.frule.model.jsondata.JsonPrimitive;
 import com.flock.frule.model.jsondata.JsonType;
 
+import java.io.InvalidObjectException;
+
 public class JsonPrimitiveNodeFactory implements NodeFactory<JsonPrimitive> {
     static {
         JsonPrimitiveNodeFactory jsonPrimitiveOperator = new JsonPrimitiveNodeFactory();
@@ -14,7 +16,7 @@ public class JsonPrimitiveNodeFactory implements NodeFactory<JsonPrimitive> {
     }
 
     @Override
-    public Node<JsonPrimitive> getInstance(JsonType json) {
+    public Node<JsonPrimitive> getInstance(JsonType json) throws InvalidObjectException {
         return new JsonPrimitiveNode(json);
     }
 }

@@ -24,7 +24,7 @@ public class EqualsNode implements Node<Boolean> {
             left = NodeManager.create(jsonArray.get(0));
             right = NodeManager.create(jsonArray.get(1));
         } else {
-            throw new IllegalArgumentException("Expected JsonArray");
+            throw new InvalidObjectException("Expected JsonArray");
         }
     }
 

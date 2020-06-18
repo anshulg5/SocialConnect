@@ -4,11 +4,13 @@ import com.flock.frule.model.Node;
 import com.flock.frule.model.jsondata.JsonObject;
 import com.flock.frule.model.jsondata.JsonType;
 
+import java.io.InvalidObjectException;
+
 public class JsonObjectNode implements Node<JsonObject> {
     public static final String TYPE = "JSONObj";
     private final JsonObject jsonObject;
 
-    public JsonObjectNode(JsonType json) {
+    public JsonObjectNode(JsonType json) throws InvalidObjectException {
         if(json.isObject()) {
             JsonObject temp;
             try{
@@ -18,7 +20,7 @@ public class JsonObjectNode implements Node<JsonObject> {
             }
             this.jsonObject = temp;
         } else {
-            throw new IllegalArgumentException("type-mismatch");
+            throw new InvalidObjectException("type-mismatch");
         }
     }
 

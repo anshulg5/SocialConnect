@@ -25,7 +25,7 @@ public class NotNode implements Node<Boolean> {
             }
             this.arg = NodeManager.create(jsonArray.get(0));
         } else {
-            throw new IllegalArgumentException("Expected JsonArray");
+            throw new InvalidObjectException("Expected JsonArray");
         }
 
     }

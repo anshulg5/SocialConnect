@@ -7,6 +7,8 @@ import com.flock.frule.model.NodeFactory;
 import com.flock.frule.model.jsondata.JsonArray;
 import com.flock.frule.model.jsondata.JsonType;
 
+import java.io.InvalidObjectException;
+
 public class JsonArrayNodeFactory implements NodeFactory<JsonArray> {
     static {
         JsonArrayNodeFactory jsonArrayOperator = new JsonArrayNodeFactory();
@@ -14,7 +16,7 @@ public class JsonArrayNodeFactory implements NodeFactory<JsonArray> {
     }
 
     @Override
-    public Node<JsonArray> getInstance(JsonType json) {
+    public Node<JsonArray> getInstance(JsonType json) throws InvalidObjectException {
         return new JsonArrayNode(json);
     }
 }

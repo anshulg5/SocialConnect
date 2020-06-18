@@ -20,7 +20,7 @@ public class IntegerNode implements Node<Integer> {
         else if(arg.isPrimitive())
             this.arg = new JsonPrimitiveNode(arg.asPrimitive());
         else
-            throw new IllegalArgumentException("type-mismatch");
+            throw new InvalidObjectException("type-mismatch");
     }
 
 

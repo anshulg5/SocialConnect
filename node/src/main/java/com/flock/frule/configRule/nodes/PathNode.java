@@ -33,7 +33,7 @@ public class PathNode<T> implements Node<T> {
         } else if (arg.isArray()) {
             collectionNode = new JsonArrayNode(arg.asArray());
         } else {
-            throw new IllegalArgumentException("type-mismatch");
+            throw new InvalidObjectException("type-mismatch");
         }
     }
 

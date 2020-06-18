@@ -20,7 +20,7 @@ public class BooleanNode implements Node<Boolean> {
         else if(arg.isPrimitive())
             this.arg = new JsonPrimitiveNode(arg.asPrimitive());
         else
-            throw new IllegalArgumentException("type-mismatch");
+            throw new InvalidObjectException("type-mismatch");
     }
 
     @Override

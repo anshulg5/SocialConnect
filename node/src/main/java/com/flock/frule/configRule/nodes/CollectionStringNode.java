@@ -4,15 +4,19 @@ import com.flock.frule.model.Node;
 import com.flock.frule.model.jsondata.JsonArray;
 import com.flock.frule.model.jsondata.JsonType;
 
+import java.io.InvalidObjectException;
+
 public class CollectionStringNode implements Node<JsonArray> {
     public static final String TYPE = "STRLIST";
     private final JsonArray jsonArray;
 
-    public CollectionStringNode(JsonType json) {
+    public CollectionStringNode(JsonType json) throws InvalidObjectException {
         if(json.isArray()) {
             this.jsonArray = json.asArray();
-        } else {
+        } else if(json.isObject()){
             this.jsonArray = json.asObject().get(TYPE).asArray();
+        } else {
+            throw new InvalidObjectException("type-mismatch");
         }
     }
 
