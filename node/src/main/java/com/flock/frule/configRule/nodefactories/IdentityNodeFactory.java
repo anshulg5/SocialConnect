@@ -6,17 +6,15 @@ import com.flock.frule.model.Node;
 import com.flock.frule.model.NodeFactory;
 import com.flock.frule.model.jsondata.JsonType;
 
-import java.io.InvalidObjectException;
-
 public class IdentityNodeFactory implements NodeFactory<JsonType> {
 
     static {
-        IdentityNodeFactory equalsOperator = new IdentityNodeFactory();
-        NodeManager.registerNodeFactory("IDTY",equalsOperator);
+        IdentityNodeFactory identityOperator = new IdentityNodeFactory();
+        NodeManager.registerNodeFactory("IDTY",identityOperator);
     }
 
     @Override
-    public Node<JsonType> getInstance(JsonType json) throws InvalidObjectException, IllegalAccessException {
+    public Node<JsonType> getInstance(JsonType json) {
         return new IdentityNode();
     }
 }

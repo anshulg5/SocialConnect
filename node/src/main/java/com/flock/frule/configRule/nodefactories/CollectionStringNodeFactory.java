@@ -16,7 +16,7 @@ public class CollectionStringNodeFactory implements NodeFactory<JsonArray> {
     }
 
     @Override
-    public Node<JsonArray> getInstance(JsonType json) throws InvalidObjectException, IllegalAccessException {
+    public Node<JsonArray> getInstance(JsonType json) throws InvalidObjectException {
         return new CollectionStringNode(json);
     }
 

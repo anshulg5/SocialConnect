@@ -11,8 +11,8 @@ import java.io.InvalidObjectException;
 public class OrNodeFactory implements NodeFactory<Boolean> {
 
     static {
-        OrNodeFactory andOperator = new OrNodeFactory();
-        NodeManager.registerNodeFactory("OR",andOperator);
+        OrNodeFactory orOperator = new OrNodeFactory();
+        NodeManager.registerNodeFactory("OR",orOperator);
     }
 
     @Override

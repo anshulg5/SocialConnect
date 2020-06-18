@@ -11,8 +11,8 @@ import java.io.InvalidObjectException;
 public class LessThanNodeFactory implements NodeFactory<Boolean> {
 
     static {
-        LessThanNodeFactory equalsOperator = new LessThanNodeFactory();
-        NodeManager.registerNodeFactory("LESS",equalsOperator);
+        LessThanNodeFactory lessThanOperator = new LessThanNodeFactory();
+        NodeManager.registerNodeFactory("LESS",lessThanOperator);
     }
 
     @Override

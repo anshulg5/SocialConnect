@@ -11,8 +11,8 @@ import java.io.InvalidObjectException;
 public class GreaterThanNodeFactory implements NodeFactory<Boolean> {
 
     static {
-        GreaterThanNodeFactory equalsOperator = new GreaterThanNodeFactory();
-        NodeManager.registerNodeFactory("GTR",equalsOperator);
+        GreaterThanNodeFactory greaterThanOperator = new GreaterThanNodeFactory();
+        NodeManager.registerNodeFactory("GTR",greaterThanOperator);
     }
 
     @Override
