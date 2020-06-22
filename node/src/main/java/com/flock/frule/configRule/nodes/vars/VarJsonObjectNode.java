@@ -11,11 +11,10 @@
 //
 //public class VarJsonObjectNode implements Node<JsonObject> {
 //    private final Logger log = LoggerFactory.getLogger(this.getClass());
+//    private final String TYPE = "VarJSONObj";
+//    private final Map<String, Node<JsonType>> arg;
 //
-//    private final Map<String, Node> arg;
-//
-//    VarJsonObjectNode(Map<String, Node> map) {
-//        this.arg = map;
+//    VarJsonObjectNode(JsonObject json) {
 ////        log.debug("replaced node spec by node object in JsonData: {}",this.arg);
 //    }
 //
