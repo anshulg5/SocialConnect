@@ -19,9 +19,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @Singleton
 public class MediatorApp {
 
-    private RuleApp ruleApp;
+    private RuleService ruleService;
     private SenderApp MessageSender;
-    private ConnectionDetailDao dao = null;
+    private ConnectionDetailDao dao;
     private Map<String, String> channelDetails;
     private AppMessage currAppmsg = null;
     private Node<Boolean> rule = null;
@@ -35,11 +35,11 @@ public class MediatorApp {
     }
 
     @Inject
-    public MediatorApp(RuleApp ruleApp, SenderApp MessageSender, ConnectionDetailDao dao) {
-        this.ruleApp = ruleApp;
+    public MediatorApp(RuleService ruleService, SenderApp MessageSender, ConnectionDetailDao dao) {
+        this.ruleService = ruleService;
         this.dao = dao;
         this.MessageSender = MessageSender;
-        channelDetails = new ConcurrentHashMap();
+        channelDetails = new ConcurrentHashMap<>();
     }
 
 
@@ -74,7 +74,7 @@ public class MediatorApp {
         if(isJSONValid(msg.getText())) {
             try {
                 ObjectMapper mapper = new ObjectMapper();
-                objectMap.put("msg", (Map<String, Object>) mapper.readValue(msg.getText(), new TypeReference<Map<String, Object>>() {}));
+                objectMap.put("msg", mapper.readValue(msg.getText(), new TypeReference<Map<String, Object>>() {}));
             }
             catch (Exception e){
                 return false;
@@ -88,7 +88,7 @@ public class MediatorApp {
         // TODO: replace empty jsonObject
         JsonObject jsonObject = new JsonObject(); //
 
-        boolean success = ruleApp.validateByID("third", jsonObject);
+        boolean success = ruleService.validateByID("third", jsonObject).getStatus();
         if (success) {  // check here
             System.out.println(msg + "passed Rule");
             return MessageSender.send(msg.getChannelId(),msg.getText());

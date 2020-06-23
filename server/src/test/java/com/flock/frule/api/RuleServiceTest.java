@@ -1,9 +1,8 @@
 package com.flock.frule.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flock.frule.TestExtension;
-import com.flock.frule.app.RuleApp;
+import com.flock.frule.app.RuleService;
+import com.flock.frule.model.Rule;
 import com.flock.frule.model.jsondata.JsonType;
 import com.flock.frule.util.Serializer;
 import com.google.gson.JsonParser;
@@ -23,11 +22,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(TestExtension.class)
-public class RulesApiTest {
+public class RuleServiceTest {
     @Inject
-    private RuleApp ruleApp;
+    private RuleService ruleService;
 
-    private ObjectMapper mapper = new ObjectMapper();
+    // TODO: Supply rule object to tests instead of ruleString
     private static String ruleString1, ruleString2, ruleString3, ruleString4, ruleString5;
 
     @ParameterizedTest
@@ -35,16 +34,17 @@ public class RulesApiTest {
     public void shouldReturnTrue_whenNewCorrectRuleIsAdded(String id, String ruleString) throws IOException, IllegalAccessException {
         //given
         JsonType jsonRule = Serializer.fromJson(ruleString);
+        Rule rule = new Rule(id,jsonRule);
 
         //when
-        Boolean status = ruleApp.addRule(id,jsonRule);
+        boolean status = ruleService.addRule(id,rule).getStatus();
 
         //then
         assertTrue(status);
-        assertEquals(ruleString,ruleApp.fetchRules().get(id));
+        assertEquals(ruleString, ruleService.fetchRules().get(id).getRuleString());
 
         //clean
-        ruleApp.deleteRule(id);
+        ruleService.deleteRule(id);
     }
 
     @ParameterizedTest
@@ -52,17 +52,19 @@ public class RulesApiTest {
     public void shouldReturnFalse_whenDuplicateCorrectRuleIsAdded(String id, String ruleString1, String ruleString2) throws IOException, IllegalAccessException {
         //given
         JsonType jsonRule1 = Serializer.fromJson(ruleString1);
+        Rule rule1 = new Rule(id,jsonRule1);
         JsonType jsonRule2 = Serializer.fromJson(ruleString2);
+        Rule rule2 = new Rule(id,jsonRule2);
 
         //when
-        ruleApp.addRule(id,jsonRule1);
-        Boolean status = ruleApp.addRule(id,jsonRule2);
+        ruleService.addRule(id,rule1);
+        boolean status = ruleService.addRule(id,rule2).getStatus();
 
         //then
         assertFalse(status);
 
         //clean
-        ruleApp.deleteRule(id);
+        ruleService.deleteRule(id);
     }
 
     @ParameterizedTest
@@ -70,18 +72,20 @@ public class RulesApiTest {
     public void shouldReturnTrue_whenRuleIsUpdated(String id, String ruleString1, String ruleString2) throws IOException, IllegalAccessException {
         //given
         JsonType jsonRule1 = Serializer.fromJson(ruleString1);
+        Rule rule1 = new Rule(id,jsonRule1);
         JsonType jsonRule2 = Serializer.fromJson(ruleString2);
+        Rule rule2 = new Rule(id,jsonRule2);
 
         //when
-        ruleApp.addRule(id,jsonRule1);
-        Boolean status = ruleApp.updateRule(id,jsonRule2);
+        ruleService.addRule(id,rule1);
+        boolean status = ruleService.updateRule(id,rule2).getStatus();
 
         //then
         assertTrue(status);
-        assertEquals(ruleString2,ruleApp.fetchRules().get(id));
+        assertEquals(ruleString2, ruleService.fetchRules().get(id).getRuleString());
 
         //clean
-        ruleApp.deleteRule(id);
+        ruleService.deleteRule(id);
     }
 
     @ParameterizedTest
@@ -89,16 +93,17 @@ public class RulesApiTest {
     public void shouldReturnFalse_whenRuleToBeUpdatedIsNotPresent(String id, String ruleString) throws IOException, IllegalAccessException {
         //given
         JsonType jsonRule = Serializer.fromJson(ruleString);
+        Rule rule = new Rule(id,jsonRule);
 
         //when
-        Boolean status = ruleApp.updateRule(id,jsonRule);
+        boolean status = ruleService.updateRule(id,rule).getStatus();
 
         //then
         assertFalse(status);
-        assertNull(ruleApp.fetchRules().get(id));
+        assertNull(ruleService.fetchRules().get(id));
 
         //clean
-        ruleApp.deleteRule(id);
+        ruleService.deleteRule(id);
     }
 
     @ParameterizedTest
@@ -106,31 +111,32 @@ public class RulesApiTest {
     public void shouldReturnTrue_whenRuleIsDeleted(String id, String ruleString) throws IOException, IllegalAccessException {
         //given
         JsonType jsonRule = Serializer.fromJson(ruleString);
+        Rule rule = new Rule(id,jsonRule);
 
         //when
-        ruleApp.addRule(id,jsonRule);
-        Boolean status = ruleApp.deleteRule(id);
+        ruleService.addRule(id,rule);
+        boolean status = ruleService.deleteRule(id).getStatus();
 
         //then
         assertTrue(status);
-        assertNull(ruleApp.fetchRules().get(id));
+        assertNull(ruleService.fetchRules().get(id));
 
         //clean
-        ruleApp.deleteRule(id);
+        ruleService.deleteRule(id);
     }
 
     @ParameterizedTest
     @MethodSource
-    public void shouldThrowIllegalAccessException_whenKeyInRuleIsUnknown(String id, String ruleString) throws JsonProcessingException {
+    public void shouldThrowIllegalAccessException_whenKeyInRuleIsUnknown(String id, String ruleString) {
         //given
         JsonType jsonRule = Serializer.fromJson(ruleString);
 
         //when_then
-        assertThrows(IllegalAccessException.class, () -> ruleApp.addRule(id,jsonRule));
-        assertNull(ruleApp.fetchRules().get(id));
+        assertThrows(IllegalAccessException.class, () -> new Rule(id,jsonRule));
+        assertNull(ruleService.fetchRules().get(id));
 
         //clean
-        ruleApp.deleteRule(id);
+        ruleService.deleteRule(id);
     }
 
     @Test
@@ -139,11 +145,11 @@ public class RulesApiTest {
         String id = "random";
 
         //when
-        Boolean status = ruleApp.deleteRule(id);
+        boolean status = ruleService.deleteRule(id).getStatus();
 
         //then
         assertFalse(status);
-        assertNull(ruleApp.fetchRules().get(id));
+        assertNull(ruleService.fetchRules().get(id));
     }
 
     private static Stream<Arguments> oneRuleIdAndOneRuleStringProvider(){

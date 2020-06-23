@@ -1,6 +1,8 @@
 package com.flock.frule.servlet;
 
-import com.flock.frule.app.RuleApp;
+import com.flock.frule.app.RuleService;
+import com.flock.frule.model.Response;
+import com.flock.frule.model.Rule;
 import com.flock.frule.model.jsondata.JsonType;
 import com.flock.frule.util.Serializer;
 import org.json.JSONObject;
@@ -11,21 +13,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InvalidObjectException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
 
 @Singleton
 public class RuleManagerServlet extends HttpServlet {
-    RuleApp ruleApp;
+    RuleService ruleService;
 
     @Inject
-    RuleManagerServlet(RuleApp ruleApp){
-        this.ruleApp = ruleApp;
+    RuleManagerServlet(RuleService ruleService){
+        this.ruleService = ruleService;
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.addHeader("Access-Control-Allow-Origin", "*");
 //        resp.addHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE, HEAD");
 //        resp.addHeader("Access-Control-Allow-Headers", "X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept");
@@ -52,101 +54,83 @@ public class RuleManagerServlet extends HttpServlet {
             default:
         }
         System.out.println("status"+resp.getStatus());
-//        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/");
-//        requestDispatcher.forward(req, resp);
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         doPost(req,resp);
-//        resp.sendRedirect("/");
     }
 
-    private void addRule(HttpServletRequest req, HttpServletResponse resp){
-        String ID = req.getParameter("id");
-        JsonType jsonRule;
-        try {
-            String ruleString = req.getParameter("rule");
-            if(ID==null || ruleString==null)
-                throw new NullPointerException();
-            jsonRule = Serializer.fromJson(ruleString);
-        } catch (NullPointerException e){
+    private void addRule(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        PrintWriter out = resp.getWriter();
+        String id = req.getParameter("id");
+        String jsonString = req.getParameter("rule");
+        Rule rule;
+        if(id == null || jsonString == null){
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.write("Parameter missing");
             return;
         }
-        Boolean success=false;
         try {
-            success = ruleApp.addRule(ID, jsonRule);
-        } catch (IllegalAccessException | InvalidObjectException e) {
-            e.printStackTrace();
-        }
-        setSuccessMsg(resp,success,"added","duplicate");    //used to set Error 403 in case of duplicacy
-    }
-
-    private void deleteRule(HttpServletRequest req, HttpServletResponse resp){
-        String ID = req.getParameter("id");
-        if(ID==null){
+            JsonType json = Serializer.fromJson(jsonString);
+            rule = new Rule(id,json);
+        } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.write("Invalid Arguement");
             return;
         }
-        Boolean success;
-        success = ruleApp.deleteRule(ID);
-        setSuccessMsg(resp,success,"deleted","not present");
+        Response response = ruleService.addRule(id,rule);
+        if(!response.getStatus())
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        out.write(response.getMessage());
     }
 
-    private void updateRule(HttpServletRequest req, HttpServletResponse resp){
-        String ID = req.getParameter("id");
-        JsonType jsonRule;
-        try {
-            String ruleString = req.getParameter("rule");
-            if(ID==null || ruleString==null)
-                throw new NullPointerException();
-            jsonRule = Serializer.fromJson(ruleString);
-        } catch (NullPointerException e){
+    private void updateRule(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        PrintWriter out = resp.getWriter();
+        String id = req.getParameter("id");
+        String jsonString = req.getParameter("rule");
+        Rule rule;
+        if(id == null || jsonString == null){
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.write("Parameter missing");
             return;
         }
-        Boolean success=false;
         try {
-            success = ruleApp.updateRule(ID, jsonRule);
-            System.out.println(success);
-        } catch (IllegalAccessException | InvalidObjectException e) {
-            e.printStackTrace();
+            JsonType json = Serializer.fromJson(jsonString);
+            rule = new Rule(id,json);
+        } catch (Exception e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.write("Invalid Arguement");
+            return;
         }
-        setSuccessMsg(resp,success,"updated","not present");
+        Response response = ruleService.updateRule(id,rule);
+        if(!response.getStatus())
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        out.write(response.getMessage());
     }
 
-    private void setSuccessMsg(HttpServletResponse resp, Boolean success, String successMsg, String failureMsg){
-        System.out.println("Success: "+success);
-        try {
-            if(success){
-                resp.setStatus(HttpServletResponse.SC_OK);
-                PrintWriter out = resp.getWriter();
-                out.write(successMsg);
-                out.close();
-            }
-            else {
-                resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                PrintWriter out = resp.getWriter();
-                out.write(failureMsg);
-                out.close();
-            }
-        } catch (IOException e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    private void deleteRule(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        PrintWriter out = resp.getWriter();
+        String id = req.getParameter("id");
+        if(id == null){
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.write("Parameter missing");
+            return;
         }
+        Response response = ruleService.deleteRule(id);
+        if(!response.getStatus())
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        out.write(response.getMessage());
     }
 
-    private void fetchRule(HttpServletRequest req, HttpServletResponse resp){
-        Map<String, String> map = ruleApp.fetchRules();
-        JSONObject json = new JSONObject(map);
+    private void fetchRule(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        PrintWriter out = resp.getWriter();
+        Map<String, Rule> rulesMap = ruleService.fetchRules();
+        Map<String, String> rules = new HashMap<>();
+        rulesMap.forEach((k,v) -> rules.put(k,v.getRuleString()));
+        JSONObject json = new JSONObject(rules);
         resp.setContentType("application/json");
-        try {
-            PrintWriter out = resp.getWriter();
-            out.write(json.toString());
-            out.close();
-        } catch (IOException e) {
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
+        out.write(json.toString());
 
     }
 }
