@@ -1,5 +1,6 @@
 package com.flock.frule.model;
 
+import com.flock.frule.configRule.nodes.targetaction.TargetAction;
 import com.flock.frule.model.jsondata.JsonObject;
 import com.flock.frule.model.jsondata.JsonType;
 import org.slf4j.Logger;
