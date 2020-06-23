@@ -1,5 +1,9 @@
 package com.flock.frule.model;
 
+/**
+ * This class is used as a response to return a boolean
+ * status from a method along with a added message.
+ */
 public class Response {
     private boolean status;
     private String message;
