@@ -20,7 +20,7 @@ public class PropertiesModule extends AbstractModule {
 
     private Properties loadConfig(String propertiesFileName) {
         FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
-                new FileBasedConfigurationBuilder(PropertiesConfiguration.class)
+                new FileBasedConfigurationBuilder<>(PropertiesConfiguration.class)
                     .configure(new Parameters().properties()
 //                    .setListDelimiterHandler(new DefaultListDelimiterHandler(','))
                     .setFileName(propertiesFileName + ".properties"));
