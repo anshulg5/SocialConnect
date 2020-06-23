@@ -3,6 +3,7 @@ package com.flock.frule.app;
 import com.flock.frule.dao.RuleDao;
 import com.flock.frule.model.Response;
 import com.flock.frule.model.Rule;
+import com.flock.frule.model.Target;
 import com.flock.frule.model.jsondata.JsonType;
 
 import javax.inject.Inject;
@@ -31,7 +32,7 @@ public class RuleServiceImpl implements RuleService {
         Response response = new Response();
         if(rulesMap.containsKey(id)){
             response.setStatus(false);
-            response.setMessage("Rule already exist with id: " + id);
+            response.setMessage("Rule with id: " + id + " already exist");
             return response;
         }
         ruleDao.addRule(rule);
@@ -78,6 +79,28 @@ public class RuleServiceImpl implements RuleService {
     }
 
     @Override
+    public Response addTarget(String ruleId, Target target) {
+        if(!rulesMap.containsKey(ruleId)){
+            Response response = new Response();
+            response.setStatus(false);
+            response.setMessage("No rule with id: " + ruleId);
+            return response;
+        }
+        return rulesMap.get(ruleId).addTarget(target);
+    }
+
+    @Override
+    public Response removeTarget(String ruleId, String targetId) {
+        if(!rulesMap.containsKey(ruleId)){
+            Response response = new Response();
+            response.setStatus(false);
+            response.setMessage("No rule with id: " + ruleId);
+            return response;
+        }
+        return rulesMap.get(ruleId).removeTarget(targetId);
+    }
+
+    @Override
     public Response validateByID(String id, JsonType input){
         Response response = new Response();
         if(!rulesMap.containsKey(id)){
@@ -85,13 +108,12 @@ public class RuleServiceImpl implements RuleService {
             response.setMessage("No rule with id: " + id);
             return response;
         }
-        Boolean match = rulesMap.get(id).validate(input);
-        response.setStatus(match);
-        if(match)
-            response.setMessage("Input validation passed on Rule id: "+ id);
-        else
-            response.setMessage("Input validation failed on Rule id: " + id);
-        return response;
+        return rulesMap.get(id).validate(input);
+    }
+
+    @Override
+    public void applyInput(JsonType input) {
+        rulesMap.forEach((k,v) -> v.apply(input));
     }
 
 }

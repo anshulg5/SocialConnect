@@ -6,6 +6,8 @@ import com.flock.frule.model.Rule;
 import com.flock.frule.model.jsondata.JsonType;
 import com.flock.frule.util.Serializer;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -17,8 +19,10 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+//TODO: remove code duplication
 @Singleton
 public class RuleManagerServlet extends HttpServlet {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
     RuleService ruleService;
 
     @Inject
@@ -33,9 +37,7 @@ public class RuleManagerServlet extends HttpServlet {
 //        resp.addHeader("Access-Control-Allow-Headers", "X-PINGOTHER, Origin, X-Requested-With, Content-Type, Accept");
 //        resp.addHeader("Access-Control-Max-Age", "1728000");
         String path = req.getPathInfo();
-        System.out.println(path);
-        System.out.println("id: "+req.getParameter("id"));
-        System.out.println("rule: "+req.getParameter("rule"));
+        log.info(path);
         resp.setContentType("text/html");
         resp.setStatus(HttpServletResponse.SC_OK);
         switch(path){
@@ -51,9 +53,11 @@ public class RuleManagerServlet extends HttpServlet {
             case "/fetch":
                 fetchRule(req,resp);
                 break;
+            case "/apply":
+                applyInput(req,resp);
             default:
         }
-        System.out.println("status"+resp.getStatus());
+        log.info("status"+resp.getStatus());
     }
 
     @Override
@@ -132,5 +136,25 @@ public class RuleManagerServlet extends HttpServlet {
         resp.setContentType("application/json");
         out.write(json.toString());
 
+    }
+
+    private void applyInput(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        PrintWriter out = resp.getWriter();
+        String inputString = req.getParameter("input");
+        if(inputString == null){
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.write("Parameter missing");
+            return;
+        }
+        JsonType input;
+        try{
+            input = Serializer.fromJson(inputString);
+        } catch(Exception e){
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.write("Invalid Arguement");
+            return;
+        }
+        ruleService.applyInput(input);
+        out.write("Applied rules on input");
     }
 }

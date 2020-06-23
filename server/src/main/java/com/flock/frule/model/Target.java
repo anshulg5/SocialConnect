@@ -12,10 +12,12 @@ import java.util.concurrent.CompletionStage;
 public class Target {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+    private final String id;
     private final Map<String, Node<JsonType>> vars;
     private final TargetAction action;
 
-    public Target(Map<String, Node<JsonType>> vars, TargetAction action) {
+    public Target(String id, Map<String, Node<JsonType>> vars, TargetAction action) {
+        this.id = id;
         this.vars = vars;
         this.action = action;
     }
@@ -31,5 +33,9 @@ public class Target {
         copy.merge(input.asObject());
         vars.forEach((var, mapper) -> copy.put(var, mapper.apply(input)));
         return copy;
+    }
+
+    public String getId() {
+        return id;
     }
 }

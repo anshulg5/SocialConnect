@@ -29,13 +29,13 @@ public class MsgValidationTest {
     @ParameterizedTest
     @MethodSource
     public void shouldReturnTrue_whenRulePassOnMsg(Rule rule, JsonObject input) {
-        assertTrue(rule.validate(input));
+        assertTrue(rule.validate(input).getStatus());
     }
 
     @ParameterizedTest
     @MethodSource
     public void shouldReturnFalse_whenSimilarStructureOfRuleAndMsg_and_whenRuleFailsOnMsg(Rule rule, JsonObject input) {
-        assertFalse(rule.validate(input));
+        assertFalse(rule.validate(input).getStatus());
     }
 
 //    @ParameterizedTest
