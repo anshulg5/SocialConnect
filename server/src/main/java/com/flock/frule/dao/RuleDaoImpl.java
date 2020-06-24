@@ -36,8 +36,14 @@ public class RuleDaoImpl implements RuleDao {
     }
 
     @Override
-    public void deleteRule(String ruleID){
+    public void updateRule(String ruleId, Rule rule) {
+        String updateString = "UPDATE RULE SET JSONString = ? WHERE ID = ?";
+        db.update(updateString,rule.getRuleString(),ruleId);
+    }
+
+    @Override
+    public void deleteRule(String ruleId){
         String removeString = "DELETE FROM RULE WHERE ID = ?";
-        db.update(removeString,ruleID);
+        db.update(removeString,ruleId);
     }
 }

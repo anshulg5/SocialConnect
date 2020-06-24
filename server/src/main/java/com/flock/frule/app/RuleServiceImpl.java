@@ -50,8 +50,7 @@ public class RuleServiceImpl implements RuleService {
             response.setMessage("No rule with id: " + id);
             return response;
         }
-        ruleDao.deleteRule(id);
-        ruleDao.addRule(rule);
+        ruleDao.updateRule(id,rule);
         rulesMap.put(id,rule);
         response.setStatus(true);
         response.setMessage("Rule with id: "+ id + " updated");
