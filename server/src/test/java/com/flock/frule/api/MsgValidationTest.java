@@ -2,10 +2,7 @@ package com.flock.frule.api;
 
 import com.flock.frule.TestExtension;
 import com.flock.frule.model.Rule;
-import com.flock.frule.model.jsondata.JsonArray;
 import com.flock.frule.model.jsondata.JsonObject;
-import com.flock.frule.model.jsondata.JsonPrimitive;
-import com.flock.frule.model.jsondata.JsonType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.IOException;
 import java.util.stream.Stream;
 
+import static com.flock.frule.helpers.JsonBuilder.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -388,53 +386,6 @@ public class MsgValidationTest {
 
     }
 
-    private static JsonObject singletonListObject(String key, Object ... listItems) {
-        return obj(key, arr(listItems));
-    }
 
-    private static JsonArray arr(Object... entries) {
-        JsonArray result = new JsonArray();
-        for (Object entry : entries) {
-            result.add(of(entry));
-        }
-        return result;
-    }
-
-    static JsonType of(Object entry) {
-        if (entry instanceof JsonType) return (JsonType) entry;
-        if (entry instanceof String || entry instanceof Boolean || entry instanceof Number) {
-//            return JsonPrimitive.of(entry);
-            return new JsonPrimitive(entry);
-        }
-        else
-            throw new RuntimeException();
-//        else if (entry instanceof Collection || entry.getClass().isArray()) {
-////            return JsonArray.of(entry);
-//            JsonArray jsonArray = new JsonArray();
-//
-//
-//        }
-    }
-
-    static JsonObject obj(String k1, JsonType v1) {
-        JsonObject input = new JsonObject();
-        input.put(k1,v1);
-        return input;
-    }
-
-    static JsonObject obj(String k1, JsonType v1, String k2, JsonType v2) {
-        JsonObject input = new JsonObject();
-        input.put(k1,v1);
-        input.put(k2,v2);
-        return input;
-    }
-
-    static JsonObject obj(String k1, JsonType v1, String k2, JsonType v2, String k3, JsonType v3) {
-        JsonObject input = new JsonObject();
-        input.put(k1,v1);
-        input.put(k2,v2);
-        input.put(k3,v3);
-        return input;
-    }
 
 }
