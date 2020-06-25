@@ -1,6 +1,7 @@
 package com.flock.frule.app;
 
 import com.flock.frule.dao.RuleDao;
+import com.flock.frule.dao.TargetDao;
 import com.flock.frule.model.Response;
 import com.flock.frule.model.Rule;
 import com.flock.frule.model.Target;
@@ -13,12 +14,14 @@ import java.util.Map;
 
 @Singleton
 public class RuleServiceImpl implements RuleService {
-    private RuleDao ruleDao;
+    private final RuleDao ruleDao;
+    private final TargetDao targetDao;
     private final Map<String, Rule> rulesMap;
 
     @Inject
-    RuleServiceImpl(RuleDao ruleDao){
+    RuleServiceImpl(RuleDao ruleDao, TargetDao targetDao){
         this.ruleDao = ruleDao;
+        this.targetDao = targetDao;
         rulesMap = new HashMap<>();
     }
 
@@ -79,24 +82,33 @@ public class RuleServiceImpl implements RuleService {
 
     @Override
     public Response addTarget(String ruleId, Target target) {
+        Response response;
         if(!rulesMap.containsKey(ruleId)){
-            Response response = new Response();
+            response = new Response();
             response.setStatus(false);
             response.setMessage("No rule with id: " + ruleId);
             return response;
         }
-        return rulesMap.get(ruleId).addTarget(target);
+        response = rulesMap.get(ruleId).addTarget(target);
+        if(response.getStatus())
+            targetDao.addTarget(ruleId,target);
+        return response;
+
     }
 
     @Override
     public Response removeTarget(String ruleId, String targetId) {
+        Response response;
         if(!rulesMap.containsKey(ruleId)){
-            Response response = new Response();
+            response = new Response();
             response.setStatus(false);
             response.setMessage("No rule with id: " + ruleId);
             return response;
         }
-        return rulesMap.get(ruleId).removeTarget(targetId);
+        response = rulesMap.get(ruleId).removeTarget(targetId);
+        if(response.getStatus())
+            targetDao.removeTarget(ruleId,targetId);
+        return response;
     }
 
     @Override

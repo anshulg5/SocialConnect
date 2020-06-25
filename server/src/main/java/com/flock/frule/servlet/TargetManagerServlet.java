@@ -1,7 +1,6 @@
 package com.flock.frule.servlet;
 
 import com.flock.frule.app.RuleService;
-import com.flock.frule.helpers.TargetBuilder;
 import com.flock.frule.model.Response;
 import com.flock.frule.model.Target;
 import com.flock.frule.model.jsondata.JsonType;
@@ -64,7 +63,7 @@ public class TargetManagerServlet extends HttpServlet {
         }
         try {
             JsonType json = Serializer.fromJson(targetJsonString);
-            target = TargetBuilder.fromJson(json.asObject());
+            target = Target.Builder.fromJson(json.asObject());
         } catch (Exception e) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             out.write("Invalid Arguement");

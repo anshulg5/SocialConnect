@@ -2,39 +2,56 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
-    <changeSet author="anshul.g (generated)" id="1585718834671-1">
+
+    <changeSet id="create_bot_table" author="anshul.g">
         <createTable tableName="bot">
             <column name="name" type="VARCHAR(30)"/>
             <column name="token" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="anshul.g (generated)" id="1585718834671-2">
+
+    <changeSet id="create_botdetail_table" author="anshul.g">
         <createTable tableName="botdetail">
-            <column name="botusername" type="BPCHAR(50)">
+            <column name="bot_username" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="bottoken" type="TEXT"/>
-            <column name="msgtext" type="TEXT"/>
+            <column name="bot_token" type="TEXT"/>
+            <column name="msg_text" type="TEXT"/>
         </createTable>
     </changeSet>
-    <changeSet author="anshul.g (generated)" id="1585718834671-3">
+
+    <changeSet id="create_connection_table" author="anshul.g" >
         <createTable tableName="connection">
-            <column name="sourceid" type="BPCHAR(50)"/>
-            <column name="targetid" type="BPCHAR(50)"/>
+            <column name="source_id" type="VARCHAR(50)"/>
+            <column name="target_id" type="VARCHAR(50)"/>
         </createTable>
     </changeSet>
-    <changeSet author="anshul.g (generated)" id="1585718834671-4">
+
+    <changeSet id="create_rule_table" author="anshul.g">
         <createTable tableName="rule">
             <column name="id" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="jsonstring" type="TEXT"/>
+            <column name="json" type="TEXT"/>
         </createTable>
     </changeSet>
-    <changeSet author="anshul.g (generated)" id="1585718834671-5">
-        <addPrimaryKey columnNames="botusername" constraintName="botdetail_pkey" tableName="botdetail"/>
+
+    <changeSet id="add_primarykey_in_botdetail" author="anshul.g">
+        <addPrimaryKey columnNames="bot_username" constraintName="botdetail_pkey" tableName="botdetail"/>
     </changeSet>
-    <changeSet author="anshul.g (generated)" id="1585718834671-6">
+
+    <changeSet id="add_primarykey_in_rule" author="anshul.g">
         <addPrimaryKey columnNames="id" constraintName="rule_pkey" tableName="rule"/>
+    </changeSet>
+    
+    <changeSet id="create_target_table" author="anshul.g">
+        <sql>
+            CREATE TABLE target(
+            target_id VARCHAR(50)  NOT NULL,
+            target_json TEXT,
+            rule_id VARCHAR(50) NOT NULL REFERENCES rule(id) ON DELETE CASCADE,
+            CONSTRAINT id PRIMARY KEY (target_id,rule_id)
+            );
+        </sql>
     </changeSet>
 </databaseChangeLog>

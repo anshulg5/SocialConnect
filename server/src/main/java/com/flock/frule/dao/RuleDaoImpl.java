@@ -2,13 +2,10 @@ package com.flock.frule.dao;
 
 
 import com.flock.frule.model.Rule;
-import com.flock.frule.model.RuleMapper;
 import com.google.inject.Inject;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.inject.Singleton;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Singleton
@@ -21,29 +18,27 @@ public class RuleDaoImpl implements RuleDao {
     }
 
     public Map<String, Rule> getRules(){
-        Map<String, Rule> map = new HashMap<>();
-        List<Rule> list = db.query("SELECT * from RULE", new RuleMapper());
-        for (Rule rule : list) {
-            map.put(rule.getID(), rule);
-        }
-        return map;
+        String queryString = "SELECT rule.id, rule.json, target.target_id, target.target_json" +
+                " FROM rule LEFT JOIN target" +
+                " ON rule.id = target.rule_id";
+        return db.query(queryString, new RuleMapExtractor());
     }
 
     @Override
     public void addRule(Rule rule){
-        String insertString = "INSERT INTO RULE (ID,JSONString) VALUES (?,?)";
-        db.update(insertString,rule.getID(),rule.getRuleString());
+        String insertQuery = "INSERT INTO rule (id,json) VALUES (?,?)";
+        db.update(insertQuery,rule.getID(),rule.getRuleString());
     }
 
     @Override
     public void updateRule(String ruleId, Rule rule) {
-        String updateString = "UPDATE RULE SET JSONString = ? WHERE ID = ?";
-        db.update(updateString,rule.getRuleString(),ruleId);
+        String updateQuery = "UPDATE rule SET json = ? WHERE id = ?";
+        db.update(updateQuery,rule.getRuleString(),ruleId);
     }
 
     @Override
     public void deleteRule(String ruleId){
-        String removeString = "DELETE FROM RULE WHERE ID = ?";
+        String removeString = "DELETE FROM rule WHERE id = ?";
         db.update(removeString,ruleId);
     }
 }

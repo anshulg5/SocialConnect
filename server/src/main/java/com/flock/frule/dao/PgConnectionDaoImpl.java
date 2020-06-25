@@ -1,7 +1,6 @@
 package com.flock.frule.dao;
 
 import com.flock.frule.model.ConnectionDetail;
-import com.flock.frule.model.ConnectionMapper;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,7 +24,7 @@ public class PgConnectionDaoImpl implements ConnectionDetailDao {
 
     @Override
     public boolean saveDetails(ConnectionDetail detail) {
-        return db.update("INSERT into connection(sourceid,targetid) values(?,?)",detail.getSourceID(),detail.getTargetID()) > 0;
+        return db.update("INSERT into connection(source_id,target_id) values(?,?)",detail.getSourceID(),detail.getTargetID()) > 0;
     }
 
 

@@ -16,6 +16,7 @@ public class DatabaseModule extends AbstractModule {
         bind(ConnectionDetailDao.class).to(PgConnectionDaoImpl.class);
         bind(BotDetailDao.class).to(PgBotDetailDaoImpl.class);
         bind(RuleDao.class).to(RuleDaoImpl.class);
+        bind(TargetDao.class).to(TargetDaoImpl.class);
     }
 
     @Provides

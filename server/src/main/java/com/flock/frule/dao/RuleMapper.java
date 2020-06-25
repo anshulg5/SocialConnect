@@ -1,6 +1,7 @@
-package com.flock.frule.model;
+package com.flock.frule.dao;
 
 
+import com.flock.frule.model.Rule;
 import com.flock.frule.util.Serializer;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -12,8 +13,8 @@ public class RuleMapper implements RowMapper<Rule> {
 
     @Override
     public Rule mapRow(ResultSet resultSet, int i) throws SQLException {
-        String ID = resultSet.getString("ID");
-        String JSONString = resultSet.getString("JSONString");
+        String ID = resultSet.getString("id");
+        String JSONString = resultSet.getString("json");
         Rule rule = null;
         try {
             rule = new Rule(ID, Serializer.fromJson(JSONString));
