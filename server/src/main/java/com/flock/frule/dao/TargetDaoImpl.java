@@ -18,7 +18,7 @@ public class TargetDaoImpl implements TargetDao{
     @Override
     public void addTarget(String ruleId, Target target) {
         String insertQuery = "INSERT INTO target (target_id, target_json, rule_id) VALUES (?,?,?)";
-        db.update(insertQuery,target.getId(),target.getTargetJSonString(),ruleId);
+        db.update(insertQuery,target.getId(),target.toString(),ruleId);
     }
 
     @Override

@@ -44,7 +44,8 @@ public class Target {
         return id;
     }
 
-    public String getTargetJSonString() {
+    @Override
+    public String toString() {
         return this.targetJSonString;
     }
 
