@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 //TODO: remove code duplication
 @Singleton
@@ -138,14 +139,16 @@ public class RuleManagerServlet extends HttpServlet {
 
     }
 
+    // takes input from the POST Request Body
     private void applyInput(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PrintWriter out = resp.getWriter();
-        String inputString = req.getParameter("input");
-        if(inputString == null){
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            out.write("Parameter missing");
-            return;
-        }
+        String inputString = req.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+        log.info(inputString);
+//        if(inputString == null){
+//            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+//            out.write("Parameter missing");
+//            return;
+//        }
         JsonType input;
         try{
             input = Serializer.fromJson(inputString);

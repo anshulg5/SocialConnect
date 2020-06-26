@@ -3,12 +3,16 @@ package com.flock.frule.model;
 import com.flock.frule.NodeManager;
 import com.flock.frule.model.jsondata.JsonType;
 import com.flock.frule.util.Serializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InvalidObjectException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Rule {
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     private final String ID;
     private final String ruleString;
     private final Node<Boolean> rootNode;
@@ -63,8 +67,10 @@ public class Rule {
         response.setStatus(success);
         if(success){
             response.setMessage("Input validation passed on Rule id: "+ ID);
+            log.info(response.getMessage());
         } else {
             response.setMessage("Input validation failed on Rule id: " + ID);
+            log.info(response.getMessage());
         }
         return response;
     }
