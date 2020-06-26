@@ -159,5 +159,6 @@ public class RuleManagerServlet extends HttpServlet {
         }
         ruleService.applyInput(input);
         out.write("Applied rules on input");
+        log.info("Applied rules on input");
     }
 }
