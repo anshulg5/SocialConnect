@@ -29,16 +29,24 @@ public class NodeManager {
     }
 
     public static <T> Node<T> create(JsonType json) throws IllegalAccessException, InvalidObjectException {
-        JsonObject jsonObject = json.asObject();
-        Set<String> keySet = jsonObject.getKeys();
-        if(keySet.size()!=1){
-            throw new InvalidObjectException("Only one key expected in the JsonObject");
+        if(json.isObject()){
+            JsonObject jsonObject = json.asObject();
+            Set<String> keySet = jsonObject.getKeys();
+            if(keySet.size()!=1){
+                throw new InvalidObjectException("Only one key expected in the JsonObject");
+            }
+            String nodeType = keySet.iterator().next();
+            log.debug(nodeType + " : " + jsonObject.get(nodeType));
+            if(!hashMap.containsKey(nodeType))
+                throw new IllegalAccessException("cannot identify key: "+ nodeType);
+            return (Node<T>) getNodeFactory(nodeType).getInstance(jsonObject);
+        } else if(json.isPrimitive()){
+            return (Node<T>) getNodeFactory("JSONPrimitive").getInstance(json);
+        } else if(json.isArray()){
+            return (Node<T>) getNodeFactory("JSONArr").getInstance(json);
+        } else{ // json is of type JsonNull
+            return (Node<T>) getNodeFactory("JsonNull").getInstance(json);
         }
-        String nodeType = keySet.iterator().next();
-        log.debug(nodeType + " : " + jsonObject.get(nodeType));
-        if(!hashMap.containsKey(nodeType))
-            throw new IllegalAccessException("cannot identify key: "+ nodeType);
-        return (Node<T>) getNodeFactory(nodeType).getInstance(jsonObject);
 
     }
     
