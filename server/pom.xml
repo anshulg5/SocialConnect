@@ -9,9 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <properties>
-        <ENV>local</ENV>
-    </properties>
+<!--    <properties>-->
+<!--        <ENV>local</ENV>-->
+<!--    </properties>-->
 
     <artifactId>server</artifactId>
 
@@ -189,7 +189,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
 <!--                    <systemPropertyVariables>-->
-<!--                        <ENV>local</ENV>-->
+<!--                        <ENV>pre-prod</ENV>-->
 <!--                    </systemPropertyVariables>-->
                     <environmentVariables>
                         <LANG>en_US.UTF-8</LANG>

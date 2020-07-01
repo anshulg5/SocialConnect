@@ -175,7 +175,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>org.example.main.Main</mainClass>
+                            <mainClass>com.flock.frule.main.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
