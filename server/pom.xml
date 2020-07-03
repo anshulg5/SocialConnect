@@ -3,15 +3,16 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>SocialConnect</artifactId>
-        <groupId>org.example</groupId>
+        <artifactId>parent</artifactId>
+        <groupId>frule</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-<!--    <properties>-->
-<!--        <ENV>local</ENV>-->
-<!--    </properties>-->
+    <properties>
+        <service.name>frule</service.name>
+        <ENV>local</ENV>
+    </properties>
 
     <artifactId>server</artifactId>
 
@@ -38,13 +39,13 @@
         </dependency>
 
         <dependency>
-            <groupId>org.example</groupId>
+            <groupId>frule</groupId>
             <artifactId>commons</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.example</groupId>
+            <groupId>frule</groupId>
             <artifactId>node</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -152,7 +153,6 @@
         </dependency>
 
 
-
     </dependencies>
 
 
@@ -204,6 +204,76 @@
                 <configuration>
                     <source>8</source>
                     <target>8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>rpm-maven-plugin</artifactId>
+                <version>2.2.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <name>${service.name}</name>
+                    <distribution>dist</distribution>
+                    <group>Application</group>
+                    <prefix>/opt/${service.name}/current</prefix>
+                    <defineStatements>
+                        <defineStatement>_rollback_transaction_on_failure 1</defineStatement>
+                    </defineStatements>
+                    <mappings>
+                        <mapping>
+                            <directory>/opt/${service.name}/current/classes</directory>
+                            <filemode>775</filemode>
+                            <username>${service.name}</username>
+                            <groupname>${service.name}</groupname>
+                            <sources>
+                                <source>
+                                    <location>target/classes</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/opt/${service.name}/current/scripts</directory>
+                            <filemode>775</filemode>
+                            <username>${service.name}</username>
+                            <groupname>${service.name}</groupname>
+                            <sources>
+                                <source>
+                                    <location>src/main/scripts</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                        <mapping>
+                            <directory>/opt/${service.name}/current/libs</directory>
+                            <filemode>775</filemode>
+                            <username>${service.name}</username>
+                            <groupname>${service.name}</groupname>
+                            <dependency />
+                        </mapping>
+                        <mapping>
+                            <directoryIncluded>false</directoryIncluded>
+                            <directory>/etc/init.d</directory>
+                            <filemode>775</filemode>
+                            <username>root</username>
+                            <groupname>root</groupname>
+                            <sources>
+                                <source>
+                                    <filter>true</filter>
+                                    <location>src/main/resources/${service.name}</location>
+                                </source>
+                            </sources>
+                        </mapping>
+                    </mappings>
+                    <posttransScriptlet>
+                        <script>
+                            echo ${ENV} &gt; /opt/${service.name}/current/env
+                            if /opt/${service.name}/current/scripts/migrate_db.sh ; then
+                            /opt/${service.name}/current/scripts/post_deploy.sh
+                            else
+                            exit 1
+                            fi
+                        </script>
+                    </posttransScriptlet>
+                    <needarch>noarch</needarch>
                 </configuration>
             </plugin>
         </plugins>
