@@ -265,7 +265,6 @@
                     </mappings>
                     <posttransScriptlet>
                         <script>
-                            echo ${ENV} &gt; /opt/${service.name}/current/env
                             if /opt/${service.name}/current/scripts/migrate_db.sh ; then
                             /opt/${service.name}/current/scripts/post_deploy.sh
                             else

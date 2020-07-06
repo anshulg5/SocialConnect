@@ -1,6 +1,6 @@
 #!/bin/sh
 
-APP=elpis
+APP=frule
 echo "Running post deploy script"
 chown -R $APP:$APP /opt/$APP
 mkdir -p /logs/$APP
