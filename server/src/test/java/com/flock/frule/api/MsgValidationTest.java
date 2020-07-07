@@ -179,7 +179,7 @@ public class MsgValidationTest {
         JsonObject copyruleObject1 = obj(
                 "EQ", arr(
                         singletonListObject("PTH","array", 1),
-                        obj("JSONPrimitive", of(52))
+                        of(52)
                 )
         );
         copyrule1 = new Rule("copyid1", copyruleObject1);

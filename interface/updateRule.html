@@ -1,0 +1,29 @@
+<html>
+
+<head>
+    <title>
+        Update Rule
+    </title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/kognise/water.css@latest/dist/dark.min.css">
+
+</head>
+
+<body onload="updateData()">
+<input type="button" value="Main Menu" onclick="window.location.href='userpage.html'">
+<div>
+    <h1>Update Rule</h1>
+    <form action="javascript:updateForm()">
+        <label for="id">Enter Rule ID :</label><br>
+        <input type="text" id="id" name="id" readonly onclick="alert('Read-Only')"><br>
+        <label for="rule">Enter Rule :</label><br>
+        <textarea type="textarea" id="rule" name="rule" required></textarea><br>
+        <input type="submit" id="submit">
+    </form>
+</div>
+
+<div id="demo"></div>
+
+<script src="myScript.js"></script>
+</body>
+
+</html>
